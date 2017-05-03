@@ -1,4 +1,3 @@
-
 /**
  * scrollVis - encapsulates
  * all the code for the visualization
@@ -8,9 +7,9 @@
 var scrollVis = function () {
   // constants to define the size
   // and margins of the vis area.
-  var width = 600;
-  var height = 520;
-  var margin = { top: 0, left: 20, bottom: 40, right: 10 };
+  var width = IS_PHONE() ? PHONE_VIS_WIDTH : VIS_WIDTH;
+  var height = IS_PHONE() ? PHONE_VIS_HEIGHT : VIS_HEIGHT;
+  
 
   // Keep track of which visualization
   // we are on and which was the last
@@ -32,57 +31,13 @@ var scrollVis = function () {
   // for displaying visualizations
   var g = null;
 
-  // We will set the domain when the
-  // data is processed.
-  // @v4 using new scale names
-  var xBarScale = d3.scaleLinear()
-    .range([0, width]);
+  var dotChartY = d3.scaleBand()
+            .range([0, height])
+            .padding(0.95);
+  var dotChartX = d3.scaleLinear()
+            .range([width, 0]);
 
-  // The bar chart display is horizontal
-  // so we can use an ordinal scale
-  // to get width and y locations.
-  // @v4 using new scale type
-  var yBarScale = d3.scaleBand()
-    .paddingInner(0.08)
-    .domain([0, 1, 2])
-    .range([0, height - 50], 0.1, 0.1);
 
-  // Color is determined just by the index of the bars
-  var barColors = { 0: '#008080', 1: '#399785', 2: '#5AAF8C' };
-
-  // The histogram display shows the
-  // first 30 minutes of data
-  // so the range goes from 0 to 30
-  // @v4 using new scale name
-  var xHistScale = d3.scaleLinear()
-    .domain([0, 30])
-    .range([0, width - 20]);
-
-  // @v4 using new scale name
-  var yHistScale = d3.scaleLinear()
-    .range([height, 0]);
-
-  // The color translation uses this
-  // scale to convert the progress
-  // through the section into a
-  // color value.
-  // @v4 using new scale name
-  var coughColorScale = d3.scaleLinear()
-    .domain([0, 1.0])
-    .range(['#008080', 'red']);
-
-  // You could probably get fancy and
-  // use just one axis, modifying the
-  // scale, but I will use two separate
-  // ones to keep things easy.
-  // @v4 using new axis name
-  var xAxisBar = d3.axisBottom()
-    .scale(xBarScale);
-
-  // @v4 using new axis name
-  var xAxisHist = d3.axisBottom()
-    .scale(xHistScale)
-    .tickFormat(function (d) { return d + ' min'; });
 
   // When scrolling to a new section
   // the activation function for that
@@ -104,7 +59,7 @@ var scrollVis = function () {
   var chart = function (selection) {
     selection.each(function (rawData) {
       // create svg and give it a width and height
-      svg = d3.select(this).selectAll('svg').data([wordData]);
+      svg = d3.select(this).selectAll('svg').data([dotChartData]);
       var svgE = svg.enter().append('svg');
       // @v4 use merge to combine enter and existing selection
       svg = svg.merge(svgE);
@@ -121,29 +76,29 @@ var scrollVis = function () {
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
       // perform some preprocessing on raw data
-      var wordData = getWords(rawData);
-      // filter to just include filler words
-      var fillerWords = getFillerWords(wordData);
+      var dotChartData = getDotChartData(rawData);
 
-      // get the counts of filler words for the
-      // bar chart display
-      var fillerCounts = groupByWord(fillerWords);
-      // set the bar scale's domain
-      var countMax = d3.max(fillerCounts, function (d) { return d.value;});
-      xBarScale.domain([0, countMax]);
+      dotChartData.sort(function(a, b){ return b.localRevenue - a.localRevenue})
+  
+      dotChartY.domain(dotChartData.map(function(d) { return d.state; }));
+      dotChartX.domain([6000,-6000]);
 
-      // get aggregated histogram data
 
-      var histData = getHistogram(fillerWords);
-      // set histogram's domain
-      var histMax = d3.max(histData, function (d) { return d.length; });
-      yHistScale.domain([0, histMax]);
+      setupVis(dotChartData);
 
-      setupVis(wordData, fillerCounts, histData);
-
-      setupSections();
+      setupSections(dotChartData);
     });
   };
+
+
+  var getDotChartLineX1 = function(val){
+    if(val < 0){ return dotChartX(val)}
+    else{ return dotChartX(0)}
+  }
+  var getDotChartLineX2 = function(val){
+    if(val > 0){ return dotChartX(val)}
+    else{ return dotChartX(0)}
+  }
 
 
   /**
@@ -155,130 +110,80 @@ var scrollVis = function () {
    *  element for each filler word type.
    * @param histData - binned histogram data
    */
-  var setupVis = function (wordData, fillerCounts, histData) {
-    // axis
-    g.append('g')
-      .attr('class', 'x axis')
-      .attr('transform', 'translate(0,' + height + ')')
-      .call(xAxisBar);
-    g.select('.x.axis').style('opacity', 0);
+  var setupVis = function (dotChartData) {
 
-    // count openvis title
-    g.append('text')
-      .attr('class', 'title openvis-title')
-      .attr('x', width / 2)
-      .attr('y', height / 3)
-      .text('2013');
+  var stateG = g.selectAll(".stateG")
+      .data(dotChartData)
+      .enter().append("g")
+      .attr("class", function(d){ return "stateG " + d.state })
+      .attr("transform",function(d){ return "translate(0," + dotChartY(d.state) + ")" })
 
-    g.append('text')
-      .attr('class', 'sub-title openvis-title')
-      .attr('x', width / 2)
-      .attr('y', (height / 3) + (height / 5))
-      .text('OpenVis Conf');
+  stateG
+      // .data(dotChartData)
+    .append("line")
+      .attr("class", "localLine dotChartLine")
+      // .attr("y1", function(d) { return dotChartY(d.state); })
+      // .attr("y2", function(d) { return dotChartY(d.state); })
+      .attr("x1", function(d) { return getDotChartLineX1(d.localRevenue); })
+      .attr("x2", function(d) { return getDotChartLineX2(d.localRevenue); })
+  g.append("line")
+    .attr("class", "zeroLine")
+    .attr("y1", 0)  
+    .attr("y2", height)
+    .attr("x1", dotChartX(0))
+    .attr("x2", dotChartX(0))
+  stateG.append("line")
+      .attr("class", "stateLine dotChartLine")
+      .attr("x1", function(d) { return dotChartX(0) })
+      .attr("x2", function(d) { return dotChartX(0) })
+      .style("opacity",0)
 
-    g.selectAll('.openvis-title')
-      .attr('opacity', 0);
+  stateG.append("line")
+      .attr("class", "federalLine dotChartLine")
+      .attr("x1", function(d) { return dotChartX(0) })
+      .attr("x2", function(d) { return dotChartX(0) })
+      .style("opacity",0)
 
-    // count filler word count title
-    g.append('text')
-      .attr('class', 'title count-title highlight')
-      .attr('x', width / 2)
-      .attr('y', height / 3)
-      .text('180');
 
-    g.append('text')
-      .attr('class', 'sub-title count-title')
-      .attr('x', width / 2)
-      .attr('y', (height / 3) + (height / 5))
-      .text('Filler Words');
+  stateG.append("circle")
+      .attr("class", "localDot dotChartDot")
+      .attr("cx", function(d) { return dotChartX(d.localRevenue); })
+      .attr("r", DOT_RADIUS)
 
-    g.selectAll('.count-title')
-      .attr('opacity', 0);
+  stateG.append("circle")
+      .attr("class", "stateDot dotChartDot")
+      .attr("cx", function(d) { return dotChartX(0) })
+      .attr("r", DOT_RADIUS)
+      .style("opacity",0)
 
-    // square grid
-    // @v4 Using .merge here to ensure
-    // new and old data have same attrs applied
-    var squares = g.selectAll('.square').data(wordData, function (d) { return d.word; });
-    var squaresE = squares.enter()
-      .append('rect')
-      .classed('square', true);
-    squares = squares.merge(squaresE)
-      .attr('width', squareSize)
-      .attr('height', squareSize)
-      .attr('fill', '#fff')
-      .classed('fill-square', function (d) { return d.filler; })
-      .attr('x', function (d) { return d.x;})
-      .attr('y', function (d) { return d.y;})
-      .attr('opacity', 0);
+  stateG.append("circle")
+      .attr("class", "federalDot dotChartDot")
+      // .attr("cy", function(d) { return dotChartY(d.state); })
+      .attr("cx", function(d) { return dotChartX(0) })
+      .attr("r", DOT_RADIUS)
+      .style("opacity",0)
 
-    // barchart
-    // @v4 Using .merge here to ensure
-    // new and old data have same attrs applied
-    var bars = g.selectAll('.bar').data(fillerCounts);
-    var barsE = bars.enter()
-      .append('rect')
-      .attr('class', 'bar');
-    bars = bars.merge(barsE)
-      .attr('x', 0)
-      .attr('y', function (d, i) { return yBarScale(i);})
-      .attr('fill', function (d, i) { return barColors[i]; })
-      .attr('width', 0)
-      .attr('height', yBarScale.bandwidth());
 
-    var barText = g.selectAll('.bar-text').data(fillerCounts);
-    barText.enter()
-      .append('text')
-      .attr('class', 'bar-text')
-      .text(function (d) { return d.key + '…'; })
-      .attr('x', 0)
-      .attr('dx', 15)
-      .attr('y', function (d, i) { return yBarScale(i);})
-      .attr('dy', yBarScale.bandwidth() / 1.2)
-      .style('font-size', '110px')
-      .attr('fill', 'white')
-      .attr('opacity', 0);
+  stateG.append("circle")
+      .attr("class", "totalDot dotChartDot")
+      // .attr("cy", function(d) { return dotChartY(d.state); })
+      .attr("cx", function(d) { return dotChartX(d.localRevenue); })
+      .attr("r", SMALL_DOT_RADIUS)
 
-    // histogram
-    // @v4 Using .merge here to ensure
-    // new and old data have same attrs applied
-    var hist = g.selectAll('.hist').data(histData);
-    var histE = hist.enter().append('rect')
-      .attr('class', 'hist');
-    hist = hist.merge(histE).attr('x', function (d) { return xHistScale(d.x0); })
-      .attr('y', height)
-      .attr('height', 0)
-      .attr('width', xHistScale(histData[0].x1) - xHistScale(histData[0].x0) - 1)
-      .attr('fill', barColors[0])
-      .attr('opacity', 0);
 
-    // cough title
-    g.append('text')
-      .attr('class', 'sub-title cough cough-title')
-      .attr('x', width / 2)
-      .attr('y', 60)
-      .text('cough')
-      .attr('opacity', 0);
+  // add the x Axis
+  g.append("g")
+      .attr("id", "dotChartXAxis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(dotChartX).tickFormat(d3.format("$,")));
 
-    // arrowhead from
-    // http://logogin.blogspot.com/2013/02/d3js-arrowhead-markers.html
-    svg.append('defs').append('marker')
-      .attr('id', 'arrowhead')
-      .attr('refY', 2)
-      .attr('markerWidth', 6)
-      .attr('markerHeight', 4)
-      .attr('orient', 'auto')
-      .append('path')
-      .attr('d', 'M 0,0 V 4 L6,2 Z');
+  // add the y Axis
+  g.append("g")
+    .attr("id", "dotChartYAxis")
+    // .attr("transform", "translate(" + width + ",0)")
+    .call(d3.axisLeft(dotChartY).tickFormat(function(t){return fullNames[t]}));
 
-    g.append('path')
-      .attr('class', 'cough cough-arrow')
-      .attr('marker-end', 'url(#arrowhead)')
-      .attr('d', function () {
-        var line = 'M ' + ((width / 2) - 10) + ' ' + 80;
-        line += ' l 0 ' + 230;
-        return line;
-      })
-      .attr('opacity', 0);
+
   };
 
   /**
@@ -288,18 +193,18 @@ var scrollVis = function () {
    * the section's index.
    *
    */
-  var setupSections = function () {
+  var setupSections = function (dotChartData) {
     // activateFunctions are called each
     // time the active section changes
-    activateFunctions[0] = showTitle;
-    activateFunctions[1] = showFillerTitle;
-    activateFunctions[2] = showGrid;
-    activateFunctions[3] = highlightGrid;
-    activateFunctions[4] = showBar;
-    activateFunctions[5] = showHistPart;
-    activateFunctions[6] = showHistAll;
-    activateFunctions[7] = showCough;
-    activateFunctions[8] = showHistAll;
+    activateFunctions[0] = function(){ localDots(dotChartData) };
+    activateFunctions[1] = function(){ stateDots(dotChartData) };
+    activateFunctions[2] = function(){ federalDots(dotChartData) };
+    activateFunctions[3] = function(){ floridaTracts(dotChartData) };
+    // activateFunctions[4] = showBar;
+    // activateFunctions[5] = showHistPart;
+    // activateFunctions[6] = showHistAll;
+    // activateFunctions[7] = showCough;
+    // activateFunctions[8] = showHistAll;
 
     // updateFunctions are called while
     // in a particular section to update
@@ -307,11 +212,10 @@ var scrollVis = function () {
     // Most sections do not need to be updated
     // for all scrolling and so are set to
     // no-op functions.
-    for (var i = 0; i < 9; i++) {
+    for (var i = 0; i < 10; i++) {
       updateFunctions[i] = function () {};
     }
-    updateFunctions[7] = updateCough;
-  };
+    };
 
   /**
    * ACTIVATE FUNCTIONS
@@ -336,16 +240,269 @@ var scrollVis = function () {
    * shows: intro title
    *
    */
-  function showTitle() {
-    g.selectAll('.count-title')
-      .transition()
-      .duration(0)
-      .attr('opacity', 0);
+  function localDots(dotChartData) {
+    dotChartData.sort(function(a, b){ return (b.localRevenue) - (a.localRevenue)})
+    dotChartY.domain(dotChartData.map(function(d) { return d.state; }));
 
-    g.selectAll('.openvis-title')
+    g.selectAll(".stateDot")
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(function(d){ return 1000*Math.abs(d.stateRevenue/6000) })
+        .attr("cx", function(d) { return dotChartX(0); })
+        .style("opacity",0)
+        .attr("r", DOT_RADIUS)
+        .transition()
+        .duration(100)
+        .style("opacity",0)
+        .on("end", function(d, i){
+          if(d.state == "NJ"){
+            d3.selectAll(".stateG")
+              .transition()
+              .duration(1000)
+              .attr("transform",function(d){ return "translate(0," + dotChartY(d.state) + ")" })
+            g.select("#dotChartYAxis")
+              .transition()
+              .duration(1000)
+              .call(d3.axisLeft(dotChartY).tickFormat(function(t){return fullNames[t]}));
+          }
+
+        })
+
+    g.selectAll(".stateLine")
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(function(d){ return 1000*Math.abs(d.stateRevenue/6000) })
+        .attr("x1", function(d) { return getDotChartLineX1(0); })
+        .attr("x2", function(d) { return getDotChartLineX2(0); })
+        .transition()
+        .duration(100)
+        .style("opacity",0)
+
+
+    g.selectAll(".totalDot")
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(function(d){ return 1000*Math.abs(d.stateRevenue/6000) })
+        .attr("cx", function(d) { return dotChartX(d.localRevenue); })
+        .attr("r", SMALL_DOT_RADIUS)
+        .style("opacity",1)
+  }
+
+  function stateDots(dotChartData){
+
+    dotChartData.sort(function(a, b){ return (b.localRevenue + b.stateRevenue) - (a.localRevenue + a.stateRevenue)})
+    dotChartY.domain(dotChartData.map(function(d) { return d.state; }));
+
+    var direction = (d3.select(".federalDot").style("opacity") == 0) ? "down" : "up"
+
+    g.selectAll(".stateDot")
+        .transition()
+        .style("opacity",1)
+        .attr("r", DOT_RADIUS)
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(function(d){ return 1000*Math.abs(d.stateRevenue/6000) })
+        .attr("cx", function(d) { return dotChartX(d.stateRevenue); })
+        .on("end", function(d, i){
+          if(d.state == "NJ"){
+            d3.selectAll(".stateG")
+              .transition()
+              .duration(1000)
+              .attr("transform",function(d){ return "translate(0," + dotChartY(d.state) + ")" })
+            g.select("#dotChartYAxis")
+              .transition()
+              .duration(1000)
+              .call(d3.axisLeft(dotChartY).tickFormat(function(t){return fullNames[t]}));
+          }
+
+        })
+
+
+    d3.selectAll(".federalLine")
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(function(d){ return 1000*Math.abs(d.federalRevenue/6000) })
+        .attr("x1", function(d) { return getDotChartLineX1(0); })
+        .attr("x2", function(d) { return getDotChartLineX2(0); })
+        .transition()
+        .duration(100)
+        .style("opacity",0)
+
+    d3.selectAll(".federalDot")
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(function(d){ return 1000*Math.abs(d.federalRevenue/6000) })
+        .attr("cx", function(d) { return dotChartX(0); })
+        .transition()
+        .attr("r", DOT_RADIUS)
+        .duration(100)
+        .style("opacity",0)
+
+    g.selectAll(".stateLine")
+        .transition()
+        .style("opacity",1)
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(function(d){ return 1000*Math.abs(d.stateRevenue/6000) })
+        .attr("x1", function(d) { return getDotChartLineX1(d.stateRevenue); })
+        .attr("x2", function(d) { return getDotChartLineX2(d.stateRevenue); })
+
+
+    var directionDuration = (direction == "down") ? "stateRevenue" : "federalRevenue"
+    g.selectAll(".totalDot")
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(function(d){ return 1000*Math.abs(d[directionDuration]/6000) })
+        .attr("cx", function(d) { return dotChartX(d.stateRevenue + d.localRevenue); })
+        .attr("r", SMALL_DOT_RADIUS)
+        .style("opacity",1)
+
+
+  }
+
+  function federalDots(dotChartData){
+
+    dotChartData.sort(function(a, b){ return (b.localRevenue + b.stateRevenue + b.federalRevenue) - (a.localRevenue + a.stateRevenue + a.federalRevenue)})
+    dotChartY.domain(dotChartData.map(function(d) { console.log(d.state); return d.state; }));
+    g.selectAll(".federalDot")
+        .transition()
+        .style("opacity",1)
+        .attr("r",DOT_RADIUS)
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(function(d){ return 1000*Math.abs(d.federalRevenue/6000) })
+        .attr("cx", function(d) { return dotChartX(d.federalRevenue); })
+        .on("end", function(d, i){
+          if(d.state == "AK"){
+            d3.selectAll(".stateG")
+              .transition()
+              .duration(1000)
+              .attr("transform",function(d){ return "translate(0," + dotChartY(d.state) + ")" })
+            g.select("#dotChartYAxis")
+              .transition()
+              .duration(1000)
+              .call(d3.axisLeft(dotChartY).tickFormat(function(t){return fullNames[t]}));
+          }
+
+        })
+
+
+    g.selectAll(".federalLine")
+        .transition()
+        .style("opacity",1)
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(function(d){ return 1000*Math.abs(d.federalRevenue/6000) })
+        .attr("x1", function(d) { return getDotChartLineX1(d.federalRevenue); })
+        .attr("x2", function(d) { return getDotChartLineX2(d.federalRevenue); })
+
+
+    g.selectAll(".totalDot")
+        .transition()
+        .style("opacity",1)
+        .attr("r",SMALL_DOT_RADIUS)
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(function(d){ return 1000*Math.abs(d.federalRevenue/6000) })
+        .attr("cx", function(d) { return dotChartX(d.stateRevenue + d.localRevenue + d.federalRevenue); })
+
+    g.selectAll(".stateLine")
+        .transition()
+        .style("opacity",1)
+        .attr("x1", function(d) { return getDotChartLineX1(d.stateRevenue); })
+        .attr("x2", function(d) { return getDotChartLineX2(d.stateRevenue); })
+    g.selectAll(".localLine")
+        .transition()
+        .style("opacity",1)
+        .attr("x1", function(d) { return getDotChartLineX1(d.localRevenue); })
+        .attr("x2", function(d) { return getDotChartLineX2(d.localRevenue); })
+    g.selectAll(".stateDot")
+        .transition()
+        .style("opacity",1)
+        .attr("r",DOT_RADIUS)
+        .attr("cx", function(d) { return dotChartX(d.stateRevenue); })
+    g.selectAll(".localDot")
+        .transition()
+        .style("opacity",1)
+        .attr("r",DOT_RADIUS)
+        .attr("cx", function(d) { return dotChartX(d.localRevenue); })
+
+
+    // d3.selectAll(".stateG:not(.FL) .dotChartDot")
+    //   .transition()
+    //   .attr("cx", dotChartX(0))
+    //   .transition()
+    //   .style("opacity",0)
+    // d3.selectAll(".stateG:not(.FL) .dotChartLine")
+    //   .transition()
+    //   .attr("x1", dotChartX(0))
+    //   .attr("x2", dotChartX(0))
+    //   .transition()
+    //   .style("opacity",0)
+
+    // d3.selectAll(".stateG.FL .dotChartDot")
+    //   .transition()
+    //   .delay(1500)
+    //   .duration(1000)
+    //   .attr("r",1000)
+    //   .style("opacity",0)
+    // d3.selectAll(".stateG.FL .dotChartLine")
+    //   .transition()
+    //   .delay(1500)
+    //   .style("opacity",0)
+    d3.selectAll("#dotChartYAxis .tick text")
       .transition()
-      .duration(600)
-      .attr('opacity', 1.0);
+      .style("opacity",1)
+    d3.select(".zeroLine")
+      .transition()
+      .style("opacity",1)
+    d3.select("#dotChartXAxis")
+      .transition()
+      .style("opacity",1)
+
+  }
+
+  function floridaTracts(){
+    d3.selectAll(".stateG:not(.FL) .dotChartDot")
+      .transition()
+      .attr("cx", dotChartX(0))
+      .transition()
+      .style("opacity",0)
+    d3.selectAll(".stateG:not(.FL) .dotChartLine")
+      .transition()
+      .attr("x1", dotChartX(0))
+      .attr("x2", dotChartX(0))
+      .transition()
+      .style("opacity",0)
+    d3.selectAll("#dotChartYAxis .tick text")
+      .transition()
+      .style("opacity", function(d){
+        if(d == "FL"){ return 1; }
+        else{ return 0; }
+      })  
+    d3.selectAll(".stateG.FL .dotChartDot")
+      .transition()
+      .delay(1500)
+      .duration(1000)
+      .attr("r",1000)
+      .style("opacity",0)
+    d3.selectAll(".stateG.FL .dotChartLine")
+      .transition()
+      .delay(1500)
+      .style("opacity",0)
+    d3.selectAll("#dotChartYAxis .tick text")
+      .transition()
+      .delay(1500)
+      .style("opacity",0)
+    d3.select(".zeroLine")
+      .transition()
+      .delay(1500)
+      .style("opacity",0)
+    d3.select("#dotChartXAxis")
+      .transition()
+      .delay(1500)
+      .style("opacity",0)
+    //draw map
   }
 
   /**
@@ -356,287 +513,6 @@ var scrollVis = function () {
    * shows: filler count title
    *
    */
-  function showFillerTitle() {
-    g.selectAll('.openvis-title')
-      .transition()
-      .duration(0)
-      .attr('opacity', 0);
-
-    g.selectAll('.square')
-      .transition()
-      .duration(0)
-      .attr('opacity', 0);
-
-    g.selectAll('.count-title')
-      .transition()
-      .duration(600)
-      .attr('opacity', 1.0);
-  }
-
-  /**
-   * showGrid - square grid
-   *
-   * hides: filler count title
-   * hides: filler highlight in grid
-   * shows: square grid
-   *
-   */
-  function showGrid() {
-    g.selectAll('.count-title')
-      .transition()
-      .duration(0)
-      .attr('opacity', 0);
-
-    g.selectAll('.square')
-      .transition()
-      .duration(600)
-      .delay(function (d) {
-        return 5 * d.row;
-      })
-      .attr('opacity', 1.0)
-      .attr('fill', '#ddd');
-  }
-
-  /**
-   * highlightGrid - show fillers in grid
-   *
-   * hides: barchart, text and axis
-   * shows: square grid and highlighted
-   *  filler words. also ensures squares
-   *  are moved back to their place in the grid
-   */
-  function highlightGrid() {
-    hideAxis();
-    g.selectAll('.bar')
-      .transition()
-      .duration(600)
-      .attr('width', 0);
-
-    g.selectAll('.bar-text')
-      .transition()
-      .duration(0)
-      .attr('opacity', 0);
-
-
-    g.selectAll('.square')
-      .transition()
-      .duration(0)
-      .attr('opacity', 1.0)
-      .attr('fill', '#ddd');
-
-    // use named transition to ensure
-    // move happens even if other
-    // transitions are interrupted.
-    g.selectAll('.fill-square')
-      .transition('move-fills')
-      .duration(800)
-      .attr('x', function (d) {
-        return d.x;
-      })
-      .attr('y', function (d) {
-        return d.y;
-      });
-
-    g.selectAll('.fill-square')
-      .transition()
-      .duration(800)
-      .attr('opacity', 1.0)
-      .attr('fill', function (d) { return d.filler ? '#008080' : '#ddd'; });
-  }
-
-  /**
-   * showBar - barchart
-   *
-   * hides: square grid
-   * hides: histogram
-   * shows: barchart
-   *
-   */
-  function showBar() {
-    // ensure bar axis is set
-    showAxis(xAxisBar);
-
-    g.selectAll('.square')
-      .transition()
-      .duration(800)
-      .attr('opacity', 0);
-
-    g.selectAll('.fill-square')
-      .transition()
-      .duration(800)
-      .attr('x', 0)
-      .attr('y', function (d, i) {
-        return yBarScale(i % 3) + yBarScale.bandwidth() / 2;
-      })
-      .transition()
-      .duration(0)
-      .attr('opacity', 0);
-
-    g.selectAll('.hist')
-      .transition()
-      .duration(600)
-      .attr('height', function () { return 0; })
-      .attr('y', function () { return height; })
-      .style('opacity', 0);
-
-    g.selectAll('.bar')
-      .transition()
-      .delay(function (d, i) { return 300 * (i + 1);})
-      .duration(600)
-      .attr('width', function (d) { return xBarScale(d.value); });
-
-    g.selectAll('.bar-text')
-      .transition()
-      .duration(600)
-      .delay(1200)
-      .attr('opacity', 1);
-  }
-
-  /**
-   * showHistPart - shows the first part
-   *  of the histogram of filler words
-   *
-   * hides: barchart
-   * hides: last half of histogram
-   * shows: first half of histogram
-   *
-   */
-  function showHistPart() {
-    // switch the axis to histogram one
-    showAxis(xAxisHist);
-
-    g.selectAll('.bar-text')
-      .transition()
-      .duration(0)
-      .attr('opacity', 0);
-
-    g.selectAll('.bar')
-      .transition()
-      .duration(600)
-      .attr('width', 0);
-
-    // here we only show a bar if
-    // it is before the 15 minute mark
-    g.selectAll('.hist')
-      .transition()
-      .duration(600)
-      .attr('y', function (d) { return (d.x0 < 15) ? yHistScale(d.length) : height; })
-      .attr('height', function (d) { return (d.x0 < 15) ? height - yHistScale(d.length) : 0; })
-      .style('opacity', function (d) { return (d.x0 < 15) ? 1.0 : 1e-6; });
-  }
-
-  /**
-   * showHistAll - show all histogram
-   *
-   * hides: cough title and color
-   * (previous step is also part of the
-   *  histogram, so we don't have to hide
-   *  that)
-   * shows: all histogram bars
-   *
-   */
-  function showHistAll() {
-    // ensure the axis to histogram one
-    showAxis(xAxisHist);
-
-    g.selectAll('.cough')
-      .transition()
-      .duration(0)
-      .attr('opacity', 0);
-
-    // named transition to ensure
-    // color change is not clobbered
-    g.selectAll('.hist')
-      .transition('color')
-      .duration(500)
-      .style('fill', '#008080');
-
-    g.selectAll('.hist')
-      .transition()
-      .duration(1200)
-      .attr('y', function (d) { return yHistScale(d.length); })
-      .attr('height', function (d) { return height - yHistScale(d.length); })
-      .style('opacity', 1.0);
-  }
-
-  /**
-   * showCough
-   *
-   * hides: nothing
-   * (previous and next sections are histograms
-   *  so we don't have to hide much here)
-   * shows: histogram
-   *
-   */
-  function showCough() {
-    // ensure the axis to histogram one
-    showAxis(xAxisHist);
-
-    g.selectAll('.hist')
-      .transition()
-      .duration(600)
-      .attr('y', function (d) { return yHistScale(d.length); })
-      .attr('height', function (d) { return height - yHistScale(d.length); })
-      .style('opacity', 1.0);
-  }
-
-  /**
-   * showAxis - helper function to
-   * display particular xAxis
-   *
-   * @param axis - the axis to show
-   *  (xAxisHist or xAxisBar)
-   */
-  function showAxis(axis) {
-    g.select('.x.axis')
-      .call(axis)
-      .transition().duration(500)
-      .style('opacity', 1);
-  }
-
-  /**
-   * hideAxis - helper function
-   * to hide the axis
-   *
-   */
-  function hideAxis() {
-    g.select('.x.axis')
-      .transition().duration(500)
-      .style('opacity', 0);
-  }
-
-  /**
-   * UPDATE FUNCTIONS
-   *
-   * These will be called within a section
-   * as the user scrolls through it.
-   *
-   * We use an immediate transition to
-   * update visual elements based on
-   * how far the user has scrolled
-   *
-   */
-
-  /**
-   * updateCough - increase/decrease
-   * cough text and color
-   *
-   * @param progress - 0.0 - 1.0 -
-   *  how far user has scrolled in section
-   */
-  function updateCough(progress) {
-    g.selectAll('.cough')
-      .transition()
-      .duration(0)
-      .attr('opacity', progress);
-
-    g.selectAll('.hist')
-      .transition('cough')
-      .duration(0)
-      .style('fill', function (d) {
-        return (d.x0 >= 14) ? coughColorScale(progress) : '#008080';
-      });
-  }
 
   /**
    * DATA FUNCTIONS
@@ -646,82 +522,16 @@ var scrollVis = function () {
    *
    */
 
-  /**
-   * getWords - maps raw data to
-   * array of data objects. There is
-   * one data object for each word in the speach
-   * data.
-   *
-   * This function converts some attributes into
-   * numbers and adds attributes used in the visualization
-   *
-   * @param rawData - data read in from file
-   */
-  function getWords(rawData) {
-    return rawData.map(function (d, i) {
-      // is this word a filler word?
-      d.filler = (d.filler === '1') ? true : false;
-      // time in seconds word was spoken
-      d.time = +d.time;
-      // time in minutes word was spoken
-      d.min = Math.floor(d.time / 60);
 
-      // positioning for square visual
-      // stored here to make it easier
-      // to keep track of.
-      d.col = i % numPerRow;
-      d.x = d.col * (squareSize + squarePad);
-      d.row = Math.floor(i / numPerRow);
-      d.y = d.row * (squareSize + squarePad);
+  function getDotChartData(rawData) {
+    return rawData.map(function (d, i) {
+      d.state = d.stabbr;
+      d.stateRevenue = +d.adjrevdiff_st
+      d.localRevenue  = +d.adjrevdiff_lo
+      d.federalRevenue = +d.adjrevdiff_fe
+
       return d;
     });
-  }
-
-  /**
-   * getFillerWords - returns array of
-   * only filler words
-   *
-   * @param data - word data from getWords
-   */
-  function getFillerWords(data) {
-    return data.filter(function (d) {return d.filler; });
-  }
-
-  /**
-   * getHistogram - use d3's histogram layout
-   * to generate histogram bins for our word data
-   *
-   * @param data - word data. we use filler words
-   *  from getFillerWords
-   */
-  function getHistogram(data) {
-    // only get words from the first 30 minutes
-    var thirtyMins = data.filter(function (d) { return d.min < 30; });
-    // bin data into 2 minutes chuncks
-    // from 0 - 31 minutes
-    // @v4 The d3.histogram() produces a significantly different
-    // data structure then the old d3.layout.histogram().
-    // Take a look at this block:
-    // https://bl.ocks.org/mbostock/3048450
-    // to inform how you use it. Its different!
-    return d3.histogram()
-      .thresholds(xHistScale.ticks(10))
-      .value(function (d) { return d.min; })(thirtyMins);
-  }
-
-  /**
-   * groupByWord - group words together
-   * using nest. Used to get counts for
-   * barcharts.
-   *
-   * @param words
-   */
-  function groupByWord(words) {
-    return d3.nest()
-      .key(function (d) { return d.word; })
-      .rollup(function (v) { return v.length; })
-      .entries(words)
-      .sort(function (a, b) {return b.value - a.value;});
   }
 
   /**
@@ -754,6 +564,7 @@ var scrollVis = function () {
 };
 
 
+
 /**
  * display - called once data
  * has been loaded.
@@ -767,6 +578,26 @@ function display(data) {
   // display it
   var plot = scrollVis();
   d3.select('#vis')
+      .style("left", function(){
+        if(IS_PHONE()){
+          return ( (window.innerWidth - PHONE_VIS_WIDTH - margin.left - margin.right)*.5 ) + "px"
+        }
+        if(IS_MOBILE()){
+          return ( (window.innerWidth - VIS_WIDTH - margin.left - margin.right)*.5 ) + "px"
+        }else{
+          return "inherit"
+        }
+      })
+      .style("top", function(){
+        if(IS_PHONE()){
+          return ( (window.innerHeight - PHONE_VIS_HEIGHT - margin.top - margin.bottom)*.5 ) + "px"
+        }
+        if(IS_MOBILE()){
+          return ( (window.innerHeight - VIS_HEIGHT - margin.top - margin.bottom)*.5 ) + "px"
+        }else{
+          return "20px"
+        }
+      })
     .datum(data)
     .call(plot);
 
@@ -782,9 +613,9 @@ function display(data) {
     // highlight current step text
     d3.selectAll('.step')
       .style('opacity', function (d, i) { return i === index ? 1 : 0.1; });
-
     // activate current section
-    plot.activate(index);
+    plot.activate(index);  
+    
   });
 
   scroll.on('progress', function (index, progress) {
@@ -793,4 +624,4 @@ function display(data) {
 }
 
 // load data and display
-d3.tsv('data/words.tsv', display);
+d3.csv('data/data_ben_2014.csv', display);

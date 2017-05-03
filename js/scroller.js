@@ -7,6 +7,7 @@
  *
  */
 function scroller() {
+
   var container = d3.select('body');
   // event dispatcher
   var dispatch = d3.dispatch('active', 'progress');
@@ -71,6 +72,27 @@ function scroller() {
     // sectionPositions will be each sections
     // starting position relative to the top
     // of the first section.
+    d3.select("#vis")
+      .style("left", function(){
+        if(IS_PHONE()){
+          return ( (window.innerWidth - PHONE_VIS_WIDTH - margin.left - margin.right)*.5 ) + "px"
+        }
+        if(IS_MOBILE()){
+          return ( (window.innerWidth - VIS_WIDTH - margin.left - margin.right)*.5 ) + "px"
+        }else{
+          return "inherit"
+        }
+      })
+      .style("top", function(){
+        if(IS_PHONE()){
+          return ( (window.innerHeight - PHONE_VIS_HEIGHT - margin.top - margin.bottom)*.5 ) + "px"
+        }
+        if(IS_MOBILE()){
+          return ( (window.innerHeight - VIS_HEIGHT - margin.top - margin.bottom)*.5 ) + "px"
+        }else{
+          return "20px"
+        }
+      })
     sectionPositions = [];
     var startPos;
     sections.each(function (d, i) {

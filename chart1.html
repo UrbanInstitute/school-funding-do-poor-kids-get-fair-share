@@ -1,0 +1,97 @@
+<html>
+<head>
+<style> /* set the CSS */
+
+.dotChartLine { stroke: black; }
+
+</style>
+
+</head>
+<body>
+<div id = "vis">
+</div>
+<script src="lib/d3.js"></script>
+<script>
+// set the dimensions and margins of the graph
+var margin = {top: 20, right: 20, bottom: 30, left: 40},
+		width = 600 - margin.left - margin.right,
+		height = 700 - margin.top - margin.bottom;
+
+// set the ranges
+var dotChartY = d3.scaleBand()
+					.range([0, height])
+					.padding(0.95);
+var dotChartX = d3.scaleLinear()
+					.range([width, 0]);
+					
+// append the svg object to the body of the page
+// append a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+var svg = d3.select("#vis").append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+	.append("g")
+		.attr("transform", 
+					"translate(" + margin.left + "," + margin.top + ")");
+
+// get the data
+d3.csv("data/data_ben_2014.csv", function(error, data) {
+	if (error) throw error;
+
+	// format the data
+	data.forEach(function(d) {
+		d.state = d.stabbr;
+		d.stateRevenue = +d.adjrevdiff_st
+		d.localRevenue	= +d.adjrevdiff_lo
+		d.federalRevenue = +d.adjrevdiff_fe
+	});
+
+	// Scale the range of the data in the domains
+	data.sort(function(a, b){ return a.localRevenue - b.localRevenue})
+	
+	dotChartY.domain(data.map(function(d) { return d.state; }));
+	dotChartX.domain([6000,-6000]);
+
+
+	var getDotChartLineX1 = function(val){
+		if(val < 0){ return dotChartX(val)}
+		else{ return dotChartX(0)}
+	}
+	var getDotChartLineX2 = function(val){
+		if(val > 0){ return dotChartX(val)}
+		else{ return dotChartX(0)}
+	}
+	
+	// append the rectangles for the bar chart
+	svg.selectAll(".localLine")
+			.data(data)
+		.enter().append("line")
+			.attr("class", "localLine dotChartLine")
+			.attr("y1", function(d) { return dotChartY(d.state); })
+			.attr("y2", function(d) { return dotChartY(d.state); })
+			.attr("x1", function(d) { return getDotChartLineX1(d.localRevenue); })
+			.attr("x2", function(d) { return getDotChartLineX2(d.localRevenue); })
+
+	svg.selectAll(".localDot")
+			.data(data)
+		.enter().append("circle")
+			.attr("class", "localDot dotChartDot")
+			.attr("cy", function(d) { return dotChartY(d.state); })
+			.attr("cx", function(d) { return dotChartX(d.localRevenue); })
+			.attr("r", "3")
+
+
+	// add the x Axis
+	svg.append("g")
+			.attr("transform", "translate(0," + height + ")")
+			.call(d3.axisBottom(dotChartX));
+
+	// add the y Axis
+	svg.append("g")
+			.call(d3.axisLeft(dotChartY));
+
+});
+
+</script>
+</body>
+</html>

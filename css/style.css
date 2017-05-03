@@ -1,6 +1,6 @@
 
 .container {
-  width: 890px;
+  width: 1180px;
 }
 
 #graphic {
@@ -11,7 +11,7 @@
 #sections {
   position: relative;
   display: inline-block;
-  width: 250px;
+  width: 400px;
   top: 0px;
   z-index: 90;
   padding-bottom: 200px;
@@ -19,21 +19,16 @@
 
 .step {
   margin-bottom: 200px;
-  font-family: "TiemposTextWeb-Regular","Georgia";
+  font-family: "Lato";
   font-size: 16px;
   line-height: 23px;
-  color: #767678;
+  color: #000;
 }
-
-#sections .title {
-  font-family: Arial,Helvetica,"san-serif";
-  font-size: 16px;
+.title{
   font-weight: bold;
-  margin-bottom: 2px;
-  color: #262626;
-  line-height: 1.2em;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
-
 #extra-space {
   height: 300px;
 }
@@ -49,32 +44,97 @@
   /* background-color: #ddd; */
 }
 
-#vis .title {
-  font-size:120px;
-  text-anchor: middle;
-}
-
-#vis .sub-title {
-  font-size:80px;
-  text-anchor: middle;
-}
-
 .axis path,
 .axis line {
   fill: none;
   stroke: #666;
   shape-rendering: crispEdges;
 }
-
-.highlight {
-  fill: #008080;
-  font-weight: bold;
+#dotChartYAxis path, #dotChartYAxis line{
+  display: none;
+}
+.tick text{
+  font-size: 12px;
+  font-family: "Lato";
 }
 
-.cough-arrow {
-  stroke: #000;
-  stroke-width: 4px;
-
+#isMobile, #isPhone{
+    display: none;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+@media (max-width: 1200px){
+  .container{
+    margin-left: 10px;
+  }
+}
+@media (max-width: 900px){
+  .container{
+    margin-left: auto;
+    width: 100%;
+  }
+  #isMobile{
+    display: block;
+  }
+  #sections{
+    display: inherit;
+    width: 400px;
+    margin: 0 auto;
+  }
+  .step {
+    margin-bottom: 600px;
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: rgb(136, 136, 136) 4px 4px 16px;
+    padding: 30px;
+    z-index: 2;
+  }
+  #vis{
+    position: fixed;
+    top: 20px;
+  }
+}
+@media (max-width: 600px){
+  #isPhone{
+      display: block;
+  }
+  .step {
+    margin-bottom: 300px;
+  }
+  #vis{
+    /*margin-top: -300px;*/
+  }
+}
+@media (max-width: 500px){
+  #sections{
+    width: 300px;
+  }
 }
 
-
+.dotChartLine {
+  stroke: #dcdbdb;
+  stroke-width: 3;
+}
+.federalLine{
+  stroke: #9d9d9d;
+  stroke-width: 1;
+}
+.zeroLine{
+  stroke: black;
+}
+.stateDot{
+  fill: #1696d2;
+}
+.localDot{
+  fill: #a2d4ec;
+}
+.federalDot{
+  fill: #062635;
+}
+.totalDot{
+  fill: #ec008b;
+}
