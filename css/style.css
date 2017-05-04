@@ -1,4 +1,9 @@
-
+*:focus{
+  outline: none;
+}
+body{
+  font-family: "Lato";
+}
 .container {
   width: 1180px;
 }
@@ -57,8 +62,45 @@
   font-size: 12px;
   font-family: "Lato";
 }
+.largeChartLabel, .largeScatterplotLabel{
+  font-weight: bold;
+  letter-spacing: 4px;
+  fill: #9d9d9d;
+}
+text.dotChartLegend{
+  font-family: "Lato";
+  font-size: 12px;
+}
+.dotHoverRect{
+  fill: none;
+}
+g.dotChartSelected .dotHoverRect{
+  fill: #fff2cf;
+}
 
-#isMobile, #isPhone{
+
+#scatterPlotXAxis path, #scatterPlotYAxis path{
+  display: none;
+}
+.scatterAxis{
+
+}
+.scatterGrid{
+  stroke: #dcdbdb;
+}
+.scatterDot{
+  fill: #1696d2;
+}
+.scatterDot.scatterSelected{
+  fill: #fdbf11;
+  opacity: 1 !important;
+}
+
+
+
+
+
+#isMobile, #isPhone, #sectionIndex{
     display: none;
     pointer-events: none;
     width: 0;
@@ -126,15 +168,15 @@
 .zeroLine{
   stroke: black;
 }
-.stateDot{
+.stateDot, .legendStateDot{
   fill: #1696d2;
 }
-.localDot{
+.localDot, .legendLocalDot{
   fill: #a2d4ec;
 }
-.federalDot{
+.federalDot, .legendFederalDot{
   fill: #062635;
 }
-.totalDot{
+.totalDot, .legendTotalDot{
   fill: #ec008b;
 }

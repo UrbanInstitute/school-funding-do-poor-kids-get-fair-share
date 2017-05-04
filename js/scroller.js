@@ -121,6 +121,7 @@ function scroller() {
       // @v4 you now `.call` the dispatch callback
       dispatch.call('active', this, sectionIndex);
       currentIndex = sectionIndex;
+      d3.select("#sectionIndex").attr("data-index",currentIndex)
     }
 
     var prevIndex = Math.max(sectionIndex - 1, 0);

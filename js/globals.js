@@ -4,6 +4,9 @@
   var IS_MOBILE = function(){
     return (d3.select("#isMobile").style("display") == "block")
   }
+  var SECTION_INDEX = function(){
+    return d3.select("#sectionIndex").attr("data-index")
+  }
 
   var PHONE_VIS_WIDTH = 330;
   var PHONE_VIS_HEIGHT = 460;
@@ -13,7 +16,7 @@
   var DOT_RADIUS = 5;
   var SMALL_DOT_RADIUS = 3;
 
-  var margin = { top: 0, left: 150, bottom: 40, right: 20 };
+  var margin = { top: 30, left: 120, bottom: 40, right: 20 };
 
   var fullNames = {
     "AL": "Alabama",

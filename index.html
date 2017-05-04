@@ -11,6 +11,7 @@
 <body>
 <div id = "isMobile"></div>
 <div id = "isPhone"></div>
+<div id = "sectionIndex" data-index="0"></div>
 <div class="container">
   <div id='graphic'>
     <div id='sections'>
@@ -40,7 +41,7 @@
         </p>
       </section>
       <section class="step">
-        <div class="title">Florida counties</div>
+        <div class="title">Florida tracts</div>
         <p>
         Leberkas cow sausage prosciutto turducken, pig picanha. Boudin ground round salami pork belly doner rump. Shankle sirloin kielbasa, sausage pancetta venison pig tenderloin drumstick hamburger pork belly. Corned beef strip steak turkey ribeye boudin ground round meatloaf fatback. Pancetta salami boudin ham. Bresaola strip steak pork belly flank shankle ribeye. Cupim brisket shankle drumstick short loin pig tenderloin meatball pork chop.
         </p>
@@ -61,7 +62,7 @@
         </p>
       </section>
       <section class="step">
-        <div class="title">New York counties</div>
+        <div class="title">New York tracts</div>
         <p>
         Tri-tip swine prosciutto pancetta. Pork short loin brisket drumstick, turducken burgdoggen strip steak beef ribs biltong bresaola kielbasa salami pig frankfurter bacon. Chicken strip steak meatball picanha sirloin prosciutto t-bone tri-tip pork belly filet mignon beef cupim short loin. Alcatra sausage porchetta turducken, jerky beef picanha leberkas pork chop ham. Picanha alcatra pastrami andouille pork salami, rump shank beef ribs flank pork chop chicken doner short ribs.
         </p>
@@ -77,20 +78,19 @@
       </section>
 
       <section class="step">
-        <div class="title">Fillers Over Time</div>
-        I hoped that all these blunders were toward the beginning of my talk. And the data suggests that fewer fillers are used as I get into it. Perhaps the talk started out rough and improved as I found my groove.
-      </section>
-      <section class="step">
-        <div class="title">Ramping Back Up</div>
-        Unfortunately, the trend does not continue. Midway into the talk my Um's and Ah's spike. I continue to use them pretty consistently throughout the rest of the talk.
-      </section>
-      <section class="step">
-        <div class="title">The Cough Effect</div>
-        My theory is that at this critical halfway point in my talk, I heard a dry cough indicative of the audience's waning interest. This caused self-confidence to collapse and forced me out of my groove.<br/><br/>A competing theory is that I just hadn't practiced the last half of my speech as much.
-      </section>
-      <section class="step">
-        <div class="title">Best of Luck to Me in 2015</div>
-        The world may never know, or care, but hopefully these insights improve my speaking in 2015. Though preliminary results aren't looking so good.
+        <div class="title">Change over time</div>
+        <p>
+        Salami turducken doner ham hock, tail turkey short ribs landjaeger. Sirloin landjaeger flank venison fatback ham hock ribeye short loin. Ham frankfurter biltong pastrami. Brisket landjaeger flank bresaola, shoulder ham hock pork loin sirloin short ribs capicola. Pork kielbasa short loin cow tongue landjaeger ham hock, andouille spare ribs short ribs ground round. Beef ribs kielbasa pancetta ground round. Cupim pork belly hamburger jowl shoulder venison swine burgdoggen.
+        </p>
+        <p>
+        Biltong ham hock chicken, shank beef bresaola filet mignon t-bone ham landjaeger meatloaf porchetta tail strip steak brisket. Shank picanha sirloin filet mignon andouille turducken. Kevin porchetta chicken jerky, kielbasa short loin bresaola bacon spare ribs cow shank shoulder landjaeger pork chop. Prosciutto tail t-bone, ribeye cow ground round tenderloin cupim. Beef tail ham ground round burgdoggen, strip steak tongue shoulder ribeye. Frankfurter shoulder bresaola, ham jowl ribeye pastrami pork belly pig cupim rump spare ribs landjaeger tail bacon.
+        </p>
+        <p>
+        Jerky turducken spare ribs tail shank venison. Pork belly hamburger landjaeger meatball tenderloin drumstick chuck flank filet mignon ground round brisket tongue shoulder. Short ribs capicola pork loin spare ribs bacon doner shank landjaeger. Fatback short ribs t-bone hamburger, pork burgdoggen shankle frankfurter. T-bone kielbasa frankfurter, pork loin tail ground round brisket jowl meatball ribeye picanha strip steak.
+        </p>
+        <p>
+        Bacon chicken turducken picanha, burgdoggen boudin tail venison swine alcatra leberkas. Turducken pork loin swine andouille, pig venison biltong pancetta picanha. Beef ribs short loin shoulder, tenderloin filet mignon ribeye cupim meatball jowl pancetta. Beef ribs jerky pork belly, rump burgdoggen pig ribeye pork loin. Kielbasa turducken picanha drumstick pancetta pork chop ham ball tip andouille t-bone fatback turkey jowl. Shankle ribeye porchetta doner t-bone tenderloin cupim. Doner pig pastrami flank turducken ground round ham frankfurter hamburger landjaeger kevin meatloaf porchetta turkey.
+        </p>
       </section>
     </div>
     <div id='vis'>
@@ -102,6 +102,8 @@
 
 
 <script src="lib/d3.js"></script>
+<script src="lib/d3-voronoi.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
 <script src="js/globals.js"></script>
 <script src="js/scroller.js"></script>
 <script src="js/sections.js"></script>

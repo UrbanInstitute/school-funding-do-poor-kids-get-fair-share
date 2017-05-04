@@ -1,0 +1,670 @@
+GISJOIN,SDUNI,pov_fam_5_17,nonpov_fam_5_17,tot_fam_5_17,Percent_Pov_Fam5_17
+G36000001,Dolgeville Central School District,116,503,619,0.18739903
+G36000002,Sauquoit Valley Central School District,56,594,650,0.086153843
+G36000003,Edwards-Knox Central School District,60,244,304,0.19736843
+G36000004,Rotterdam-Mohonasen Central School District,171,1447,1618,0.10568603
+G36000005,Broadalbin-Perth Central School District,142,876,1018,0.13948919
+G36000006,Cherry Valley-Springfield Central School District,61,335,396,0.15404041
+G36000007,Jasper-Troupsburg Central School District,70,283,353,0.19830029
+G36000008,South Country Central School District,518,2410,2928,0.17691256
+G36000009,Saranac Central School District,219,947,1166,0.18782161
+G36000010,Cobleskill-Richmondville Central School District,143,915,1058,0.13516068
+G36000011,Wayland-Cohocton Central School District,223,759,982,0.22708757
+G36000012,Bolivar-Richburg Central School District,110,371,481,0.22869022
+G36000013,Oneida City School District,265,1076,1341,0.19761372
+G36000014,Waterloo Central School District,172,947,1119,0.15370867
+G36000015,Allegany-Limestone Central School District,112,553,665,0.16842106
+G36000016,Averill Park Central School District,110,1897,2007,0.05480817
+G36000017,Genesee Valley Central School District,73,355,428,0.17056075
+G36000018,Chautauqua Lake Central School District,125,203,328,0.38109756
+G36000019,Unadilla Valley Central School District,79,473,552,0.14311594
+G36000020,Campbell-Savona Central School District,70,366,436,0.16055046
+G36000021,Mattituck-Cutchogue Union Free School District,27,905,932,0.028969957
+G36000023,Sullivan West Central School District,62,723,785,0.078980893
+G36000124,Canisteo-Greenwood Central School District,185,441,626,0.29552716
+G36000125,Eastport-South Manor Central School District,127,2107,2234,0.056848701
+G36000971,North Colonie Central School District,436,3077,3513,0.12411045
+G36001087,Central Valley School District,369,1052,1421,0.25967628
+G36001107,Oppenheim-Ephratah-St. Johnsville Central School District,112,447,559,0.20035778
+G36002310,Glens Falls Common School District,42,94,136,0.30882353
+G36002340,South Jefferson Central School District,249,955,1204,0.20681064
+G36002370,Addison Central School District,282,559,841,0.33531511
+G36002400,Afton Central School District,50,236,286,0.17482518
+G36002430,Akron Central School District,99,926,1025,0.096585363
+G36002460,Albany City School District,1860,3969,5829,0.31909418
+G36002520,Albion Central School District,210,789,999,0.2102102
+G36002550,Alden Central School District,189,1069,1258,0.15023847
+G36002580,Alexander Central School District,29,446,475,0.061052632
+G36002670,Alexandria Central School District,44,240,284,0.15492958
+G36002700,Alfred-Almond Central School District,59,323,382,0.15445027
+G36002730,Windsor Central School District,75,1053,1128,0.066489361
+G36002820,Altmar-Parish-Williamstown Central School District,174,647,821,0.21193667
+G36002880,Amagansett Union Free School District,3,106,109,0.027522936
+G36002920,Amherst Central School District,118,2011,2129,0.055425081
+G36002940,Amityville Union Free School District,254,1995,2249,0.11293908
+G36002970,Amsterdam City School District,923,1466,2389,0.38635412
+G36003000,Andes Central School District,32,47,79,0.4050633
+G36003030,Andover Central School District,52,185,237,0.21940929
+G36003060,Schenevus Central School District,48,233,281,0.17081851
+G36003180,Ardsley Union Free School District,32,999,1031,0.031037828
+G36003210,Argyle Central School District,57,244,301,0.18936877
+G36003240,Arkport Central School District,28,223,251,0.11155379
+G36003270,Arlington Central School District,353,5303,5656,0.062411599
+G36003420,Attica Central School District,107,732,839,0.12753278
+G36003480,Auburn City School District,569,2418,2987,0.19049214
+G36003630,Avoca Central School District,66,249,315,0.20952381
+G36003660,Avon Central School District,87,672,759,0.11462451
+G36003720,Babylon Union Free School District,75,969,1044,0.071839079
+G36003810,Bainbridge-Guilford Central School District,45,386,431,0.10440835
+G36003840,Baldwin Union Free School District,328,3385,3713,0.088338271
+G36003870,Baldwinsville Central School District,313,3170,3483,0.089865059
+G36003930,Ballston Spa Central School District,236,2454,2690,0.087732345
+G36003960,Barker Central School District,96,520,616,0.15584415
+G36003990,Batavia City School District,442,1119,1561,0.28315184
+G36004050,Bath Central School District,294,738,1032,0.28488371
+G36004080,Bay Shore Union Free School District,228,3228,3456,0.065972224
+G36004110,Bayport-Blue Point Union Free School District,150,1297,1447,0.10366275
+G36004140,Beacon City School District,497,1653,2150,0.23116279
+G36004200,Beaver River Central School District,28,563,591,0.047377326
+G36004290,Beekmantown Central School District,194,1057,1251,0.15507594
+G36004350,Belfast Central School District,51,252,303,0.16831683
+G36004370,Belleville Henderson Central School District,75,293,368,0.20380434
+G36004530,Bemus Point Central School District,4,383,387,0.010335918
+G36004620,Berlin Central School District,52,509,561,0.092691623
+G36004650,Berne-Knox-Westerlo Central School District,55,565,620,0.088709675
+G36004710,Bethlehem Central School District,73,2826,2899,0.025181096
+G36004740,Bethpage Union Free School District,24,1828,1852,0.012958963
+G36004757,Gilbertsville-Mount Upton Central School District,89,233,322,0.27639753
+G36004758,Kiryas Joel Village Union Free School District,514,1051,1565,0.3284345
+G36004800,Binghamton Common School District,0,31,31,0
+G36004870,Binghamton City School District,1135,2086,3221,0.35237503
+G36004920,East Bloomfield Central School District,75,554,629,0.11923689
+G36005010,Bolton Central School District,0,80,80,0
+G36005040,Adirondack Central School District,155,579,734,0.21117166
+G36005220,Bradford Central School District,38,120,158,0.24050634
+G36005280,Brentwood Union Free School District,1077,8100,9177,0.11735862
+G36005310,Brewster Central School District,125,2098,2223,0.056230318
+G36005340,Briarcliff Manor Union Free School District,17,866,883,0.019252548
+G36005370,Bridgehampton Union Free School District,0,57,57,0
+G36005460,Brighton Central School District,151,2161,2312,0.065311417
+G36005520,Brunswick Central School District (Brittonkill),62,622,684,0.090643272
+G36005580,Brockport Central School District,281,2044,2325,0.12086021
+G36005610,Brocton Central School District,54,304,358,0.15083799
+G36005640,Bronxville Union Free School District,30,860,890,0.033707865
+G36005670,Brookfield Central School District,10,167,177,0.056497175
+G36005820,Brushton-Moira Central School District,140,313,453,0.30905077
+G36005850,Buffalo City School District,10658,14548,25206,0.42283583
+G36005940,Burnt Hills-Ballston Lake Central School District,63,1716,1779,0.035413153
+G36006060,Byram Hills Central School District,20,1455,1475,0.013559322
+G36006090,Byron-Bergen Central School District,157,576,733,0.21418826
+G36006160,Cairo-Durham Central School District,221,642,863,0.25608343
+G36006180,Caledonia-Mumford Central School District,40,474,514,0.077821009
+G36006210,Cambridge Central School District,21,472,493,0.042596348
+G36006240,Camden Central School District,256,1027,1283,0.19953234
+G36006300,Canajoharie Central School District,93,565,658,0.14133738
+G36006330,Canandaigua City School District,312,2203,2515,0.12405567
+G36006360,Canaseraga Central School District,56,135,191,0.29319373
+G36006390,Canastota Central School District,102,699,801,0.12734082
+G36006420,Candor Central School District,71,385,456,0.15570176
+G36006470,Canton Central School District,138,640,778,0.17737789
+G36006500,Spackenkill Union Free School District,124,906,1030,0.12038835
+G36006540,Carle Place Union Free School District,136,868,1004,0.13545817
+G36006570,Carmel Central School District,256,2719,2975,0.086050421
+G36006630,Carthage Central School District,284,1659,1943,0.14616573
+G36006660,Cassadaga Valley Central School District,157,511,668,0.23502994
+G36006690,Cato-Meridian Central School District,55,505,560,0.098214284
+G36006720,Catskill Central School District,193,968,1161,0.166236
+G36006750,Cattaraugus-Little Valley Central School District,121,428,549,0.22040074
+G36006780,Cazenovia Central School District,81,824,905,0.089502759
+G36006840,Center Moriches Union Free School District,0,808,808,0
+G36006870,Central Islip Union Free School District,440,2938,3378,0.13025458
+G36006900,Central Square Central School District,407,2320,2727,0.14924826
+G36006990,Chappaqua Central School District,95,2202,2297,0.041358292
+G36007020,Grand Island Central School District,209,1836,2045,0.10220049
+G36007050,Charlotte Valley Central School District,56,177,233,0.24034335
+G36007080,Chateaugay Central School District,85,205,290,0.29310346
+G36007110,Chatham Central School District,83,783,866,0.095842957
+G36007170,Chazy Union Free School District,11,326,337,0.032640949
+G36007230,Cheektowaga Central School District,364,1406,1770,0.20564972
+G36007260,Chenango Forks Central School District,185,771,956,0.19351465
+G36007290,Chenango Valley Central School District,203,867,1070,0.18971963
+G36007320,Westhill Central School District,31,1017,1048,0.029580154
+G36007380,Chester Union Free School District,25,577,602,0.04152824
+G36007470,Chittenango Central School District,99,1125,1224,0.080882356
+G36007530,Churchville-Chili Central School District,323,2172,2495,0.12945892
+G36007560,Cincinnatus Central School District,85,297,382,0.22251309
+G36007590,Clarence Central School District,191,3021,3212,0.059464507
+G36007650,Thousand Islands Central School District,109,557,666,0.16366367
+G36007680,Cleveland Hill Union Free School District,107,763,870,0.12298851
+G36007710,Clifton-Fine Central School District,79,97,176,0.44886363
+G36007770,Clinton Central School District,74,755,829,0.089264177
+G36007860,Clyde-Savannah Central School District,63,456,519,0.12138728
+G36007890,Clymer Central School District,77,205,282,0.27304965
+G36007980,Cohoes City School District,304,800,1104,0.27536231
+G36008010,Cold Spring Harbor Central School District,51,982,1033,0.049370766
+G36008100,Colton-Pierrepont Central School District,69,156,225,0.30666667
+G36008130,Commack Union Free School District,186,4090,4276,0.043498598
+G36008160,Connetquot Central School District,183,3795,3978,0.046003018
+G36008250,Cooperstown Central School District,58,496,554,0.10469314
+G36008280,Copenhagen Central School District,101,264,365,0.27671233
+G36008310,Copiague Union Free School District,206,2434,2640,0.078030303
+G36008340,Pembroke Central School District,138,536,674,0.20474778
+G36008370,Corinth Central School District,147,490,637,0.23076923
+G36008400,Corning City School District,448,3044,3492,0.12829325
+G36008430,Cornwall Central School District,31,2089,2120,0.014622642
+G36008460,Cortland City School District,246,1559,1805,0.13628809
+G36008490,Coxsackie-Athens Central School District,131,663,794,0.1649874
+G36008580,Croton-Harmon Union Free School District,35,958,993,0.035246726
+G36008610,Crown Point Central School District,24,155,179,0.13407822
+G36008790,Dansville Central School District,255,739,994,0.25653923
+G36008850,DeRuyter Central School District,31,171,202,0.15346535
+G36008880,Deer Park Union Free School District,223,2428,2651,0.084119201
+G36008910,Delhi Central School District,60,376,436,0.13761468
+G36008970,Yorkshire-Pioneer Central School District,196,1373,1569,0.12492033
+G36009030,Depew Union Free School District,172,1033,1205,0.1427386
+G36009060,Deposit Central School District,59,282,341,0.17302053
+G36009090,Jamesville-DeWitt Central School District,102,1689,1791,0.056951422
+G36009120,Dobbs Ferry Union Free School District,8,787,795,0.010062893
+G36009210,Dover Union Free School District,151,783,934,0.16167024
+G36009240,Downsville Central School District,81,82,163,0.49693251
+G36009330,Dryden Central School District,194,1060,1254,0.15470494
+G36009360,Duanesburg Central School District,50,490,540,0.09259259
+G36009390,Dundee Central School District,81,424,505,0.16039604
+G36009420,Dunkirk City School District,470,968,1438,0.32684284
+G36009540,East Aurora Union Free School District,93,1183,1276,0.072884016
+G36009630,East Greenbush Central School District,162,2617,2779,0.058294352
+G36009660,East Hampton Union Free School District,57,848,905,0.062983423
+G36009690,East Irondequoit Central School District,384,1783,2167,0.17720351
+G36009720,East Islip Union Free School District,107,2643,2750,0.038909093
+G36009840,East Meadow Union Free School District,247,4275,4522,0.054621849
+G36009870,East Moriches Union Free School District,0,532,532,0
+G36009900,East Quogue Union Free School District,12,490,502,0.023904383
+G36009930,East Rochester Union Free School District,209,527,736,0.28396741
+G36009960,East Rockaway Union Free School District,15,841,856,0.017523365
+G36009990,East Syracuse-Minoa Central School District,252,1784,2036,0.1237721
+G36010050,East Williston Union Free School District,59,961,1020,0.057843138
+G36010080,Eastchester Union Free School District,49,1769,1818,0.026952695
+G36010170,Eden Central School District,25,836,861,0.029036004
+G36010200,Edgemont Union Free School District,34,1105,1139,0.029850746
+G36010230,Edinburg Common School District,5,63,68,0.073529415
+G36010260,Edmeston Central School District,28,223,251,0.11155379
+G36010380,Elba Central School District,30,242,272,0.11029412
+G36010410,Eldred Central School District,72,373,445,0.16179775
+G36010440,Elizabethtown-Lewis Central School District,23,202,225,0.10222222
+G36010500,Ellenville Central School District,166,1089,1255,0.13227092
+G36010530,Ellicottville Central School District,88,260,348,0.25287357
+G36010560,Elmira City School District,1366,3062,4428,0.30849141
+G36010590,Elmira Heights Central School District,89,522,611,0.14566284
+G36010650,Elmsford Union Free School District,40,774,814,0.049140047
+G36010680,Elwood Union Free School District,94,1272,1366,0.068814054
+G36010710,Union-Endicott Central School District,432,2322,2754,0.15686275
+G36010860,Fabius-Pompey Central School District,73,408,481,0.15176715
+G36010890,Fairport Central School District,330,3541,3871,0.08524929
+G36010920,Falconer Central School District,156,498,654,0.23853211
+G36010950,Fallsburg Central School District,258,525,783,0.32950193
+G36010980,Farmingdale Union Free School District,235,3835,4070,0.05773956
+G36011070,Fillmore Central School District,78,267,345,0.22608696
+G36011100,Fishers Island Union Free School District,0,23,23,0
+G36011190,Fonda-Fultonville Central School District,88,739,827,0.10640871
+G36011250,Forestville Central School District,39,217,256,0.15234375
+G36011280,Fort Ann Central School District,9,326,335,0.026865672
+G36011310,Fort Edward Union Free School District,44,327,371,0.11859838
+G36011370,Fort Plain Central School District,98,313,411,0.23844282
+G36011400,Frankfort-Schuyler Central School District,94,535,629,0.14944357
+G36011430,Franklin Central School District,11,216,227,0.048458152
+G36011490,Franklinville Central School District,99,352,451,0.21951219
+G36011520,Fredonia Central School District,61,801,862,0.070765659
+G36011550,Freeport Union Free School District,544,3125,3669,0.14826928
+G36011610,Frewsburg Central School District,85,440,525,0.16190477
+G36011640,Friendship Central School District,118,149,267,0.44194758
+G36011670,Frontier Central School District,352,2948,3300,0.10666667
+G36011700,Fulton City School District,599,1499,2098,0.28551
+G36011730,Galway Central School District,115,794,909,0.12651265
+G36011740,Gananda Central School District,35,671,706,0.049575072
+G36011760,Garden City Union Free School District,103,2144,2247,0.045838896
+G36011860,Garrison Union Free School District,0,187,187,0
+G36011880,Gates-Chili Central School District,395,2605,3000,0.13166666
+G36011910,General Brown Central School District,160,857,1017,0.15732546
+G36011940,Geneseo Central School District,129,508,637,0.20251177
+G36011970,Geneva City School District,358,907,1265,0.28300396
+G36012030,Germantown Central School District,51,434,485,0.10515464
+G36012120,Gilboa-Conesville Central School District,17,168,185,0.091891892
+G36012180,Glen Cove City School District,619,1874,2493,0.24829523
+G36012240,Glens Falls City School District,214,1009,1223,0.17497955
+G36012270,Gloversville City School District,820,1052,1872,0.43803418
+G36012300,Gorham-Middlesex Central School District (Marcus Whitman),136,683,819,0.16605617
+G36012330,Goshen Central School District,79,1608,1687,0.046828691
+G36012360,Gouverneur Central School District,261,787,1048,0.2490458
+G36012390,Gowanda Central School District,228,553,781,0.29193342
+G36012450,Granville Central School District,168,593,761,0.22076215
+G36012510,Great Neck Union Free School District,318,4083,4401,0.072256304
+G36012630,Greece Central School District,935,5960,6895,0.13560551
+G36012660,Green Island Union Free School District,14,219,233,0.060085837
+G36012720,Greenburgh Central School District,91,1604,1695,0.053687315
+G36012750,Greene Central School District,196,540,736,0.26630434
+G36012840,Greenport Union Free School District,59,233,292,0.2020548
+G36012870,Greenville Central School District,61,678,739,0.082543977
+G36012900,Greenwich Central School District,32,555,587,0.054514479
+G36012960,Greenwood Lake Union Free School District,11,509,520,0.021153847
+G36012990,Springville-Griffith Institute Central School,122,1181,1303,0.093630083
+G36013020,Groton Central School District,95,454,549,0.1730419
+G36013080,Guilderland Central School District,175,3236,3411,0.051304601
+G36013110,Hadley-Luzerne Central School District,51,406,457,0.11159737
+G36013230,Haldane Central School District,76,575,651,0.11674348
+G36013290,Half Hollow Hills Central School District,212,4879,5091,0.041642115
+G36013350,Hamburg Central School District,83,2301,2384,0.034815438
+G36013380,Hamilton Central School District,18,270,288,0.0625
+G36013440,Hammond Central School District,58,122,180,0.32222223
+G36013470,Hammondsport Central School District,38,284,322,0.11801242
+G36013530,Hampton Bays Union Free School District,27,1056,1083,0.024930747
+G36013560,Hancock Central School District,3,160,163,0.018404908
+G36013590,Hannibal Central School District,299,670,969,0.30856553
+G36013620,Harborfields Central School District,44,2153,2197,0.02002731
+G36013710,Harpursville Central School District,195,295,490,0.39795917
+G36013740,Harrison Central School District,302,2452,2754,0.10965868
+G36013770,Harrisville Central School District,68,161,229,0.29694322
+G36013830,Hartford Central School District,60,264,324,0.18518518
+G36013950,Hastings-on-Hudson Union Free School District,0,1001,1001,0
+G36013980,Hauppauge Union Free School District,79,2221,2300,0.034347825
+G36014010,Haverstraw-Stony Point Central School District (North Rockland),581,4946,5527,0.10512032
+G36014130,Hempstead Union Free School District,1186,3329,4515,0.26267996
+G36014190,Hendrick Hudson Central School District,126,1530,1656,0.076086953
+G36014220,Herkimer Central School District,142,514,656,0.21646342
+G36014250,Hermon-DeKalb Central School District,47,141,188,0.25
+G36014280,Herricks Union Free School District,56,2594,2650,0.021132076
+G36014310,Heuvelton Central School District,135,335,470,0.28723404
+G36014340,Hicksville Union Free School District,180,3330,3510,0.051282052
+G36014400,Highland Central School District,118,964,1082,0.1090573
+G36014430,Highland Falls Central School District,109,829,938,0.11620469
+G36014460,Hilton Central School District,113,2693,2806,0.040270846
+G36014490,Hinsdale Central School District,118,209,327,0.36085626
+G36014550,Holland Central School District,72,560,632,0.11392405
+G36014580,Holland Patent Central School District,101,900,1001,0.1008991
+G36014610,Holley Central School District,146,557,703,0.20768137
+G36014640,Homer Central School District,126,1011,1137,0.11081794
+G36014670,Honeoye Central School District,17,422,439,0.038724374
+G36014700,Honeoye Falls-Lima Central School District,132,1436,1568,0.084183671
+G36014730,Hoosic Valley Central School District,74,702,776,0.095360823
+G36014760,Hoosick Falls Central School District,101,723,824,0.12257282
+G36014820,Hornell City School District,286,736,1022,0.27984345
+G36014850,Horseheads Central School District,185,2197,2382,0.077665828
+G36014880,Sackets Harbor Central School District,5,294,299,0.016722407
+G36014940,Hudson City School District,194,984,1178,0.1646859
+G36014970,Hudson Falls Central School District,374,1153,1527,0.24492469
+G36015060,Hunter-Tannersville Central School District,25,132,157,0.15923567
+G36015090,Huntington Union Free School District,613,3102,3715,0.16500673
+G36015180,Hyde Park Central School District,368,2126,2494,0.14755413
+G36015210,Kinderhook Central School District (Ichabod Crane),86,1174,1260,0.068253972
+G36015270,Indian Lake Central School District,0,58,58,0
+G36015300,Indian River Central School District,262,2047,2309,0.11346903
+G36015330,Inlet Common School District,10,14,24,0.41666666
+G36015360,Iroquois Central School District,53,1593,1646,0.032199271
+G36015390,West Irondequoit Central School District,168,2097,2265,0.074172184
+G36015450,Irvington Union Free School District,43,1256,1299,0.033102386
+G36015480,Island Park Union Free School District,137,609,746,0.18364611
+G36015510,Island Trees Union Free School District,66,1589,1655,0.039879154
+G36015540,Islip Union Free School District,86,1738,1824,0.047149122
+G36015570,Ithaca City School District,491,2975,3466,0.14166185
+G36015630,Jamestown City School District,1247,1974,3221,0.38714686
+G36015720,Jefferson Central School District,55,145,200,0.27500001
+G36015780,Brookhaven-Comsewogue Union Free School District,162,2469,2631,0.061573546
+G36015810,Jericho Union Free School District,104,1735,1839,0.056552473
+G36015870,Johnsburg Central School District,31,104,135,0.22962964
+G36015900,Johnson City Central School District,194,1229,1423,0.13633169
+G36015980,Johnstown City School District,136,1027,1163,0.11693895
+G36015990,Jordan-Elbridge Central School District,158,730,888,0.17792793
+G36016080,Katonah-Lewisboro Union Free School District,93,2162,2255,0.041241687
+G36016140,Keene Central School District,11,68,79,0.1392405
+G36016170,AuSable Valley Central School District,74,883,957,0.077324972
+G36016200,Kendall Central School District,106,416,522,0.20306513
+G36016230,Kenmore-Tonawanda Union Free School District,1040,4834,5874,0.17705141
+G36016260,Kings Park Central School District,125,1924,2049,0.061005369
+G36016290,Kingston City School District,753,3602,4355,0.1729047
+G36016380,La Fargeville Central School District,85,213,298,0.2852349
+G36016410,LaFayette Central School District,29,513,542,0.053505536
+G36016440,Lackawanna City School District,440,912,1352,0.32544377
+G36016470,Lake George Central School District,84,337,421,0.19952494
+G36016500,Lake Placid Central School District,46,593,639,0.07198748
+G36016530,Lake Pleasant Central School District,5,22,27,0.18518518
+G36016560,Evans-Brant Central School District (Lake Shore),203,1350,1553,0.13071474
+G36016620,Lakeland Central School District,134,3418,3552,0.037725225
+G36016680,Lancaster Central School District,177,4112,4289,0.04126836
+G36016710,Lansing Central School District,64,705,769,0.083224967
+G36016740,Lansingburgh Central School District,552,1201,1753,0.31488878
+G36016800,Laurens Central School District,141,158,299,0.47157189
+G36016830,Lawrence Union Free School District,393,3130,3523,0.11155266
+G36016950,Le Roy Central School District,63,683,746,0.084450401
+G36016960,North Warren Central School District,83,287,370,0.22432433
+G36016980,North Rose-Wolcott Central School District,142,669,811,0.17509247
+G36017130,Letchworth Central School District,114,524,638,0.17868339
+G36017160,Levittown Union Free School District,116,4542,4658,0.024903392
+G36017190,Lewiston-Porter Central School District,72,1442,1514,0.047556143
+G36017220,Liberty Central School District,171,626,797,0.21455458
+G36017380,Lindenhurst Union Free School District,331,3734,4065,0.081426814
+G36017430,Lisbon Central School District,18,373,391,0.046035804
+G36017460,Little Falls City School District,107,490,597,0.17922948
+G36017520,Liverpool Central School District,583,4222,4805,0.12133195
+G36017580,Livingston Manor Central School District,61,230,291,0.209622
+G36017640,Livonia Central School District,125,973,1098,0.11384335
+G36017670,Lockport City School District,483,2629,3112,0.15520565
+G36017700,Locust Valley Central School District,98,1343,1441,0.068008326
+G36017730,Long Beach City School District,283,2807,3090,0.091585763
+G36017760,Long Lake Central School District,0,15,15,0
+G36017820,Lowville Academy and Central School District,91,673,764,0.11910995
+G36017880,Lyme Central School District,23,153,176,0.13068181
+G36017910,Lynbrook Union Free School District,138,1724,1862,0.074113853
+G36017940,Lyncourt Union Free School District,55,209,264,0.20833333
+G36017970,Lyndonville Central School District,49,500,549,0.089253187
+G36018030,Lyons Central School District,190,355,545,0.34862384
+G36018080,Madison Central School District,126,200,326,0.38650307
+G36018090,Madrid-Waddington Central School District,106,244,350,0.30285713
+G36018120,Mahopac Central School District,89,2699,2788,0.031922527
+G36018150,Maine-Endwell Central School District,202,1324,1526,0.13237222
+G36018180,Malone Central School District,350,1093,1443,0.24255024
+G36018210,Malverne Union Free School District,135,1500,1635,0.082568809
+G36018240,Mamaroneck Union Free School District,253,2992,3245,0.077966101
+G36018270,Manhasset Union Free School District,168,1874,2042,0.082272284
+G36018330,Fayetteville-Manlius Central School District,115,2917,3032,0.03792876
+G36018450,Marathon Central School District,38,444,482,0.078838177
+G36018480,Marcellus Central School District,59,1127,1186,0.04974705
+G36018510,Margaretville Central School District,74,234,308,0.24025974
+G36018540,Marion Central School District,53,412,465,0.1139785
+G36018570,Marlboro Central School District,67,1307,1374,0.048762735
+G36018600,Cheektowaga-Maryvale Union Free School District,157,1272,1429,0.10986704
+G36018630,Massapequa Union Free School District,154,4716,4870,0.031622175
+G36018660,Massena Central School District,437,1425,1862,0.23469388
+G36018690,William Floyd Union Free School District,877,4642,5519,0.1589056
+G36018750,Mayfield Central School District,163,506,669,0.24364723
+G36018840,McGraw Central School District,42,265,307,0.13680781
+G36018900,Mechanicville City School District,148,765,913,0.16210295
+G36018960,Medina Central School District,313,726,1039,0.3012512
+G36018990,Menands Union Free School District,26,254,280,0.092857145
+G36019170,Mexico Central School District,253,1037,1290,0.19612403
+G36019200,Middle Country Central School District,590,5838,6428,0.091785938
+G36019230,Longwood Central School District,378,5414,5792,0.065262429
+G36019260,Middleburgh Central School District,57,359,416,0.13701923
+G36019320,Middletown City School District,904,3210,4114,0.21973749
+G36019350,Milford Central School District,17,223,240,0.070833333
+G36019380,Millbrook Central School District,0,672,672,0
+G36019410,Miller Place Union Free School District,117,1639,1756,0.066628702
+G36019500,Mineola Union Free School District,153,2053,2206,0.0693563
+G36019530,Minerva Central School District,0,29,29,0
+G36019560,Minisink Valley Central School District,240,2315,2555,0.093933463
+G36019650,Monroe-Woodbury Central School District,205,3731,3936,0.052083332
+G36019680,Valley Central School District (Montgomery),263,2574,2837,0.092703559
+G36019710,Montauk Union Free School District,76,136,212,0.35849056
+G36019740,Monticello Central School District,482,1247,1729,0.27877384
+G36019800,Moravia Central School District,99,577,676,0.1464497
+G36019830,Moriah Central School District,64,351,415,0.15421687
+G36019860,Morris Central School District,28,225,253,0.11067194
+G36019890,Morristown Central School District,35,136,171,0.20467836
+G36019920,Morrisville-Eaton Central School District,55,330,385,0.14285715
+G36019950,Bedford Central School District,266,2874,3140,0.084713377
+G36020010,Mount Morris Central School District,67,312,379,0.176781
+G36020040,Mount Sinai Union Free School District,34,1318,1352,0.02514793
+G36020100,Mount Vernon School District,1403,5295,6698,0.20946552
+G36020160,Mount Pleasant Central School District,13,1123,1136,0.011443662
+G36020190,Nanuet Union Free School District,87,1488,1575,0.055238094
+G36020220,Naples Central School District,94,342,436,0.21559633
+G36020340,Clarkstown Central School District,293,4924,5217,0.056162547
+G36020370,New Hartford Central School District,76,1356,1432,0.053072624
+G36020430,New Lebanon Central School District,46,328,374,0.12299465
+G36020460,New Paltz Central School District,54,1356,1410,0.038297873
+G36020490,New Rochelle City School District,908,6584,7492,0.12119594
+G36020520,New Suffolk Common School District,0,5,5,0
+G36020580,New York City Department Of Education,210510,554922,765432,0.27502117
+G36020610,New York Mills Union Free School District,76,514,590,0.12881356
+G36020640,Newark Central School District,203,1010,1213,0.16735367
+G36020670,Newark Valley Central School District,42,718,760,0.055263158
+G36020700,Newburgh City School District,1710,5387,7097,0.24094687
+G36020730,Newcomb Central School District,7,26,33,0.21212122
+G36020760,Newfane Central School District,163,924,1087,0.14995401
+G36020790,Newfield Central School District,148,310,458,0.32314411
+G36020820,Niagara Falls City School District,1753,3017,4770,0.36750525
+G36020850,Niagara-Wheatfield Central School District,173,2395,2568,0.067367598
+G36020880,Niskayuna Central School District,134,2045,2179,0.061496098
+G36020910,North Babylon Union Free School District,175,2646,2821,0.062034741
+G36020970,North Collins Central School District,3,288,291,0.010309278
+G36021180,North Salem Central School District,44,794,838,0.052505966
+G36021210,North Syracuse Central School District,652,6084,6736,0.096793346
+G36021240,North Tonawanda City School District,297,2165,2462,0.12063363
+G36021250,Northeastern Clinton Central School District,192,825,1017,0.18879056
+G36021260,Northern Adirondack Central School District,171,425,596,0.28691274
+G36021270,Northport-East Northport Union Free School District,112,3677,3789,0.029559251
+G36021300,Northville Central School District,49,182,231,0.21212122
+G36021330,Norwich City School District,344,872,1216,0.28289473
+G36021360,Norwood-Norfolk Central School District,162,558,720,0.22499999
+G36021450,Dalton-Nunda Central School District (Keshequa),72,397,469,0.15351813
+G36021480,Nyack Union Free School District,158,2012,2170,0.07281106
+G36021510,Oakfield-Alabama Central School District,15,516,531,0.028248588
+G36021540,Fire Island Union Free School District,0,24,24,0
+G36021570,Oceanside Union Free School District,316,3104,3420,0.09239766
+G36021630,Odessa-Montour Central School District,100,304,404,0.24752475
+G36021660,Ogdensburg City School District,214,763,977,0.21903788
+G36021720,Olean City School District,465,996,1461,0.31827515
+G36021780,Oneonta City School District,262,1125,1387,0.18889689
+G36021810,Onondaga Central School District,25,483,508,0.049212597
+G36021840,Onteora Central School District,109,918,1027,0.10613437
+G36021900,Orchard Park Central School District,83,3352,3435,0.024163028
+G36021930,Oysterponds Union Free School District,6,55,61,0.098360658
+G36021960,Oriskany Central School District,47,396,443,0.10609481
+G36022020,Ossining Union Free School District,664,2859,3523,0.18847573
+G36022050,Oswego City School District,492,2077,2569,0.19151421
+G36022100,Georgetown-South Otselic Central School District,48,188,236,0.20338982
+G36022140,South Seneca Central School District,65,417,482,0.13485478
+G36022170,Owego-Apalachin Central School District,196,1108,1304,0.15030675
+G36022200,Van Hornesville-Owen D. Young Central School District,6,139,145,0.04137931
+G36022260,Oxford Academy and Central School District,46,388,434,0.10599078
+G36022290,Oyster Bay-East Norwich Central School District,60,1274,1334,0.044977512
+G36022380,Palmyra-Macedon Central School District,127,1059,1186,0.10708263
+G36022410,Panama Central School District,70,310,380,0.18421052
+G36022440,Parishville-Hopkinton Central School District,58,230,288,0.2013889
+G36022470,Patchogue-Medford Union Free School District,587,4494,5081,0.11552844
+G36022500,Pavilion Central School District,130,372,502,0.25896415
+G36022530,Pawling Central School District,50,863,913,0.054764513
+G36022560,Pearl River Union Free School District,121,1479,1600,0.075625002
+G36022650,Peekskill City School District,235,1887,2122,0.11074458
+G36022680,Pelham Union Free School District,12,1481,1493,0.008037509
+G36022710,Penfield Central School District,62,3203,3265,0.01898928
+G36022740,Penn Yan Central School District,242,1048,1290,0.1875969
+G36022770,Perry Central School District,170,409,579,0.29360968
+G36022830,Peru Central School District,216,1118,1334,0.16191904
+G36022890,Phelps-Clifton Springs Central School District,90,1169,1259,0.071485303
+G36022920,Phoenix Central School District,99,854,953,0.10388248
+G36023010,Pine Bush Central School District,158,3022,3180,0.049685534
+G36023040,Pine Plains Central School District,49,642,691,0.07091172
+G36023070,Pine Valley Central School District (South Dayton),91,407,498,0.18273093
+G36023130,Piseco Common School District,1,6,7,0.14285715
+G36023160,Pittsford Central School District,143,3514,3657,0.039103091
+G36023190,Plainedge Union Free School District,124,1888,2012,0.061630219
+G36023220,Plainview-Old Bethpage Central School District,126,3061,3187,0.039535612
+G36023280,Plattsburgh City School District,373,1066,1439,0.25920779
+G36023310,Pleasantville Union Free School District,0,986,986,0
+G36023340,Pocantico Hills Central School District,7,322,329,0.021276595
+G36023370,Poland Central School District,50,378,428,0.11682243
+G36023430,Port Byron Central School District,98,491,589,0.1663837
+G36023460,Port Chester-Rye Union Free School District,616,2659,3275,0.18809161
+G36023490,Port Jefferson Union Free School District,28,751,779,0.035943516
+G36023520,Port Jervis City School District,253,1244,1497,0.16900468
+G36023580,Port Washington Union Free School District,165,3196,3361,0.049092531
+G36023640,Portville Central School District,42,390,432,0.097222224
+G36023670,Potsdam Central School District,143,870,1013,0.14116485
+G36023760,Poughkeepsie City School District,905,1896,2801,0.3230989
+G36023790,Prattsburgh Central School District,21,257,278,0.075539567
+G36023880,Pulaski Central School District,71,485,556,0.12769784
+G36023970,Putnam Central School District,21,71,92,0.22826087
+G36024000,Putnam Valley Central School District,226,1204,1430,0.15804195
+G36024030,Queensbury Union Free School District,264,1947,2211,0.11940298
+G36024060,Quogue Union Free School District,0,68,68,0
+G36024090,Randolph Central School District,137,436,573,0.2390925
+G36024120,Raquette Lake Union Free School District,0,0,0,
+G36024150,Ravena-Coeymans-Selkirk Central School District,107,1119,1226,0.087275691
+G36024210,Red Creek Central School District,103,459,562,0.18327402
+G36024240,Red Hook Central School District,46,1246,1292,0.035603717
+G36024270,Manchester-Shortsville Central School District,97,403,500,0.19400001
+G36024360,Remsen Central School District,34,203,237,0.14345992
+G36024420,Remsenburg-Speonk Union Free School District,0,107,107,0
+G36024450,Rensselaer City School District,268,521,789,0.33967048
+G36024480,Rhinebeck Central School District,140,693,833,0.16806723
+G36024570,Richfield Springs Central School District,69,346,415,0.16626506
+G36024630,Blind Brook-Rye Union Free School District,15,843,858,0.017482517
+G36024660,Ripley Central School District,60,113,173,0.3468208
+G36024690,Riverhead Central School District,378,2586,2964,0.12753037
+G36024750,Rochester City School District,9206,10155,19361,0.47549197
+G36024780,Rockville Centre Union Free School District,187,2235,2422,0.077208921
+G36024840,Rocky Point Union Free School District,125,1955,2080,0.060096152
+G36024900,Rome City School District,590,2557,3147,0.18748014
+G36024930,Romulus Central School District,12,227,239,0.050209206
+G36024960,Rondout Valley Central School District,218,1225,1443,0.15107416
+G36024990,Roosevelt Union Free School District,462,1573,2035,0.22702703
+G36025020,Roscoe Central School District,26,167,193,0.13471502
+G36025050,Roslyn Union Free School District,204,1983,2187,0.09327846
+G36025110,Roxbury Central School District,49,236,285,0.17192982
+G36025140,Royalton-Hartland Central School District,79,822,901,0.087680355
+G36025170,Rush-Henrietta Central School District,533,3445,3978,0.13398694
+G36025260,Rye City School District,56,1839,1895,0.029551452
+G36025290,Rye Neck Union Free School District,0,1037,1037,0
+G36025320,Florida Union Free School District,32,460,492,0.065040648
+G36025350,Sachem Central School District,495,8362,8857,0.055887997
+G36025380,Sag Harbor Union Free School District,142,533,675,0.21037038
+G36025410,Sagaponack Common School District,0,27,27,0
+G36025440,Salamanca City School District,240,533,773,0.31047866
+G36025470,Salem Central School District,75,269,344,0.21802326
+G36025500,Salmon River Central School District,241,577,818,0.29462102
+G36025650,Sandy Creek Central School District,113,417,530,0.21320754
+G36025740,Saranac Lake Central School District,157,828,985,0.15939087
+G36025770,Saratoga Springs City School District,321,3785,4106,0.078178279
+G36025800,Saugerties Central School District,116,1753,1869,0.062065277
+G36025920,Sayville Union Free School District,42,1931,1973,0.02128738
+G36025950,Scarsdale Union Free School District,57,2695,2752,0.02071221
+G36025980,Schalmont Central School District,101,1067,1168,0.086472601
+G36026010,Schenectady City School District,1543,3100,4643,0.33232823
+G36026070,Schodack Central School District,0,592,592,0
+G36026100,Schoharie Central School District,90,428,518,0.17374517
+G36026130,Schroon Lake Central School District,11,60,71,0.15492958
+G36026160,Schuylerville Central School District,62,985,1047,0.059216809
+G36026190,Scio Central School District,29,152,181,0.160221
+G36026310,Scotia-Glenville Central School District,50,1430,1480,0.033783782
+G36026370,North Shore Central School District,42,1604,1646,0.025516404
+G36026400,Seaford Union Free School District,96,1558,1654,0.058041111
+G36026430,Seneca Falls Central School District,75,725,800,0.09375
+G36026580,Sharon Springs Central School District,114,151,265,0.43018869
+G36026640,Shelter Island Union Free School District,0,246,246,0
+G36026670,Shenendehowa Central School District,458,5957,6415,0.071395166
+G36026700,Sherburne-Earlville Central School District,158,731,889,0.17772779
+G36026730,Sherman Central School District,52,201,253,0.20553359
+G36026760,Sherrill City School District,112,1106,1218,0.091954023
+G36026840,Shoreham-Wading River Central School District,48,1040,1088,0.044117648
+G36026850,Sidney Central School District,94,623,717,0.13110182
+G36026880,Silver Creek Central School District,149,462,611,0.24386252
+G36026940,Skaneateles Central School District,22,841,863,0.025492469
+G36027000,Cheektowaga-Sloan Union Free School District,155,818,973,0.15930113
+G36027060,Smithtown Central School District,294,5984,6278,0.0468302
+G36027120,Sodus Central School District,198,480,678,0.2920354
+G36027150,Solvay Union Free School District,124,596,720,0.17222223
+G36027180,Somers Central School District,13,2084,2097,0.006199332
+G36027210,South Colonie Central School District,267,2845,3112,0.085796915
+G36027240,South Glens Falls Central School District,131,2027,2158,0.060704354
+G36027300,South Huntington Union Free School District,400,3632,4032,0.099206351
+G36027330,South Kortright Central School District,43,123,166,0.25903615
+G36027360,South Lewis Central School District,190,537,727,0.26134801
+G36027450,South Orangetown Central School District,105,2103,2208,0.047554348
+G36027540,Southampton Union Free School District,114,690,804,0.14179105
+G36027570,Southern Cayuga Central School District,105,430,535,0.19626169
+G36027620,Southold Union Free School District,61,446,507,0.12031558
+G36027660,Southwestern Central School District at Jamestown,148,736,884,0.16742082
+G36027750,Spencer-Van Etten Central School District,91,490,581,0.15662651
+G36027780,Spencerport Central School District,277,2442,2719,0.10187569
+G36027810,East Ramapo Central School District (Spring Valley),2177,8428,10605,0.20528053
+G36027900,Springs Union Free School District,66,471,537,0.12290503
+G36027960,Brasher Falls Central School District,59,348,407,0.14496315
+G36027990,Saint Regis Falls Central School District,75,160,235,0.31914893
+G36028020,Stamford Central School District,44,207,251,0.17529881
+G36028050,Starpoint Central School District,78,1735,1813,0.043022614
+G36028110,Stillwater Central School District,98,727,825,0.11878788
+G36028140,Stockbridge Valley Central School District,36,202,238,0.15126051
+G36028200,Three Village Central School District,234,3986,4220,0.055450238
+G36028320,Ramapo Central School District (Suffern),187,2899,3086,0.060596243
+G36028380,Susquehanna Valley Central School District,129,954,1083,0.11911357
+G36028500,Sweet Home Central School District,402,2073,2475,0.16242424
+G36028560,Syosset Central School District,203,3817,4020,0.050497513
+G36028590,Syracuse City School District,5051,6772,11823,0.42721814
+G36028620,Taconic Hills Central School District,190,792,982,0.19348268
+G36028650,Union Free School District of the Tarrytowns,226,1672,1898,0.11907271
+G36028680,Ticonderoga Central School District,126,422,548,0.229927
+G36028710,Tioga Central School District,116,570,686,0.16909622
+G36028740,Tonawanda City School District,180,1156,1336,0.13473053
+G36028800,Town of Webb Union Free School District,0,92,92,0
+G36028890,Tri-Valley Central School District,128,530,658,0.19452888
+G36028950,Troy City School District,963,1664,2627,0.36657783
+G36028980,Trumansburg Central School District,115,637,752,0.15292554
+G36029040,Tuckahoe Union Free School District,42,719,761,0.055190537
+G36029070,Tuckahoe Common School District,0,325,325,0
+G36029130,Tully Central School District,79,646,725,0.10896552
+G36029160,Tupper Lake Central School District,50,535,585,0.085470088
+G36029190,Tuxedo Union Free School District,5,291,296,0.016891891
+G36029240,Otego-Unadilla Central School District,91,477,568,0.16021127
+G36029250,Union Springs Central School District,65,548,613,0.10603589
+G36029280,Uniondale Union Free School District,323,3353,3676,0.087867245
+G36029370,Utica City School District,2640,3455,6095,0.43314192
+G36029400,Valhalla Union Free School District,52,1022,1074,0.048417132
+G36029610,Vestal Central School District,211,2015,2226,0.094788857
+G36029640,Victor Central School District,159,2551,2710,0.058671586
+G36029670,Voorheesville Central School District,12,614,626,0.019169329
+G36029760,Wainscott Common School District,19,14,33,0.57575756
+G36029790,Wallkill Central School District,241,1799,2040,0.11813726
+G36029820,Walton Central School District,212,394,606,0.34983498
+G36029850,Wantagh Union Free School District,36,1919,1955,0.018414322
+G36029880,Wappingers Central School District,549,7324,7873,0.069731995
+G36029910,Warrensburg Central School District,65,419,484,0.13429752
+G36029940,Warsaw Central School District,166,442,608,0.27302632
+G36029970,Warwick Valley Central School District,126,2245,2371,0.053142134
+G36030030,Washingtonville Central School District,230,2235,2465,0.093306288
+G36030060,Waterford-Halfmoon Union Free School District,121,309,430,0.28139535
+G36030120,Watertown City School District,673,1943,2616,0.257263
+G36030160,Waterville Central School District,51,431,482,0.10580913
+G36030210,Watervliet City School District,221,786,1007,0.21946375
+G36030240,Watkins Glen Central School District,48,536,584,0.08219178
+G36030270,Waverly Central School District,110,733,843,0.13048635
+G36030330,Wayne Central School District,99,1406,1505,0.065780729
+G36030360,Webster Central School District,358,5169,5527,0.064772934
+G36030390,Northeast Central School District,3,568,571,0.00525394
+G36030420,Weedsport Central School District,35,492,527,0.066413663
+G36030450,Wells Central School District,10,48,58,0.1724138
+G36030480,Wellsville Central School District,182,624,806,0.22580644
+G36030540,West Babylon Union Free School District,278,2482,2760,0.10072464
+G36030600,West Canada Valley Central School District,54,443,497,0.10865191
+G36030630,West Genesee Central School District,118,3078,3196,0.036921151
+G36030660,West Hempstead Union Free School District,170,1661,1831,0.09284544
+G36030690,West Islip Union Free School District,166,2702,2868,0.057880055
+G36030780,West Seneca Central School District,376,4349,4725,0.079576723
+G36030900,West Valley Central School District,16,177,193,0.082901552
+G36030930,Mount Markham Central School District,90,539,629,0.14308426
+G36030960,Westbury Union Free School District,458,2277,2735,0.16745886
+G36030990,Westfield Central School District,89,363,452,0.19690265
+G36031020,Westhampton Beach Union Free School District,6,407,413,0.014527845
+G36031050,Westmoreland Central School District,48,605,653,0.073506892
+G36031080,Westport Central School District,12,92,104,0.11538462
+G36031170,Wheatland-Chili Central School District,81,471,552,0.14673913
+G36031200,Wheelerville Union Free School District,0,87,87,0
+G36031260,White Plains City School District,813,4399,5212,0.15598619
+G36031290,Whitehall Central School District,180,338,518,0.34749034
+G36031320,Whitesboro Central School District,98,2170,2268,0.043209877
+G36031350,Whitesville Central School District,18,91,109,0.16513762
+G36031380,Whitney Point Central School District,134,680,814,0.16461916
+G36031410,North Greenbush Common School District (Williams),17,75,92,0.18478261
+G36031440,Williamson Central School District,79,459,538,0.14684016
+G36031470,Williamsville Central School District,321,6981,7302,0.04396056
+G36031500,Willsboro Central School District,7,153,160,0.043749999
+G36031560,Wilson Central School District,115,655,770,0.14935064
+G36031590,Windham-Ashland-Jewett Central School District,10,173,183,0.054644808
+G36031710,Hewlett-Woodmere Union Free School District,110,1892,2002,0.054945055
+G36031740,Worcester Central School District,78,208,286,0.27272728
+G36031800,Wyandanch Union Free School District,222,888,1110,0.2
+G36031830,Wynantskill Union Free School District,0,304,304,0
+G36031860,Wyoming Central School District,25,146,171,0.14619882
+G36031920,Yonkers City School District,4007,14613,18620,0.21519871
+G36031950,York Central School District,57,551,608,0.09375
+G36031980,Yorktown Central School District,12,2220,2232,0.005376344
+G36032010,Cuba-Rushford Central School District,68,404,472,0.14406779
+G36099999,Remainder of New York,1909,23837,25746,0.07414744
