@@ -1,5 +1,4 @@
 data/shapefiles/*
 data/geojson/*
-data/topojson/*
 *.zip
 *.shp
