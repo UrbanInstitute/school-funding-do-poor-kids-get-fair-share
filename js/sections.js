@@ -98,9 +98,9 @@ var scrollVis = function () {
       scatterPlotY.domain([.8,1.2]);
       scatterPlotX.domain([.8,1.2]);
 
-      setupVis(dotChartData, scatterplotData);
+      setupVis(dotChartData, scatterplotData, floridaTractData, floridaDistrictData, newYorkTractData, newYorkDistrictData);
 
-      setupSections(dotChartData, scatterplotData);
+      setupSections(dotChartData, scatterplotData, floridaTractData, floridaDistrictData, newYorkTractData, newYorkDistrictData);
     });
   };
 
@@ -351,11 +351,6 @@ var scrollVis = function () {
       //florida maps
 
   var path = d3.geoPath()
-
-
-
-
-  d3.json("data/topojson/fl_tract_map.json", function (error, floridaTractData){
   g.append("g")
     .attr("class", "floridaTracts")
     .selectAll("path")
@@ -364,21 +359,17 @@ var scrollVis = function () {
     .attr("fill", function(d) { return mapColor(d.properties.poverty) })
     .attr("d", path)
     .style("opacity",0);
-  });
 
-  d3.json("data/topojson/fl_dist_map.json", function (error, floridaDistrictData){
-    g.append("g")
-      .attr("class", "floridaDistricts")
-      .selectAll("path")
-      .data(topojson.feature(floridaDistrictData, floridaDistrictData.objects.fl_dist_map).features)
-      .enter().append("path")
-      .attr("fill", function(d) { return mapColor(d.properties.poverty) })
-      .attr("stroke","none")
-      .attr("d", path)
-      .style("opacity",0);
-    });
+  g.append("g")
+    .attr("class", "floridaDistricts")
+    .selectAll("path")
+    .data(topojson.feature(floridaDistrictData, floridaDistrictData.objects.fl_dist_map).features)
+    .enter().append("path")
+    .attr("fill", function(d) { return mapColor(d.properties.poverty) })
+    .attr("stroke","none")
+    .attr("d", path)
+    .style("opacity",0);
 
-  d3.json("data/topojson/ny_tract_map.json", function (error, newYorkTractData){
   g.append("g")
     .attr("class", "newYorkTracts")
     .selectAll("path")
@@ -387,9 +378,7 @@ var scrollVis = function () {
     .attr("fill", function(d) { return mapColor(d.properties.poverty) })
     .attr("d", path)
     .style("opacity",0);
-  });
 
-  d3.json("data/topojson/ny_dist_map.json", function (error, newYorkDistrictData){  
   g.append("g")
     .attr("class", "newYorkDistricts")
     .selectAll("path")
@@ -399,7 +388,6 @@ var scrollVis = function () {
     .attr("stroke","none")
     .attr("d", path)
     .style("opacity",0);
-  });
 
 
 
@@ -1043,7 +1031,7 @@ function removeTooltip(d, i){
  *
  * @param data - loaded tsv data
  */
-function display(dotChartData, scatterplotData) {
+function display(dotChartData, scatterplotData, floridaTractData, floridaDistrictData, newYorkTractData, newYorkDistrictData) {
   // create a new plot and
   // display it
   var plot = scrollVis();
@@ -1068,7 +1056,7 @@ function display(dotChartData, scatterplotData) {
           return "20px"
         }
       })
-    .datum([dotChartData, scatterplotData])
+    .datum([dotChartData, scatterplotData, floridaTractData, floridaDistrictData, newYorkTractData, newYorkDistrictData])
     .call(plot);
 
   // setup scroll functionality
@@ -1096,7 +1084,15 @@ function display(dotChartData, scatterplotData) {
 // load data and display
 d3.csv("data/data_ben_2014.csv", function(dotChartData){
   d3.csv("data/data_ben_19952014.csv", function(scatterplotData){
-            display(dotChartData, scatterplotData)
+    d3.json("data/topojson/fl_dist_map.json", function (error, floridaDistrictData){
+      d3.json("data/topojson/fl_tract_map.json", function (error, floridaTractData){
+        d3.json("data/topojson/ny_tract_map.json", function (error, newYorkTractData){
+            d3.json("data/topojson/ny_dist_map.json", function (error, newYorkDistrictData){
+            display(dotChartData, scatterplotData, floridaTractData, floridaDistrictData, newYorkTractData, newYorkDistrictData)
+          });
+        });
+      });
+    });
   });
 });
 
