@@ -89,18 +89,12 @@ var scrollVis = function () {
       dotChartX.domain([6000,-6000]);
 
       var scatterplotData = getScatterplotData(rawData[1])
-      var floridaTractData = rawData[2]
-      var floridaDistrictData = rawData[3]
-      var newYorkTractData = rawData[4]
-      var newYorkDistrictData = rawData[5]
-      // scatterPlotY.domain(d3.extent(scatterplotData, function(d) { return d.ratio1995; }));
-      // scatterPlotX.domain(d3.extent(scatterplotData, function(d) { return d.ratio2014; }));
       scatterPlotY.domain([.8,1.2]);
       scatterPlotX.domain([.8,1.2]);
 
-      setupVis(dotChartData, scatterplotData, floridaTractData, floridaDistrictData, newYorkTractData, newYorkDistrictData);
+      setupVis(dotChartData, scatterplotData);
 
-      setupSections(dotChartData, scatterplotData, floridaTractData, floridaDistrictData, newYorkTractData, newYorkDistrictData);
+      setupSections(dotChartData, scatterplotData);
     });
   };
 
@@ -114,6 +108,38 @@ var scrollVis = function () {
     else{ return dotChartX(0)}
   }
 
+  var getScatterValue  = function(d, year){
+      var valueStr = "";
+      if(d3.select(".stateButton").classed("active")){
+        valueStr += "St"
+      }
+      if(d3.select(".localButton").classed("active")){
+        valueStr += "Lo"
+      }
+      if(d3.select(".federalButton").classed("active")){
+        valueStr += "Fe"
+      }
+      if(valueStr == ""){
+        return 1
+      }else{
+        valueStr += year
+        return d[valueStr];        
+      }
+  }
+  var getScatterCat = function(){
+      var valueStr = "";
+      if(d3.select(".stateButton").classed("active")){
+        valueStr += "St"
+      }
+      if(d3.select(".localButton").classed("active")){
+        valueStr += "Lo"
+      }
+      if(d3.select(".federalButton").classed("active")){
+        valueStr += "Fe"
+      }
+      return valueStr;
+  }
+
 
   /**
    * setupVis - creates initial elements for all
@@ -124,7 +150,7 @@ var scrollVis = function () {
    *  element for each filler word type.
    * @param histData - binned histogram data
    */
-  var setupVis = function (dotChartData, scatterplotData, floridaTractData, floridaDistrictData, newYorkTractData, newYorkDistrictData) {
+  var setupVis = function (dotChartData, scatterplotData) {
 
     var stateG = g.selectAll(".stateG")
         .data(dotChartData)
@@ -320,75 +346,216 @@ var scrollVis = function () {
         .attr("cy", scatterPlotY(1) )
         .attr("r", DOT_RADIUS)
         .style("opacity",0)
-
+    console.log(150, 450)
     g.append("text")
-      .attr("class", "largeScatterplotLabel")
-      .attr("x",35)
-      .attr("y", scatterPlotY(1.1))
-      .text("BECAME PROGRESSIVE")
-      .style("opacity",0)
-    g.append("text")
-      .attr("class", "largeScatterplotLabel")
+      .attr("class", "largeScatterplotLabel q1 active")
       .attr("x",335)
-      .attr("y", scatterPlotY(1.1))
+      .attr("y", 150)
       .text("STAYED PROGRESSIVE")
       .style("opacity",0)
     g.append("text")
-      .attr("class", "largeScatterplotLabel")
+      .attr("class", "largeScatterplotLabel q2a active")
       .attr("x",35)
-      .attr("y", scatterPlotY(.9))
-      .text("STAYED REGRESSIVE")
+      .attr("y", 150)
+      .text("BECAME")
+    g.append("text")
+      .attr("class", "largeScatterplotLabel q2b active")
+      .attr("x",124)
+      .attr("y", 150)
+      .text("PROGRESSIVE")
       .style("opacity",0)
     g.append("text")
-      .attr("class", "largeScatterplotLabel")
+      .attr("class", "largeScatterplotLabel q3a active")
+      .attr("x",35)
+      .attr("y", 450)
+      .text("STAYED")
+      .style("opacity",0)
+    g.append("text")
+      .attr("class", "largeScatterplotLabel q3b active")
+      .attr("x",118)
+      .attr("y", 450)
+      .text("REGRESSIVE")
+      .style("opacity",0)
+    g.append("text")
+      .attr("class", "largeScatterplotLabel q4 active")
       .attr("x",335)
-      .attr("y", scatterPlotY(.9))
+      .attr("y", 450)
       .text("BECAME REGRESSIVE")
+      .style("opacity",0)
+
+
+    function moveScatterLabels(cat){
+      console.log(cat)
+      if(cat == "StLo" || cat == "StLoFe" || cat == ""){
+        d3.select(".largeScatterplotLabel.q1").transition().attr("x", 335).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
+        d3.select(".largeScatterplotLabel.q2a").transition().attr("x", 35).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
+        d3.select(".largeScatterplotLabel.q2b").transition().attr("x", 124).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
+        d3.select(".largeScatterplotLabel.q3a").transition().attr("x", 35).attr("y", 450).style("letter-spacing","4px").style("font-size","14px")
+        d3.select(".largeScatterplotLabel.q3b").transition().attr("x", 118).attr("y", 450).style("letter-spacing","4px").style("font-size","14px")
+        d3.select(".largeScatterplotLabel.q4").transition().attr("x", 335).attr("y", 450).style("letter-spacing","4px").style("font-size","14px")
+      }
+      else if(cat == "Lo" || cat == "LoFe"){
+        //.6 1.2
+        d3.select(".largeScatterplotLabel.q1").transition().attr("x", 430).attr("y", 150).style("letter-spacing","1px").style("font-size","14px")
+        d3.select(".largeScatterplotLabel.q2a").transition().attr("x", 35).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
+        d3.select(".largeScatterplotLabel.q2b").transition().attr("x", 124).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
+        d3.select(".largeScatterplotLabel.q3a").transition().attr("x", 35).attr("y", 450).style("letter-spacing","4px").style("font-size","14px")
+        d3.select(".largeScatterplotLabel.q3b").transition().attr("x", 118).attr("y", 450).style("letter-spacing","4px").style("font-size","14px")
+        d3.select(".largeScatterplotLabel.q4").transition().attr("x", 430).attr("y", 450).style("letter-spacing","1px").style("font-size","14px")
+      }
+      else if(cat == "St" || cat == "StFe"){
+        //.8 1.8
+        d3.select(".largeScatterplotLabel.q1").transition().attr("x", 335).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
+        d3.select(".largeScatterplotLabel.q2a").transition().attr("x", 24).attr("y", 150).style("letter-spacing","1px").style("font-size","14px")
+        d3.select(".largeScatterplotLabel.q2b").transition().attr("x", 6).attr("y", 170).style("letter-spacing","1px").style("font-size","14px")
+        d3.select(".largeScatterplotLabel.q3a").transition().attr("x", 29).attr("y", 540).style("letter-spacing","1px").style("font-size","14px")
+        d3.select(".largeScatterplotLabel.q3b").transition().attr("x", 11).attr("y", 560).style("letter-spacing","1px").style("font-size","14px")
+        d3.select(".largeScatterplotLabel.q4").transition().attr("x", 335).attr("y", 540).style("letter-spacing","4px").style("font-size","14px")
+      }
+      else if(cat == "Fe"){
+        //.8 2.3
+        d3.select(".largeScatterplotLabel.q1").transition().attr("x", 335).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
+        d3.select(".largeScatterplotLabel.q2a").transition().attr("x", 16).attr("y", 147).style("letter-spacing","1px").style("font-size","10px")
+        d3.select(".largeScatterplotLabel.q2b").transition().attr("x", 2).attr("y", 162).style("letter-spacing","1px").style("font-size","10px")
+        d3.select(".largeScatterplotLabel.q3a").transition().attr("x", 25).attr("y", 537).style("letter-spacing","1px").style("font-size","10px")
+        d3.select(".largeScatterplotLabel.q3b").transition().attr("x", 7).attr("y", 552).style("letter-spacing","1px").style("font-size","10px")
+        d3.select(".largeScatterplotLabel.q4").transition().attr("x", 335).attr("y", 540).style("letter-spacing","4px").style("font-size","14px")
+      }
+    }
+    function updateScatter(button){
+      svg._voronoi = null;
+
+      var domains = {
+        "St": [.8,1.8],
+        "Lo": [.6,1.2],
+        "Fe": [.8,2.3],
+        "StLo": [.8,1.2],
+        "StFe": [.8,1.8],
+        "LoFe": [.6,1.2],
+        "StLoFe": [.8,1.2],
+        "": [.8,1.2]
+      }
+      var tickCounts = {
+        "St": 21,
+        "Lo": 12,
+        "Fe": 31,
+        "StLo": 8,
+        "StFe": 21,
+        "LoFe": 12,
+        "StLoFe": 8,
+        "": 8
+      }
+      var tf = d3.format(".2f")
+      var tickFormats = {
+        "St": tf,
+        "Lo": tf,
+        "Fe": function(d,i){ if (i%2 == 0){ return tf(d)} else{ return ""}},
+        "StLo": tf,
+        "StFe": tf,
+        "LoFe": tf,
+        "StLoFe": tf,
+        "": tf,
+      }
+      if(d3.select(button).classed("active")){
+        d3.select(button).classed("active", false)
+      }else{
+        d3.select(button).classed("active", true)
+      }
+
+
+      var cat = getScatterCat();
+      scatterPlotY.domain(domains[cat])
+      scatterPlotX.domain(domains[cat])
+
+      moveScatterLabels(cat)
+
+      d3.select("#scatterPlotYAxis")
+        .transition()
+        .call(d3.axisLeft(scatterPlotY).ticks(tickCounts[cat]).tickFormat(tickFormats[cat]))
+      d3.select("#scatterPlotXAxis")
+        .transition()
+        .call(d3.axisBottom(scatterPlotX).ticks(tickCounts[cat]).tickFormat(tickFormats[cat]))
+
+    d3.selectAll("#scatterPlotYAxis .tick line")
+      .transition()
+      .attr("x1", 0)
+      .attr("x2", width)
+      .attr("class", function(d){
+        if (d == 1){
+          return "scatterAxis"
+        }else{
+          return "scatterGrid"
+        }
+      })
+    d3.selectAll("#scatterPlotXAxis .tick line")
+      .transition()
+      .attr("y2", 0)
+      .attr("y1", -width)
+      .attr("class", function(d){
+        if (d == 1){
+          return "scatterAxis"
+        }else{
+          return "scatterGrid"
+        }
+      })
+
+
+      g.selectAll(".scatterDot")
+        .transition()
+        .duration(1000)
+        // .ease(d3.easeElastic)
+        .attr("cx", function(d){ return scatterPlotX(getScatterValue(d, "1995")) })
+        .attr("cy", function(d){ return scatterPlotY(getScatterValue(d, "2014")) })
+    }
+
+
+    d3.select("#vis")
+      .append("div")
+      .attr("class", "scatterButton stateButton active")
+      .text("State")
+      .on("click", function(){ updateScatter(this)})
+      .style("opacity",0)
+
+    d3.select("#vis")
+      .append("div")
+      .attr("class", "scatterButton localButton active")
+      .text("Local")
+      .on("click", function(){ updateScatter(this)})
+      .style("opacity",0)
+
+    d3.select("#vis")
+      .append("div")
+      .attr("class", "scatterButton federalButton")
+      .text("Federal")
+      .on("click", function(){ updateScatter(this)})
       .style("opacity",0)
 
 
 
       //florida maps
 
-  var path = d3.geoPath()
-  g.append("g")
-    .attr("class", "floridaTracts")
-    .selectAll("path")
-    .data(topojson.feature(floridaTractData, floridaTractData.objects.fl_tract_map).features)
-    .enter().append("path")
-    .attr("fill", function(d) { return mapColor(d.properties.poverty) })
-    .attr("d", path)
-    .style("opacity",0);
+  // var path = d3.geoPath()
+  d3.select("#vis")
+    .append("img")
+    .attr("class","floridaTractsImg mapImg mapFL")
+    .attr("src","images/fl_tract.png")
+    .style("opacity",0)
+  d3.select("#vis")
+    .append("img")
+    .attr("class","floridaDistrictsImg mapImg mapFL")
+    .attr("src","images/fl_dist.png")
+    .style("opacity",0)
 
-  g.append("g")
-    .attr("class", "floridaDistricts")
-    .selectAll("path")
-    .data(topojson.feature(floridaDistrictData, floridaDistrictData.objects.fl_dist_map).features)
-    .enter().append("path")
-    .attr("fill", function(d) { return mapColor(d.properties.poverty) })
-    .attr("stroke","none")
-    .attr("d", path)
-    .style("opacity",0);
-
-  g.append("g")
-    .attr("class", "newYorkTracts")
-    .selectAll("path")
-    .data(topojson.feature(newYorkTractData, newYorkTractData.objects.ny_tract_map).features)
-    .enter().append("path")
-    .attr("fill", function(d) { return mapColor(d.properties.poverty) })
-    .attr("d", path)
-    .style("opacity",0);
-
-  g.append("g")
-    .attr("class", "newYorkDistricts")
-    .selectAll("path")
-    .data(topojson.feature(newYorkDistrictData, newYorkDistrictData.objects.ny_dist_map).features)
-    .enter().append("path")
-    .attr("fill", function(d) { return mapColor(d.properties.poverty) })
-    .attr("stroke","none")
-    .attr("d", path)
-    .style("opacity",0);
-
+  d3.select("#vis")
+    .append("img")
+    .attr("class","newYorkTractsImg mapImg mapNY")
+    .attr("src","images/ny_tract.png")
+    .style("opacity",0)
+  d3.select("#vis")
+    .append("img")
+    .attr("class","newYorkDistrictsImg mapImg mapNY")
+    .attr("src","images/ny_dist.png")
+    .style("opacity",0)
 
 
 var  maxDistanceFromPoint = 50;
@@ -396,12 +563,12 @@ var  maxDistanceFromPoint = 50;
 svg._tooltipped = svg._voronoi = null;
 svg
   .on('mousemove', function() {
-  if(SECTION_INDEX() == "7"){
+  if(SECTION_INDEX() == "7" || SECTION_INDEX() == 8){
     if (!svg._voronoi) {
       console.log('computing the voronoi…');
       svg._voronoi = d3.voronoi()
-      .x(function(d) { return scatterPlotX(d.ratio1995); })
-      .y(function(d) { return scatterPlotY(d.ratio2014); })
+      .x(function(d) { return scatterPlotX(getScatterValue(d, "1995")); })
+      .y(function(d) { return scatterPlotY(getScatterValue(d, "2014")); })
       (scatterplotData);
       console.log('…done.');
     }
@@ -427,7 +594,6 @@ svg
     var band = dotChartY.step()
     for(var i = 0; i < states.length; i++){
       var state = dotChartY(states[i]);
-      // console.log(yCoord, state, band)
       if(yCoord < (state + band/2) && yCoord > (state - band/2)){
         d3.selectAll(".stateG")
           .classed("dotChartSelected", false)
@@ -475,6 +641,7 @@ function removeTooltip(d, i){
     activateFunctions[5] = function(){ newYorkTracts(dotChartData) };
     activateFunctions[6] = function(){ newYorkDistricts(dotChartData) };
     activateFunctions[7] = function(){ dotsOverTime(dotChartData) };
+    activateFunctions[8] = function(){ dotsOverTimeControls(dotChartData) };
 
     // updateFunctions are called while
     // in a particular section to update
@@ -787,11 +954,11 @@ function removeTooltip(d, i){
       .transition()
       .style("opacity",1)
 
-    d3.selectAll(".floridaTracts path")
+    d3.select(".floridaTractsImg")
       .transition()
       .duration(500)
       .style("opacity",0)
-    d3.selectAll(".floridaDistricts path")
+    d3.select(".floridaDistrictsImg")
       .transition()
       .duration(500)
       .style("opacity",0)
@@ -848,12 +1015,12 @@ function removeTooltip(d, i){
       .delay(1500)
       .style("opacity",0)
     //draw map
-    d3.selectAll(".floridaDistricts path")
+    d3.select(".floridaDistrictsImg")
       .transition()
       .duration(2000)
       .style("opacity",0)
 
-    d3.selectAll(".floridaTracts path")
+    d3.select(".floridaTractsImg")
       .transition()
       .delay(1500)
       .duration(1000)
@@ -861,45 +1028,44 @@ function removeTooltip(d, i){
   }
 
   function floridaDistricts(){
-    d3.selectAll(".floridaTracts path")
+    d3.select(".floridaTractsImg")
       .transition()
       .duration(100)
       .style("opacity",1)
-    d3.selectAll(".floridaDistricts path")
+    d3.select(".floridaDistrictsImg")
       .transition()
       .duration(2000)
       .style("opacity",1)
-    d3.selectAll(".newYorkTracts path")
+    d3.select(".newYorkTractsImg")
       .transition()
       .duration(500)
       .style("opacity",0)
 
   }
   function newYorkTracts(){
-    d3.selectAll(".floridaDistricts path")
+    d3.select(".floridaDistrictsImg")
       .transition()
       .duration(500)
       .style("opacity",0)
-    d3.selectAll(".floridaTracts path")
+    d3.select(".floridaTractsImg")
       .transition()
       .duration(500)
       .style("opacity",0)
-    d3.selectAll(".newYorkTracts path")
+    d3.select(".newYorkTractsImg")
       .transition()
       .duration(2000)
       .style("opacity",1)
-    d3.selectAll(".newYorkDistricts path")
+    d3.select(".newYorkDistrictsImg")
       .transition()
       .duration(1000)
       .style("opacity",0)
 
   }
   function newYorkDistricts(){
-    d3.selectAll(".newYorkDistricts path")
+    d3.select(".newYorkDistrictsImg")
       .transition()
       .duration(2000)
       .style("opacity",1)
-
     d3.selectAll(".scatterDot")
       .classed("scatterSelected", false)
       .transition()
@@ -924,11 +1090,14 @@ function removeTooltip(d, i){
       .style("opacity",0)
   }
   function dotsOverTime(){
-    d3.selectAll(".newYorkDistricts path")
+    d3.selectAll(".scatterButton")
+      .transition()
+      .style("opacity",0)
+    d3.select(".newYorkDistrictsImg")
       .transition()
       .duration(500)
       .style("opacity",0)
-    d3.selectAll(".newYorkTracts path")
+    d3.select(".newYorkTractsImg")
       .transition()
       .duration(500)
       .style("opacity",0)
@@ -939,12 +1108,9 @@ function removeTooltip(d, i){
         .transition()
         .duration(1000)
         .ease(d3.easeElastic)
-        .attr("cx", function(d){ return scatterPlotX(d.ratio1995) })
-        .attr("cy", function(d){ return scatterPlotY(d.ratio2014) })
+        .attr("cx", function(d){ return scatterPlotX(getScatterValue(d, "1995")) })
+        .attr("cy", function(d){ return scatterPlotY(getScatterValue(d, "2014")) })
 
-    // d3.selectAll(".scatterDot")
-    //   .transition()
-    //   .style("opacity",.5)
     d3.select("#scatterPlotXAxis")
       .transition()
       .style("opacity",1)
@@ -957,11 +1123,17 @@ function removeTooltip(d, i){
     d3.selectAll(".scatterGrid")
       .transition()
       .style("opacity",1)
-    d3.selectAll(".largeScatterplotLabel")
+    d3.selectAll(".largeScatterplotLabel.active")
       .transition()
       .style("opacity",1)
   }
 
+  function dotsOverTimeControls(){
+    d3.selectAll(".scatterButton")
+      .transition()
+      .duration(1000)
+      .style("opacity",1)
+  }
 
 
   /**
@@ -976,9 +1148,9 @@ function removeTooltip(d, i){
   function getDotChartData(data) {
     return data.map(function (d, i) {
       d.state = d.stabbr;
-      d.stateRevenue = +d.adjrevdiff_st
-      d.localRevenue  = +d.adjrevdiff_lo
-      d.federalRevenue = +d.adjrevdiff_fe
+      d.stateRevenue = +d.adjrevdiff_st;
+      d.localRevenue  = +d.adjrevdiff_lo;
+      d.federalRevenue = +d.adjrevdiff_fe;
 
       return d;
     });
@@ -986,8 +1158,20 @@ function removeTooltip(d, i){
   function getScatterplotData(data){
     return data.map(function (d, i) {
       d.state = d.stabbr;
-      d.ratio1995 = +d.adjrevratio_stlo1995
-      d.ratio2014 = +d.adjrevratio_stlo2014
+      d.St1995 = +d.adjrevratio_st1995
+      d.Lo1995 = +d.adjrevratio_lo1995
+      d.Fe1995 = +d.adjrevratio_fe1995
+      d.StLo1995 = +d.adjrevratio_stlo1995;
+      d.StFe1995 = +d.adjrevratio_stfe1995
+      d.LoFe1995 = +d.adjrevratio_lofe1995
+      d.StLoFe1995 = +d.adjrevratio_all1995
+      d.St2014 = +d.adjrevratio_st2014
+      d.Lo2014 = +d.adjrevratio_lo2014
+      d.Fe2014 = +d.adjrevratio_fe2014
+      d.StLo2014 = +d.adjrevratio_stlo2014;
+      d.StFe2014 = +d.adjrevratio_stfe2014
+      d.LoFe2014 = +d.adjrevratio_lofe2014
+      d.StLoFe2014 = +d.adjrevratio_all2014
       return d;
     });
   }
@@ -1031,7 +1215,7 @@ function removeTooltip(d, i){
  *
  * @param data - loaded tsv data
  */
-function display(dotChartData, scatterplotData, floridaTractData, floridaDistrictData, newYorkTractData, newYorkDistrictData) {
+function display(dotChartData, scatterplotData) {
   // create a new plot and
   // display it
   var plot = scrollVis();
@@ -1056,7 +1240,7 @@ function display(dotChartData, scatterplotData, floridaTractData, floridaDistric
           return "20px"
         }
       })
-    .datum([dotChartData, scatterplotData, floridaTractData, floridaDistrictData, newYorkTractData, newYorkDistrictData])
+    .datum([dotChartData, scatterplotData])
     .call(plot);
 
   // setup scroll functionality
@@ -1084,15 +1268,7 @@ function display(dotChartData, scatterplotData, floridaTractData, floridaDistric
 // load data and display
 d3.csv("data/data_ben_2014.csv", function(dotChartData){
   d3.csv("data/data_ben_19952014.csv", function(scatterplotData){
-    d3.json("data/topojson/fl_dist_map.json", function (error, floridaDistrictData){
-      d3.json("data/topojson/fl_tract_map.json", function (error, floridaTractData){
-        d3.json("data/topojson/ny_tract_map.json", function (error, newYorkTractData){
-            d3.json("data/topojson/ny_dist_map.json", function (error, newYorkDistrictData){
-            display(dotChartData, scatterplotData, floridaTractData, floridaDistrictData, newYorkTractData, newYorkDistrictData)
-          });
-        });
-      });
-    });
+      display(dotChartData, scatterplotData)
   });
 });
-
+// 

@@ -66,7 +66,9 @@ body{
   font-weight: bold;
   letter-spacing: 4px;
   fill: #9d9d9d;
+  font-size: 14px;
 }
+
 text.dotChartLegend{
   font-family: "Lato";
   font-size: 12px;
@@ -95,10 +97,50 @@ g.dotChartSelected .dotHoverRect{
   fill: #fdbf11;
   opacity: 1 !important;
 }
+.scatterButton{
+    position: absolute;
+    bottom: 80px;
+    background-color: #f2f2f2;
+    color: #333;
+    text-transform: uppercase;
+    padding: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    border: solid 1px #e1e1e1;
+}
+.scatterButton.active{
+  background-color: #1696d2;
+  color: #fff;
+}
+.scatterButton:hover{
+  background-color: #333;
+  color: #fff;
+}
+.stateButton{
+  left: 130px;
+}
+.localButton{
+  left: 206px;
+}
+.federalButton{
+  left: 287px;
+}
 
-
-
-
+.mapImg{
+  pointer-events: none;
+}
+.mapNY{
+    position: absolute;
+    top: 0px;
+    left: 130px;
+    width: 600px;
+}
+.mapFL{
+    position: absolute;
+    top: 0px;
+    left: 130px;
+    width: 600px;
+}
 
 #isMobile, #isPhone, #sectionIndex{
     display: none;

@@ -1,7 +1,8 @@
 curl 'https://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_36_tract_500k.zip' -o cb_2015_36_tract_500k.zip
+curl 'https://www2.census.gov/geo/tiger/TIGER2014/UNSD/tl_2014_36_unsd.zip' -o tl_2014_36_unsd.zip
 
 unzip -o cb_2015_36_tract_500k.zip
-
+unzip -o tl_2014_36_unsd.zip
 
 rm -rf subset.*
 
@@ -9,9 +10,9 @@ rm -rf subset_simple.*
 
 rm -rf new.*
 
-# ogr2ogr -where "STATEFP = '36'" subset.shp us_sd_uni_2015.shp
-# ogr2ogr subset_simple.shp subset.shp -simplify 1
+rm -rf *.json
 
+rm -rf *.ndjson
 
 ogr2ogr -f 'ESRI Shapefile' new.shp cb_2015_36_tract_500k.shp
 ogr2ogr -f 'ESRI Shapefile' new.shp -update -append tl_2014_36_unsd.shp
@@ -73,3 +74,8 @@ ndjson-reduce \
 
 topojson -o ../../../topojson/ny_tract_map.json ny_tract_map.json -p
 topojson -o ../../../topojson/ny_dist_map.json ny_dist_map.json -p
+
+#load in map.html
+#svg crowbar
+#open in illustrator
+#export as png, use artboards, medium (150ppi) quality, transparent bg

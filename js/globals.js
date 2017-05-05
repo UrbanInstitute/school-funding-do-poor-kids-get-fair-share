@@ -71,3 +71,13 @@
     "WI": "Wisconsin",
     "WY": "Wyoming"
   }
+
+        var domains = {
+        "St": [.8,1.8],
+        "Lo": [.6,1.2],
+        "Fe": [.8,2.3],
+        "StLo": [.8,1.2],
+        "StFe": [.8,1.2],
+        "LoFe": [.8,1.2],
+        "StLoFe": [.8,1.2]
+      }

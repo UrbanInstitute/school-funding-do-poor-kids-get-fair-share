@@ -17,48 +17,51 @@ var color = d3.scaleThreshold()
     .range(["#cfe8f3","#a2d4ec","#73bfe2","#46abdb","#1696d2","#12719e","#0a4c6a"]);
 
   
-d3.json("data/topojson/ny_dist_map.json", function (error, ny_dist){
-    d3.json("data/topojson/ny_tract_map.json", function (error, ny_tract){
+d3.json("data/topojson/fl_tract_map.json", function (error, data){
   var path = d3.geoPath()
-
-
- 
-
-  svg.append("g")
-    .attr("class", "tracts")
-    .selectAll("path")
-    .data(topojson.feature(ny_tract, ny_tract.objects.ny_tract_map).features)
-    .enter().append("path")
-    .attr("fill", function(d) { return color(d.properties.poverty) })
-    // .attr("fill","red")
-    // .attr("stroke","black")
-    .attr("d", path)
-
   svg.append("g")
     .attr("class", "dists")
     .selectAll("path")
-    .data(topojson.feature(ny_dist, ny_dist.objects.ny_dist_map).features)
+    .data(topojson.feature(data, data.objects.fl_tract_map).features)
     .enter().append("path")
     .attr("fill", function(d) { return color(d.properties.poverty) })
-    // .attr("fill","none")
-    // .attr("stroke","#fdbf11")
     .attr("stroke","none")
     .attr("d", path)
-    .style("opacity",0);
+});
 
-    d3.select("body")
-        .on("click", function(){
-            d3.selectAll(".dists path")
-                .transition()
-                .duration(2000)
-                .style("opacity",1)
-            // d3.selectAll(".tracts path")
-            //     .transition()
-            //     .duration(2000)
-            //     .style("opacity",0)
-        })
+d3.json("data/topojson/fl_dist_map.json", function (error, data){
+  var path = d3.geoPath()
+  svg.append("g")
+    .attr("class", "dists")
+    .selectAll("path")
+    .data(topojson.feature(data, data.objects.fl_dist_map).features)
+    .enter().append("path")
+    .attr("fill", function(d) { return color(d.properties.poverty) })
+    .attr("stroke","none")
+    .attr("d", path)
+});
 
-  
-    });
+d3.json("data/topojson/ny_tract_map.json", function (error, data){
+  var path = d3.geoPath()
+  svg.append("g")
+    .attr("class", "dists")
+    .selectAll("path")
+    .data(topojson.feature(data, data.objects.ny_tract_map).features)
+    .enter().append("path")
+    .attr("fill", function(d) { return color(d.properties.poverty) })
+    .attr("stroke","none")
+    .attr("d", path)
+});
+
+d3.json("data/topojson/ny_dist_map.json", function (error, data){
+  var path = d3.geoPath()
+  svg.append("g")
+    .attr("class", "dists")
+    .selectAll("path")
+    .data(topojson.feature(data, data.objects.ny_dist_map).features)
+    .enter().append("path")
+    .attr("fill", function(d) { return color(d.properties.poverty) })
+    .attr("stroke","none")
+    .attr("d", path)
 });
 </script>
