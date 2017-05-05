@@ -40,15 +40,15 @@ body{
 
 #vis {
   display: inline-block;
-  position: fixed;
-  top: 60px;
   z-index: 1;
   margin-left: 0;
-  /* height: 600px; */
-  /* width: 600px; */
-  /* background-color: #ddd; */
+  position: absolute;
+  top: 380px;
 }
-
+#vis.posFixed{
+  position: fixed;
+  top: 20px;
+}
 .axis path,
 .axis line {
   fill: none;
@@ -81,13 +81,17 @@ g.dotChartSelected .dotHoverRect{
 }
 
 
-#scatterPlotXAxis path, #scatterPlotYAxis path{
+#scatterPlotXAxis path, #scatterPlotYAxis path, #histXAxis path, #histYAxis path{
   display: none;
 }
-.scatterAxis{
-
+.axisLabel{
+  font-size: 12px;
+  font-style: italic;
 }
-.scatterGrid{
+.scatterAxis, .histAxis{
+  stroke: #333;
+}
+.scatterGrid, .histGrid{
   stroke: #dcdbdb;
 }
 .scatterDot{

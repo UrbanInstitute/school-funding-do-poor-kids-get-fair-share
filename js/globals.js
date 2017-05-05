@@ -18,6 +18,12 @@
 
   var margin = { top: 30, left: 120, bottom: 40, right: 20 };
 
+  var histMargin = {top: 20, right: 20, bottom: 120, left: 120},
+    histWidth = 600 - histMargin.left - histMargin.right,
+    histHeight = 400 - histMargin.top - histMargin.bottom,
+    histBinWidth = 5;
+
+
   var fullNames = {
     "AL": "Alabama",
     "AK": "Alaska",
@@ -71,13 +77,3 @@
     "WI": "Wisconsin",
     "WY": "Wyoming"
   }
-
-        var domains = {
-        "St": [.8,1.8],
-        "Lo": [.6,1.2],
-        "Fe": [.8,2.3],
-        "StLo": [.8,1.2],
-        "StFe": [.8,1.2],
-        "LoFe": [.8,1.2],
-        "StLoFe": [.8,1.2]
-      }

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.bar {
+  fill: steelblue;
+}
+
+
+</style>
+<svg width="960" height="500"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+// var svg = d3.select("svg"),
+//     histMargin = {top: 20, right: 20, bottom: 30, left: 40},
+//     histWidth = +svg.attr("width") - histMargin.left - histMargin.right,
+//     histHeight = +svg.attr("height") - histMargin.top - histMargin.bottom;
+
+// var histBinWidth = 5;
+
+// var histX = d3.scaleLinear().rangeRound([0, histWidth])
+//     histY = d3.scaleLinear().rangeRound([histHeight, 0]);
+
+// var histG = svg.append("g")
+//     .attr("transform", "translate(" + histMargin.left + "," + histMargin.top + ")");
+
+// d3.csv("data/poverty_histogram_data.csv", function(d) {
+//   d.bin = +d.bin
+//   d.tractFlCount = +d.tract_fl_count;
+//   d.distFlCount = +d.dist_fl_count;
+//   d.tractNyCount = +d.tract_ny_count;
+//   d.distNyCount = +d.dist_ny_count;
+//   return d;
+// }, function(error, data) {
+//   if (error) throw error;
+
+  // histX.domain([0,100]);
+  // histY.domain([0, d3.max(data, function(d) { return d.count; })]);
+
+  histG.append("g")
+      .attr("id", "histXAxis")
+      .attr("transform", "translate(0," + histHeight + ")")
+      .call(d3.axisBottom(histX));
+
+  histG.append("g")
+      .attr("id", "histYAxis")
+      .call(d3.axisLeft(histY).ticks(10, "s"))
+
+  histG.selectAll(".bar")
+    .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return histX(d.bin + .2); })
+      .attr("y", function(d) { return histY(d.count); })
+      .attr("width", histX(histBinWidth - .2))
+      .attr("height", function(d) { return histHeight - histY(d.count); });
+});
+
+</script>

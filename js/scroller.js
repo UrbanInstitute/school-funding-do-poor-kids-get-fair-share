@@ -10,7 +10,7 @@ function scroller() {
 
   var container = d3.select('body');
   // event dispatcher
-  var dispatch = d3.dispatch('active', 'progress');
+  var dispatch = d3.dispatch('active');
 
   // d3 selection of all the
   // text sections that will
@@ -25,6 +25,34 @@ function scroller() {
   // y coordinate of
   var containerStart = 0;
 
+
+  function visPosition(){
+    d3.select("#vis")
+    .style("left", function(){
+      if(IS_PHONE()){
+        return ( (window.innerWidth - PHONE_VIS_WIDTH - margin.left - margin.right)*.5 ) + "px"
+      }
+      if(IS_MOBILE()){
+        return ( (window.innerWidth - VIS_WIDTH - margin.left - margin.right)*.5 ) + "px"
+      }else{
+        return "inherit"
+      }
+    })
+    .style("top", function(){
+      if(IS_PHONE()){
+        return ( (window.innerHeight - PHONE_VIS_HEIGHT - margin.top - margin.bottom)*.5 ) + "px"
+      }
+      if(IS_MOBILE()){
+        return ( (window.innerHeight - VIS_HEIGHT - margin.top - margin.bottom)*.5 ) + "px"
+      }else{
+        if(d3.select(this).classed("posFixed")){
+          return "20px"  
+        }else{
+          return "380px"
+        }
+      }
+    })
+  }
   /**
    * scroll - constructor function.
    * Sets up scroller to monitor
@@ -72,27 +100,7 @@ function scroller() {
     // sectionPositions will be each sections
     // starting position relative to the top
     // of the first section.
-    d3.select("#vis")
-      .style("left", function(){
-        if(IS_PHONE()){
-          return ( (window.innerWidth - PHONE_VIS_WIDTH - margin.left - margin.right)*.5 ) + "px"
-        }
-        if(IS_MOBILE()){
-          return ( (window.innerWidth - VIS_WIDTH - margin.left - margin.right)*.5 ) + "px"
-        }else{
-          return "inherit"
-        }
-      })
-      .style("top", function(){
-        if(IS_PHONE()){
-          return ( (window.innerHeight - PHONE_VIS_HEIGHT - margin.top - margin.bottom)*.5 ) + "px"
-        }
-        if(IS_MOBILE()){
-          return ( (window.innerHeight - VIS_HEIGHT - margin.top - margin.bottom)*.5 ) + "px"
-        }else{
-          return "20px"
-        }
-      })
+    visPosition()
     sectionPositions = [];
     var startPos;
     sections.each(function (d, i) {
@@ -105,6 +113,18 @@ function scroller() {
     containerStart = container.node().getBoundingClientRect().top + window.pageYOffset;
   }
 
+
+  function fixVis(){
+    if(d3.select(".step").node().getBoundingClientRect().top <= 0){
+      d3.select("#vis").classed("posFixed", true)
+    }else{
+      d3.select("#vis").classed("posFixed", false)
+    }    
+  }
+  window.setInterval(function(){
+    fixVis()
+    visPosition()
+  }, 500);
   /**
    * position - get current users position.
    * if user has scrolled to new section,
@@ -113,9 +133,11 @@ function scroller() {
    *
    */
   function position() {
-    var pos = window.pageYOffset - 10 - containerStart;
-    var sectionIndex = d3.bisect(sectionPositions, pos);
-    sectionIndex = Math.min(sections.size() - 1, sectionIndex);
+    visPosition()
+    var pos = window.pageYOffset - 100 - containerStart ;
+    fixVis();
+    var sectionIndex = d3.bisect(sectionPositions, pos) - 1;
+    sectionIndex = Math.max(0,Math.min(sections.size() -1, sectionIndex));
 
     if (currentIndex !== sectionIndex) {
       // @v4 you now `.call` the dispatch callback
@@ -126,9 +148,7 @@ function scroller() {
 
     var prevIndex = Math.max(sectionIndex - 1, 0);
     var prevTop = sectionPositions[prevIndex];
-    var progress = (pos - prevTop) / (sectionPositions[sectionIndex] - prevTop);
     // @v4 you now `.call` the dispatch callback
-    dispatch.call('progress', this, currentIndex, progress);
   }
 
   /**

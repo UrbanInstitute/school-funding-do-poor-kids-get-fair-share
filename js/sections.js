@@ -31,6 +31,8 @@ var scrollVis = function () {
   // for displaying visualizations
   var g = null;
 
+  var histG = null;
+
   var dotChartY = d3.scaleBand()
             .range([0, height])
             .padding(0.95);
@@ -46,15 +48,14 @@ var scrollVis = function () {
       .domain([.1, .15, .2, .25, .3, .35, .4])
       .range(["#cfe8f3","#a2d4ec","#73bfe2","#46abdb","#1696d2","#12719e","#0a4c6a"]);
 
+  var histX = d3.scaleLinear().rangeRound([0, histWidth + histMargin.right + histMargin.left]),
+      histY = d3.scaleLinear().rangeRound([histHeight, 0]);
+
   // When scrolling to a new section
   // the activation function for that
   // section is called.
   var activateFunctions = [];
-  // If a section has an update function
-  // then it is called while scrolling
-  // through the section with the current
-  // progress through the section.
-  var updateFunctions = [];
+
 
   /**
    * chart
@@ -82,6 +83,10 @@ var scrollVis = function () {
       g = svg.select('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
+      histG = svg.append("g")
+        .attr("transform", "translate(" + histMargin.left + "," + (height -histHeight) + ")")
+        .style("opacity",0);
+
       // perform some preprocessing on raw data
       var dotChartData = getDotChartData(rawData[0]);
       dotChartData.sort(function(a, b){ return b.localRevenue - a.localRevenue})
@@ -89,12 +94,16 @@ var scrollVis = function () {
       dotChartX.domain([6000,-6000]);
 
       var scatterplotData = getScatterplotData(rawData[1])
+      var histData = getHistData(rawData[2])
       scatterPlotY.domain([.8,1.2]);
       scatterPlotX.domain([.8,1.2]);
 
-      setupVis(dotChartData, scatterplotData);
+      histX.domain([0,100]);
+      histY.domain([0, d3.max(histData, function(d) { return d.tractFlCount; })]);
 
-      setupSections(dotChartData, scatterplotData);
+      setupVis(dotChartData, scatterplotData, histData);
+
+      setupSections(dotChartData, scatterplotData, histData);
     });
   };
 
@@ -150,7 +159,7 @@ var scrollVis = function () {
    *  element for each filler word type.
    * @param histData - binned histogram data
    */
-  var setupVis = function (dotChartData, scatterplotData) {
+  var setupVis = function (dotChartData, scatterplotData, histData) {
 
     var stateG = g.selectAll(".stateG")
         .data(dotChartData)
@@ -302,6 +311,7 @@ var scrollVis = function () {
 
 
 
+
     // scatter plot
     g.append("g")
         .attr("id", "scatterPlotXAxis")
@@ -348,36 +358,37 @@ var scrollVis = function () {
         .style("opacity",0)
     console.log(150, 450)
     g.append("text")
-      .attr("class", "largeScatterplotLabel q1 active")
+      .attr("class", "largeScatterplotLabel q1")
       .attr("x",335)
       .attr("y", 150)
       .text("STAYED PROGRESSIVE")
       .style("opacity",0)
     g.append("text")
-      .attr("class", "largeScatterplotLabel q2a active")
+      .attr("class", "largeScatterplotLabel q2a")
       .attr("x",35)
       .attr("y", 150)
       .text("BECAME")
+      .style("opacity",0)
     g.append("text")
-      .attr("class", "largeScatterplotLabel q2b active")
+      .attr("class", "largeScatterplotLabel q2b")
       .attr("x",124)
       .attr("y", 150)
       .text("PROGRESSIVE")
       .style("opacity",0)
     g.append("text")
-      .attr("class", "largeScatterplotLabel q3a active")
+      .attr("class", "largeScatterplotLabel q3a")
       .attr("x",35)
       .attr("y", 450)
       .text("STAYED")
       .style("opacity",0)
     g.append("text")
-      .attr("class", "largeScatterplotLabel q3b active")
+      .attr("class", "largeScatterplotLabel q3b")
       .attr("x",118)
       .attr("y", 450)
       .text("REGRESSIVE")
       .style("opacity",0)
     g.append("text")
-      .attr("class", "largeScatterplotLabel q4 active")
+      .attr("class", "largeScatterplotLabel q4")
       .attr("x",335)
       .attr("y", 450)
       .text("BECAME REGRESSIVE")
@@ -533,8 +544,6 @@ var scrollVis = function () {
 
 
       //florida maps
-
-  // var path = d3.geoPath()
   d3.select("#vis")
     .append("img")
     .attr("class","floridaTractsImg mapImg mapFL")
@@ -556,6 +565,39 @@ var scrollVis = function () {
     .attr("class","newYorkDistrictsImg mapImg mapNY")
     .attr("src","images/ny_dist.png")
     .style("opacity",0)
+
+
+    //histograms
+  histG.append("g")
+      .attr("id", "histXAxis")
+      .attr("transform", "translate(0," + histHeight + ")")
+      .call(d3.axisBottom(histX));
+
+  histG.append("g")
+      .attr("id", "histYAxis")
+      .call(d3.axisLeft(histY).ticks(10, "s"))
+
+  histG.append("text")
+    .text("Frequency")
+    .attr("x",-30)
+    .attr("y",-9)
+    .attr("class", "axisLabel")
+
+  histG.append("text")
+    .text("Percentage of families with children 5–17 in poverty")
+    .attr("x",150)
+    .attr("y",307)
+    .attr("class", "axisLabel")
+
+  histG.selectAll(".histBar")
+    .data(histData)
+    .enter().append("rect")
+      .attr("class", "histBar")
+      .attr("x", function(d) { return histX(d.bin + .2); })
+      .attr("y", function(d) { return histY(d.tractFlCount); })
+      .attr("width", histX(histBinWidth - .2))
+      .attr("height", function(d) { return histHeight - histY(d.tract_fl_count); })
+      .style("fill",function(d){ return mapColor(d.bin/100 + .01)})
 
 
 var  maxDistanceFromPoint = 50;
@@ -630,28 +672,18 @@ function removeTooltip(d, i){
    * the section's index.
    *
    */
-  var setupSections = function (dotChartData, scatterplotData) {
+  var setupSections = function (dotChartData, scatterplotData, histData) {
     // activateFunctions are called each
     // time the active section changes
     activateFunctions[0] = function(){ localDots(dotChartData) };
     activateFunctions[1] = function(){ stateDots(dotChartData) };
     activateFunctions[2] = function(){ federalDots(dotChartData) };
-    activateFunctions[3] = function(){ floridaTracts(dotChartData) };
-    activateFunctions[4] = function(){ floridaDistricts(dotChartData) };
-    activateFunctions[5] = function(){ newYorkTracts(dotChartData) };
-    activateFunctions[6] = function(){ newYorkDistricts(dotChartData) };
+    activateFunctions[3] = function(){ floridaTracts(histData) };
+    activateFunctions[4] = function(){ floridaDistricts(histData) };
+    activateFunctions[5] = function(){ newYorkTracts(histData) };
+    activateFunctions[6] = function(){ newYorkDistricts(histData) };
     activateFunctions[7] = function(){ dotsOverTime(dotChartData) };
     activateFunctions[8] = function(){ dotsOverTimeControls(dotChartData) };
-
-    // updateFunctions are called while
-    // in a particular section to update
-    // the scroll progress in that section.
-    // Most sections do not need to be updated
-    // for all scrolling and so are set to
-    // no-op functions.
-    for (var i = 0; i < 10; i++) {
-      updateFunctions[i] = function () {};
-    }
     };
 
   /**
@@ -962,9 +994,48 @@ function removeTooltip(d, i){
       .transition()
       .duration(500)
       .style("opacity",0)
+    histG
+      .transition()
+      .duration(500)
+      .style("opacity",0)
   }
 
-  function floridaTracts(){
+  function gridlines(){
+    d3.selectAll("#histYAxis .tick line")
+      .transition()
+      .attr("x2", histX(0))
+      .attr("x1", histX(100))
+      .attr("class", function(d){
+        if (d == 0){
+          return "histAxis"
+        }else{
+          return "histGrid"
+        }
+      })
+  }
+  function floridaTracts(histData){
+    histY.domain([0, d3.max(histData, function(d) { return d.tractFlCount; })]);
+    histG
+      .transition()
+      .delay(1500)
+      .duration(1000)
+      .style("opacity",1)
+    d3.select("#histYAxis")
+      .transition()
+      .delay(1500)
+      .duration(1000)
+      .call(d3.axisLeft(histY).ticks(10, "s"))
+
+    gridlines()
+
+    d3.selectAll(".histBar")
+      .transition()
+      .delay(1500)
+      .duration(1000)
+      .attr("y", function(d) { return histY(d.tractFlCount); })
+      .attr("height", function(d) { return histHeight - histY(d.tractFlCount); })
+
+
     d3.selectAll(".stateG")
       .classed("dotChartSelected", false)
     d3.selectAll(".stateG:not(.FL) .dotChartDot")
@@ -1027,7 +1098,20 @@ function removeTooltip(d, i){
       .style("opacity",1)
   }
 
-  function floridaDistricts(){
+  function floridaDistricts(histData){
+    histY.domain([0, d3.max(histData, function(d) { return d.distFlCount; })]);
+    d3.select("#histYAxis")
+      .transition()
+      .duration(2000)
+      .call(d3.axisLeft(histY).ticks(10, "s"))
+    d3.selectAll(".histBar")
+      .transition()
+      .duration(2000)
+      .attr("y", function(d) { return histY(d.distFlCount); })
+      .attr("height", function(d) { return histHeight - histY(d.distFlCount); })
+      
+      gridlines()
+
     d3.select(".floridaTractsImg")
       .transition()
       .duration(100)
@@ -1042,7 +1126,20 @@ function removeTooltip(d, i){
       .style("opacity",0)
 
   }
-  function newYorkTracts(){
+  function newYorkTracts(histData){
+    histY.domain([0, d3.max(histData, function(d) { return d.tractNyCount; })]);
+    d3.select("#histYAxis")
+      .transition()
+      .duration(500)
+      .call(d3.axisLeft(histY).ticks(10, "s"))
+    d3.selectAll(".histBar")
+      .transition()
+      .duration(500)
+      .attr("y", function(d) { return histY(d.tractNyCount); })
+      .attr("height", function(d) { return histHeight - histY(d.tractNyCount); })
+
+    gridlines()
+
     d3.select(".floridaDistrictsImg")
       .transition()
       .duration(500)
@@ -1061,7 +1158,25 @@ function removeTooltip(d, i){
       .style("opacity",0)
 
   }
-  function newYorkDistricts(){
+  function newYorkDistricts(histData){
+    histG
+      .transition()
+      .duration(500)
+      .style("opacity",1)
+
+    histY.domain([0, d3.max(histData, function(d) { return d.distNyCount; })]);
+    d3.select("#histYAxis")
+      .transition()
+      .duration(2000)
+      .call(d3.axisLeft(histY).ticks(10, "s"))
+    d3.selectAll(".histBar")
+      .transition()
+      .duration(2000)
+      .attr("y", function(d) { return histY(d.distNyCount); })
+      .attr("height", function(d) { return histHeight - histY(d.distNyCount); })
+
+    gridlines()
+
     d3.select(".newYorkDistrictsImg")
       .transition()
       .duration(2000)
@@ -1090,6 +1205,10 @@ function removeTooltip(d, i){
       .style("opacity",0)
   }
   function dotsOverTime(){
+    histG
+      .transition()
+      .duration(500)
+      .style("opacity",0)
     d3.selectAll(".scatterButton")
       .transition()
       .style("opacity",0)
@@ -1123,7 +1242,7 @@ function removeTooltip(d, i){
     d3.selectAll(".scatterGrid")
       .transition()
       .style("opacity",1)
-    d3.selectAll(".largeScatterplotLabel.active")
+    d3.selectAll(".largeScatterplotLabel")
       .transition()
       .style("opacity",1)
   }
@@ -1175,6 +1294,16 @@ function removeTooltip(d, i){
       return d;
     });
   }
+  function getHistData(data){
+    return data.map(function (d, i) {
+      d.bin = +d.bin
+      d.tractFlCount = +d.tract_fl_count;
+      d.distFlCount = +d.dist_fl_count;
+      d.tractNyCount = +d.tract_ny_count;
+      d.distNyCount = +d.dist_ny_count;
+      return d;
+    });
+  }
 
   /**
    * activate -
@@ -1191,15 +1320,6 @@ function removeTooltip(d, i){
     lastIndex = activeIndex;
   };
 
-  /**
-   * update
-   *
-   * @param index
-   * @param progress
-   */
-  chart.update = function (index, progress) {
-    updateFunctions[index](progress);
-  };
 
   // return chart function
   return chart;
@@ -1215,7 +1335,7 @@ function removeTooltip(d, i){
  *
  * @param data - loaded tsv data
  */
-function display(dotChartData, scatterplotData) {
+function display(dotChartData, scatterplotData, histData) {
   // create a new plot and
   // display it
   var plot = scrollVis();
@@ -1240,7 +1360,7 @@ function display(dotChartData, scatterplotData) {
           return "20px"
         }
       })
-    .datum([dotChartData, scatterplotData])
+    .datum([dotChartData, scatterplotData, histData])
     .call(plot);
 
   // setup scroll functionality
@@ -1260,15 +1380,14 @@ function display(dotChartData, scatterplotData) {
     
   });
 
-  scroll.on('progress', function (index, progress) {
-    plot.update(index, progress);
-  });
 }
 
 // load data and display
 d3.csv("data/data_ben_2014.csv", function(dotChartData){
   d3.csv("data/data_ben_19952014.csv", function(scatterplotData){
-      display(dotChartData, scatterplotData)
+    d3.csv("data/poverty_histogram_data.csv", function(histData){
+      display(dotChartData, scatterplotData, histData)
+    });
   });
 });
 // 
