@@ -46,7 +46,7 @@ var scrollVis = function () {
 
   var mapColor = d3.scaleThreshold()
       .domain([.1, .15, .2, .25, .3, .35, .4])
-      .range(["#cfe8f3","#a2d4ec","#73bfe2","#46abdb","#1696d2","#12719e","#0a4c6a"]);
+      .range(["#cfe8f3","#a2d4ec","#73bfe2","#46abdb","#1696d2","#12719e","#0a4c6a","#062635"]);
 
   var histX = d3.scaleLinear().rangeRound([0, histWidth + histMargin.right + histMargin.left]),
       histY = d3.scaleLinear().rangeRound([histHeight, 0]);
@@ -84,6 +84,7 @@ var scrollVis = function () {
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
       histG = svg.append("g")
+        .attr("class", "mapElements")
         .attr("transform", "translate(" + histMargin.left + "," + (height -histHeight) + ")")
         .style("opacity",0);
 
@@ -197,7 +198,7 @@ var scrollVis = function () {
 
     var legend = svg.append("g")
       .attr("class", "legend")
-      .attr("transform",function(d){ return "translate(150,10)" })
+      .attr("transform",function(d){ return "translate(150,50)" })
 
 
     legend.append("circle")
@@ -566,6 +567,34 @@ var scrollVis = function () {
     .attr("src","images/ny_dist.png")
     .style("opacity",0)
 
+  var mapLegend = g.append("g")
+    .attr("transform", "translate(" + (width - 35) + ",0)")
+    .attr("id","mapLegend")
+    .attr("class", "mapElements")
+    .style("opacity",0)
+
+  var percent = d3.format(".0%")
+  var breaks = mapColor.domain()
+  breaks.push(1)
+    mapLegend.append("text")
+      .attr("x",24)
+      .attr("y", 5)
+      .text(percent(0))
+      .attr("class","keyLabel")
+  for(var i=0; i < mapColor.range().length; i++){
+    mapLegend.append("rect")
+      .attr("width",20)
+      .attr("height",25)
+      .attr("x",0)
+      .attr("y",i*25)
+      .style("fill", mapColor.range()[i])
+
+    mapLegend.append("text")
+      .attr("x",24)
+      .attr("y", (i+1)*25+5)
+      .text(percent(breaks[i]))
+      .attr("class","keyLabel")
+  }
 
     //histograms
   histG.append("g")
@@ -605,7 +634,7 @@ var  maxDistanceFromPoint = 50;
 svg._tooltipped = svg._voronoi = null;
 svg
   .on('mousemove', function() {
-  if(SECTION_INDEX() == "7" || SECTION_INDEX() == 8){
+  if((SECTION_INDEX() == "7" || SECTION_INDEX() == 8) && getScatterCat() != ""){
     if (!svg._voronoi) {
       console.log('computing the voronoi…');
       svg._voronoi = d3.voronoi()
@@ -994,7 +1023,7 @@ function removeTooltip(d, i){
       .transition()
       .duration(500)
       .style("opacity",0)
-    histG
+    d3.selectAll(".mapElements")
       .transition()
       .duration(500)
       .style("opacity",0)
@@ -1015,7 +1044,7 @@ function removeTooltip(d, i){
   }
   function floridaTracts(histData){
     histY.domain([0, d3.max(histData, function(d) { return d.tractFlCount; })]);
-    histG
+    d3.selectAll(".mapElements")
       .transition()
       .delay(1500)
       .duration(1000)
@@ -1159,7 +1188,7 @@ function removeTooltip(d, i){
 
   }
   function newYorkDistricts(histData){
-    histG
+    d3.selectAll(".mapElements")
       .transition()
       .duration(500)
       .style("opacity",1)
@@ -1205,7 +1234,7 @@ function removeTooltip(d, i){
       .style("opacity",0)
   }
   function dotsOverTime(){
-    histG
+    d3.selectAll(".mapElements")
       .transition()
       .duration(500)
       .style("opacity",0)

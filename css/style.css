@@ -19,7 +19,7 @@ body{
   width: 400px;
   top: 0px;
   z-index: 90;
-  padding-bottom: 200px;
+  padding-bottom: 20px;
 }
 
 .step {
@@ -43,11 +43,14 @@ body{
   z-index: 1;
   margin-left: 0;
   position: absolute;
-  top: 380px;
+  top: 730px;
 }
 #vis.posFixed{
   position: fixed;
   top: 20px;
+}
+#vis.posRel{
+  position: relative;
 }
 .axis path,
 .axis line {
@@ -145,6 +148,9 @@ g.dotChartSelected .dotHoverRect{
     left: 130px;
     width: 600px;
 }
+.keyLabel{
+  font-size: 12px;
+}
 
 #isMobile, #isPhone, #sectionIndex{
     display: none;
@@ -226,3 +232,147 @@ g.dotChartSelected .dotHoverRect{
 .totalDot, .legendTotalDot{
   fill: #ec008b;
 }
+
+
+
+/********header (below urban menu)**********/
+   
+
+.headerimage{
+     position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 350px;
+  z-index:-1;
+ 
+}
+
+.headerwrapper{
+  padding-top:120px;
+}
+
+#heroimage{
+   background-image: url("../images/raceandethnicity-banner.jpg");
+     background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+
+}
+
+
+.div-title-block
+{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 30px;
+  background-color: rgba(0, 0, 0, 0.5);
+  width:90%;
+  color: #ffffff;
+  font-weight: 700;
+  line-height: 1.4em;
+  font-size: 2.3em;
+  margin: auto;
+}
+
+
+
+/*browser windows smaller than 850px*/
+@media (max-width: 600px) {
+   .headerimage{ height:300px;}
+   .div-title-block {
+    font-size: 1.6em !important;
+   }
+}
+
+@media (max-width: 991px) {
+   
+   .headerwrapper{padding-top:125px;}
+   
+}
+
+@media  (max-width: 480px) {
+  .full-width-col { font-size:18px;}
+   .container {margin-bottom: 40px; padding:0px 4px;}
+   .headerimage{width: 100%; height: 300px;}
+   .headerwrapper{padding-top:80px;}
+   h1 { font-size:24px;}
+ 
+}
+
+
+/**************** FOOTER *****************/
+/*footer*/
+
+footer {
+    background-color: #f1f2f2;
+    margin-top: 25px;
+    padding-top: 50px;
+    padding-bottom: 25px;
+    bottom: 0;
+   overflow: hidden;
+     height:auto;
+ 
+}
+
+footer .content{
+  
+    max-width: 1100px;
+
+    
+   
+    
+}
+
+#left {
+  float: left;
+  width: 45%;
+  padding-left: 0px;
+  padding-right:0px;
+
+}
+
+#right {
+
+  float: right;
+  width: 45%;
+   padding-right: 0px;
+  padding-left: 0px;
+    font-size:14px;
+    line-height: 1.3;
+}
+
+
+
+footer p {
+    font-size: 14px;
+}
+
+footer h2 {
+    text-transform: uppercase;
+     font-weight: 700;
+}
+
+footer h3, footer h4{
+   font-weight: 700; 
+}
+
+.credits {
+    font-size: 14px;
+    margin-top: 1em;
+    margin-bottom: 16px;
+}
+
+.job {
+    font-size: 16px;
+    margin-bottom: 4px;
+    margin-top: 12px;
+}
+
+.urbanstatement {
+    font-style: italic;
+    color: #666666;
+    font-size: 13px;
+    margin-bottom: 1em;
+}
+
+

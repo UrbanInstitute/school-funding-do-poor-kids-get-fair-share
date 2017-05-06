@@ -11,16 +11,16 @@
   var PHONE_VIS_WIDTH = 330;
   var PHONE_VIS_HEIGHT = 460;
   var VIS_WIDTH = 600;
-  var VIS_HEIGHT = 720;
+  var VIS_HEIGHT = 700;
 
   var DOT_RADIUS = 5;
   var SMALL_DOT_RADIUS = 3;
 
-  var margin = { top: 30, left: 120, bottom: 40, right: 20 };
+  var margin = { top: 60, left: 120, bottom: 40, right: 20 };
 
   var histMargin = {top: 20, right: 20, bottom: 120, left: 120},
     histWidth = 600 - histMargin.left - histMargin.right,
-    histHeight = 400 - histMargin.top - histMargin.bottom,
+    histHeight = 380 - histMargin.top - histMargin.bottom,
     histBinWidth = 5;
 
 

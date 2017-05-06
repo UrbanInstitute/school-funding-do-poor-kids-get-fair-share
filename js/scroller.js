@@ -48,7 +48,11 @@ function scroller() {
         if(d3.select(this).classed("posFixed")){
           return "20px"  
         }else{
-          return "380px"
+          if(d3.select(this).classed("posRel")){
+            return "30px"  
+          }else{
+            return "730px"  
+          }
         }
       }
     })
@@ -116,15 +120,22 @@ function scroller() {
 
   function fixVis(){
     if(d3.select(".step").node().getBoundingClientRect().top <= 0){
-      d3.select("#vis").classed("posFixed", true)
+      if(d3.selectAll(".step").nodes()[d3.selectAll(".step").nodes().length-1].getBoundingClientRect().bottom <= VIS_WIDTH+margin.top+margin.bottom+20+50){
+        d3.select("#vis").classed("posRel", true)
+        d3.select("#vis").classed("posFixed", false)  
+      }else{
+        d3.select("#vis").classed("posRel", false)
+        d3.select("#vis").classed("posFixed", true)  
+      }
     }else{
+      d3.select("#vis").classed("posRel", false)
       d3.select("#vis").classed("posFixed", false)
     }    
   }
   window.setInterval(function(){
     fixVis()
     visPosition()
-  }, 500);
+  }, 100);
   /**
    * position - get current users position.
    * if user has scrolled to new section,

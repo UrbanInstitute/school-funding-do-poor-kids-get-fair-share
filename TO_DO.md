@@ -8,7 +8,6 @@
 	- bins and colors
 	- don't forget to rescreenshot
 - Labels:
-	- map key
 	- scatterplot axes
 	- scatterplot outliers
 - click handler
@@ -18,3 +17,5 @@
 	- tooltip scatterplot
 - when text draft, fix scrolling (mobile and desktop)
 - IE
+	- handle pointer-events: none stuff (w z-index?)
+- no pointer events on hidden buttons
