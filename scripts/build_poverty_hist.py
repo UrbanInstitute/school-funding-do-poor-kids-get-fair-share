@@ -17,7 +17,7 @@ for dataKey in data:
 def buildHist(cr, dataKey, colNum):
 	head = cr.next()
 	for row in cr:
-		if row[colNum] == "":
+		if row[colNum] == -99:
 			poverty = -1.0
 		else:
 			poverty = float(row[colNum])

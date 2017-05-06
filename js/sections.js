@@ -44,9 +44,6 @@ var scrollVis = function () {
   var scatterPlotX = d3.scaleLinear()
             .range([0, width]);
 
-  var mapColor = d3.scaleThreshold()
-      .domain([.1, .15, .2, .25, .3, .35, .4])
-      .range(["#cfe8f3","#a2d4ec","#73bfe2","#46abdb","#1696d2","#12719e","#0a4c6a","#062635"]);
 
   var histX = d3.scaleLinear().rangeRound([0, histWidth + histMargin.right + histMargin.left]),
       histY = d3.scaleLinear().rangeRound([histHeight, 0]);
@@ -568,7 +565,7 @@ var scrollVis = function () {
     .style("opacity",0)
 
   var mapLegend = g.append("g")
-    .attr("transform", "translate(" + (width - 35) + ",0)")
+    .attr("transform", "translate(" + (width - 35) + ",-20)")
     .attr("id","mapLegend")
     .attr("class", "mapElements")
     .style("opacity",0)
@@ -581,17 +578,17 @@ var scrollVis = function () {
       .attr("y", 5)
       .text(percent(0))
       .attr("class","keyLabel")
-  for(var i=0; i < mapColor.range().length; i++){
+  for(var i=1; i < mapColor.range().length; i++){
     mapLegend.append("rect")
       .attr("width",20)
       .attr("height",25)
       .attr("x",0)
-      .attr("y",i*25)
+      .attr("y",(i-1)*25)
       .style("fill", mapColor.range()[i])
 
     mapLegend.append("text")
       .attr("x",24)
-      .attr("y", (i+1)*25+5)
+      .attr("y", (i)*25+5)
       .text(percent(breaks[i]))
       .attr("class","keyLabel")
   }

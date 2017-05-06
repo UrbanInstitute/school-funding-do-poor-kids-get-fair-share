@@ -106,7 +106,7 @@ g.dotChartSelected .dotHoverRect{
 }
 .scatterButton{
     position: absolute;
-    bottom: 80px;
+    bottom: 60px;
     background-color: #f2f2f2;
     color: #333;
     text-transform: uppercase;
