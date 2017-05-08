@@ -159,6 +159,8 @@ var scrollVis = function () {
    */
   var setupVis = function (dotChartData, scatterplotData, histData) {
 
+
+
     var stateG = g.selectAll(".stateG")
         .data(dotChartData)
         .enter().append("g")
@@ -171,6 +173,19 @@ var scrollVis = function () {
       .attr("x",-100)
       .attr("y",-7)
       .attr("class", "dotHoverRect")
+
+
+    g.append("text")
+      .attr("class", "largeChartLabel dotChartComponents")
+      .attr("x",dotChartX(-4500))
+      .attr("y", 200)
+      .text("REGRESSIVE")
+    g.append("text")
+      .attr("class", "largeChartLabel dotChartComponents")
+      .attr("x",dotChartX(2200))
+      .attr("y", 200)
+      .text("PROGRESSIVE")
+
     stateG
       .append("line")
         .attr("class", "localLine dotChartLine")
@@ -182,16 +197,7 @@ var scrollVis = function () {
       .attr("y2", height)
       .attr("x1", dotChartX(0))
       .attr("x2", dotChartX(0))
-    g.append("text")
-      .attr("class", "largeChartLabel dotChartComponents")
-      .attr("x",dotChartX(-4500))
-      .attr("y", 200)
-      .text("REGRESSIVE")
-    g.append("text")
-      .attr("class", "largeChartLabel dotChartComponents")
-      .attr("x",dotChartX(2200))
-      .attr("y", 200)
-      .text("PROGRESSIVE")
+
 
     var legend = svg.append("g")
       .attr("class", "legend")
@@ -296,6 +302,75 @@ var scrollVis = function () {
         .attr("r", SMALL_DOT_RADIUS)
 
 
+    stateG.append("rect")
+      .attr("width",200)
+      .attr("height",44)
+      .attr("x",width-200)
+      .attr("y",7)
+      .attr("class", "dotHoverRect dotTooltip dotTooltipBg")
+      .style("opacity",.8)
+
+    stateG.append("text")
+      .attr("x",width-180)
+      .attr("y",34)
+      .text("Local: ")
+      .attr("class", "dotHoverText dotTooltip")
+
+    stateG.append("text")
+      .attr("x",width-180)
+      .attr("y",54)
+      .text("State: ")
+      .attr("class", "dotHoverText dotTooltip hidden show1")
+
+    stateG.append("text")
+      .attr("x",width-180)
+      .attr("y",74)
+      .text("Federal: ")
+      .attr("class", "dotHoverText dotTooltip hidden show2")
+
+    stateG.append("text")
+      .attr("x",width-20)
+      .attr("y",34)
+      .attr("text-anchor","end")
+      .text(function(d){ return DOLLARS(d.localRevenue)})
+      .attr("class", "dotHoverText dotTooltip localValue")
+    stateG.append("text")
+      .attr("x",width-20)
+      .attr("y",54)
+      .attr("text-anchor","end")
+      .text(function(d){ return DOLLARS(d.stateRevenue)})
+      .attr("class", "dotHoverText dotTooltip stateValue hidden show1")
+    stateG.append("text")
+      .attr("x",width-20)
+      .attr("y",74)
+      .attr("text-anchor","end")
+      .text(function(d){ return DOLLARS(d.federalRevenue)})
+      .attr("class", "dotHoverText dotTooltip federalValue hidden show2")
+
+    stateG.append("line")
+      .attr("x1",width - 110)
+      .attr("x2",width - 20)
+      .attr("y1", 84)
+      .attr("y2", 84)
+      .attr("class", "dotSumLine hidden show1")
+      .style("stroke","#333")
+    stateG.append("text")
+      .attr("x",width-100 )
+      .attr("y",74)
+      .text("+")
+      .attr("class", "dotHoverText dotSumPlus dotTooltip hidden show1")
+
+
+    stateG.append("text")
+      .attr("x",width-20)
+      .attr("y",104)
+      .attr("text-anchor","end")
+      .text(function(d){ return DOLLARS(d.federalRevenue + d.stateRevenue + d.localRevenue)})
+      .attr("class", "dotHoverText dotTooltip totalValue hidden show1")
+
+
+
+
     // add the x Axis
     g.append("g")
         .attr("id", "dotChartXAxis")
@@ -354,7 +429,6 @@ var scrollVis = function () {
         .attr("cy", scatterPlotY(1) )
         .attr("r", DOT_RADIUS)
         .style("opacity",0)
-    console.log(150, 450)
     g.append("text")
       .attr("class", "largeScatterplotLabel q1")
       .attr("x",335)
@@ -394,7 +468,6 @@ var scrollVis = function () {
 
 
     function moveScatterLabels(cat){
-      console.log(cat)
       if(cat == "StLo" || cat == "StLoFe" || cat == ""){
         d3.select(".largeScatterplotLabel.q1").transition().attr("x", 335).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
         d3.select(".largeScatterplotLabel.q2a").transition().attr("x", 35).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
@@ -565,7 +638,7 @@ var scrollVis = function () {
     .style("opacity",0)
 
   var mapLegend = g.append("g")
-    .attr("transform", "translate(" + (width - 35) + ",-20)")
+    .attr("transform", "translate(" + (width - 45) + ",-20)")
     .attr("id","mapLegend")
     .attr("class", "mapElements")
     .style("opacity",0)
@@ -580,18 +653,31 @@ var scrollVis = function () {
       .attr("class","keyLabel")
   for(var i=1; i < mapColor.range().length; i++){
     mapLegend.append("rect")
-      .attr("width",20)
-      .attr("height",25)
+      .attr("width",15)
+      .attr("height",20)
       .attr("x",0)
-      .attr("y",(i-1)*25)
+      .attr("y",(i-1)*20)
       .style("fill", mapColor.range()[i])
 
     mapLegend.append("text")
       .attr("x",24)
-      .attr("y", (i)*25+5)
+      .attr("y", (i)*20+5)
       .text(percent(breaks[i]))
       .attr("class","keyLabel")
   }
+
+    mapLegend.append("rect")
+      .attr("width",15)
+      .attr("height",20)
+      .attr("x",0)
+      .attr("y",(mapColor.range().length)*20)
+      .style("fill", mapColor.range()[0])
+
+    mapLegend.append("text")
+      .attr("x",24)
+      .attr("y",(mapColor.range().length)*20 + 15)
+      .text("No data")
+      .attr("class","keyLabel")
 
     //histograms
   histG.append("g")
@@ -633,12 +719,10 @@ svg
   .on('mousemove', function() {
   if((SECTION_INDEX() == "7" || SECTION_INDEX() == 8) && getScatterCat() != ""){
     if (!svg._voronoi) {
-      console.log('computing the voronoi…');
       svg._voronoi = d3.voronoi()
       .x(function(d) { return scatterPlotX(getScatterValue(d, "1995")); })
       .y(function(d) { return scatterPlotY(getScatterValue(d, "2014")); })
       (scatterplotData);
-      console.log('…done.');
     }
     var p = d3.mouse(this), site;
     p[0] -= margin.left;
@@ -650,13 +734,43 @@ svg
       site = svg._voronoi.find(p[0], p[1], maxDistanceFromPoint);
     }
     if (site !== svg._tooltipped) {
-      if (svg._tooltipped) removeTooltip(svg._tooltipped.data)
-      if (site) showTooltip(site.data);
+      if (svg._tooltipped) removeScatterTooltip(svg._tooltipped.data)
+      if (site) showScatterTooltip(site.data);
       svg._tooltipped = site;
     }
   }
   else if(SECTION_INDEX() < 3){
     var m = d3.mouse(this)
+    showDotTooltip(m, SECTION_INDEX())
+  }
+
+  })
+  .on("mouseout", function(){
+    removeDotTooltip();
+  })
+  .on("click", function(){
+    if(d3.selectAll(".dotChartClicked.dotChartSelected").nodes().length == 1){
+    //if already clicked, re-click to deselect
+      d3.selectAll(".dotChartClicked")
+        .classed("dotChartClicked", false)
+      d3.selectAll(".stateG.dotChartSelected")
+        .classed("dotChartSelected", false)
+    }
+    d3.selectAll(".dotChartClicked")
+      .classed("dotChartClicked", false)
+    d3.selectAll(".stateG.dotChartSelected")
+      .classed("dotChartClicked", true)
+  })
+
+function showScatterTooltip (d, i) {
+  d3.select(".scatterDot." + d.state)
+    .classed("scatterSelected", true)
+}
+function removeScatterTooltip(d, i){
+  d3.select(".scatterDot." + d.state)
+    .classed("scatterSelected", false)
+}
+function showDotTooltip(m, sectionIndex){
     var yCoord = m[1] - margin.top
     var states = dotChartY.domain()
     var band = dotChartY.step()
@@ -666,26 +780,23 @@ svg
         d3.selectAll(".stateG")
           .classed("dotChartSelected", false)
 
-        d3.select(".stateG." + states[i])
+        var selectedG = d3.select(".stateG." + states[i])
           .classed("dotChartSelected", true)
+        selectedG.node().parentNode.appendChild(selectedG.node())
+        // selectedG.select(".dotTooltip.stateValue")
+
         break;
       }
+      // d3.selectAll(".dotTooltip")
     }
-  }
-
-  })
-  .on("mouseout", function(){
-    d3.selectAll(".stateG")
-      .classed("dotChartSelected", false)
-  })
-
-function showTooltip (d, i) {
-  d3.select(".scatterDot." + d.state)
-    .classed("scatterSelected", true)
 }
-function removeTooltip(d, i){
-  d3.select(".scatterDot." + d.state)
-    .classed("scatterSelected", false)
+function removeDotTooltip(){
+  d3.selectAll(".stateG")
+      .classed("dotChartSelected", false)
+  if(SECTION_INDEX() < 3){
+      d3.selectAll(".dotChartClicked")
+      .classed("dotChartSelected", true)
+  }
 }
 
   };
@@ -736,6 +847,10 @@ function removeTooltip(d, i){
    *
    */
   function localDots(dotChartData) {
+    d3.selectAll(".show2").classed("hidden", true)
+    d3.selectAll(".show1").classed("hidden", true)
+    d3.selectAll(".dotTooltipBg").transition().attr("height",44)
+
     d3.select(".legendLocalDot")
       .transition()
       .attr("cx",0)
@@ -800,6 +915,13 @@ function removeTooltip(d, i){
   }
 
   function stateDots(dotChartData){
+    d3.selectAll(".show2").classed("hidden", true)
+    d3.selectAll(".show1").classed("hidden", false)
+    d3.selectAll(".dotTooltipBg").transition().attr("height",94)
+    d3.selectAll(".totalValue").text(function(d){ return DOLLARS(d.stateRevenue + d.localRevenue)}).transition().attr("y", 84)
+    d3.selectAll(".dotSumLine").transition().attr("y1", 64).attr("y2", 64)
+    d3.selectAll(".dotSumPlus").transition().attr("y", 54)
+
 
 
     d3.select(".legendLocalDot")
@@ -900,6 +1022,17 @@ function removeTooltip(d, i){
   }
 
   function federalDots(dotChartData){
+
+    d3.selectAll(".dotChartClicked")
+      .classed("dotChartSelected", true)
+
+    d3.selectAll(".show2").classed("hidden", false)
+    d3.selectAll(".show1").classed("hidden", false)
+    d3.selectAll(".dotTooltipBg").transition().attr("height",114)
+    d3.selectAll(".totalValue").text(function(d){ return DOLLARS(d.federalRevenue + d.stateRevenue + d.localRevenue)}).transition().attr("y", 104)
+    d3.selectAll(".dotSumLine").transition().attr("y1", 84).attr("y2", 84)
+    d3.selectAll(".dotSumPlus").transition().attr("y", 74)
+
 
     d3.select(".legendLocalDot")
       .transition()

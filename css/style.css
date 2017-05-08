@@ -80,7 +80,25 @@ text.dotChartLegend{
   fill: none;
 }
 g.dotChartSelected .dotHoverRect{
-  fill: #fff2cf;
+  fill: #fdbf11;
+  opacity: .2;
+}
+g.dotChartSelected .dotHoverRect.dotTooltip{
+  fill: #fdd870;
+}
+g.dotChartClicked .dotHoverRect{
+  opacity: .4;
+}
+
+
+.dotHoverText, .dotSumLine{
+  opacity: 0;
+}
+g.dotChartSelected .dotHoverText, g.dotChartSelected .dotSumLine {
+  opacity: 1;
+}
+g.dotChartSelected .dotHoverText.hidden, g.dotChartSelected .dotSumLine.hidden {
+  opacity: 0;
 }
 
 

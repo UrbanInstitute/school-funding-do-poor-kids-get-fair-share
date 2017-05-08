@@ -3,17 +3,13 @@
 	- Axis labels (fewer, state abbrevs)
 	- Hide various scatter elements
 	- scale map down
-- Map
-	- code NA as NA (blank row vals)
-	- bins and colors
-	- don't forget to rescreenshot
+- Resize events for height as well as width
 - Labels:
 	- scatterplot axes
 	- scatterplot outliers
 - click handler
 - header/footer
 - Mouseover:
-	- tooltip dot chart
 	- tooltip scatterplot
 - when text draft, fix scrolling (mobile and desktop)
 - IE

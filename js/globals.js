@@ -16,7 +16,7 @@
   var DOT_RADIUS = 5;
   var SMALL_DOT_RADIUS = 3;
 
-  var margin = { top: 60, left: 120, bottom: 40, right: 20 };
+  var margin = { top: 60, left: 120, bottom: 104, right: 20 };
 
   var histMargin = {top: 20, right: 20, bottom: 120, left: 120},
     histWidth = 600 - histMargin.left - histMargin.right,
@@ -81,3 +81,5 @@
   var mapColor = d3.scaleThreshold()
       .domain([0,.05, .1, .15, .2, .25, .3,.35,.4])
       .range(["#9d9d9d","#cfe8f3","#a2d4ec","#73bfe2","#46abdb","#1696d2","#12719e","#0a4c6a","#062635","#000"]);
+
+var DOLLARS = d3.format("$,.2f")
