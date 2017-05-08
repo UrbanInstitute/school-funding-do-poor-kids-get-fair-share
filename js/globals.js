@@ -83,3 +83,4 @@
       .range(["#9d9d9d","#cfe8f3","#a2d4ec","#73bfe2","#46abdb","#1696d2","#12719e","#0a4c6a","#062635","#000"]);
 
 var DOLLARS = d3.format("$,.2f")
+var RATIOS = d3.format(".2f")

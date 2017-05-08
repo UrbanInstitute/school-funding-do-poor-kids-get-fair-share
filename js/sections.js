@@ -27,6 +27,8 @@ var scrollVis = function () {
   // main svg used for visualization
   var svg = null;
 
+  var outliers = null;
+
   // d3 selection that will be used
   // for displaying visualizations
   var g = null;
@@ -158,9 +160,6 @@ var scrollVis = function () {
    * @param histData - binned histogram data
    */
   var setupVis = function (dotChartData, scatterplotData, histData) {
-
-
-
     var stateG = g.selectAll(".stateG")
         .data(dotChartData)
         .enter().append("g")
@@ -466,6 +465,84 @@ var scrollVis = function () {
       .text("BECAME REGRESSIVE")
       .style("opacity",0)
 
+    var defs = svg.append("defs");
+    var filter = defs.append("filter")
+      .attr("id", "drop-shadow")
+      .attr("height", "130%");
+    filter.append("feGaussianBlur")
+        .attr("in", "SourceAlpha")
+        .attr("stdDeviation", 5)
+    filter.append("feOffset")
+        .attr("dx", 5)
+        .attr("dy", 5)
+    filter.append("feComponentTransfer")
+        .append("feFuncA")
+        .attr("type", "linear")
+        .attr("slope",.5)
+
+    var feMerge = filter.append("feMerge");
+
+    feMerge.append("feMergeNode")
+    feMerge.append("feMergeNode")
+        .attr("in", "SourceGraphic");
+
+    var scatterTooltipContainer = g.append("g")
+      .attr("id","scatterTooltipContainer")
+      .style("opacity",0)
+
+    scatterTooltipContainer.append("rect")
+      .attr("width",158)
+      .attr("height",130)
+      .attr("fill","#fff")
+      .style("opacity",.7)
+      .style("filter", "url(#drop-shadow)")
+    scatterTooltipContainer.append("text")
+      .attr("x",20)
+      .attr("y", 30)
+      .attr("class", "stateName")
+      .text("North Carolina")
+    scatterTooltipContainer.append("text")
+      .attr("x",20)
+      .attr("y", 50)
+      .attr("class", "subtitle")
+      .text("Poverty/Non Poverty")
+    scatterTooltipContainer.append("text")
+      .attr("x",20)
+      .attr("y", 63)
+      .attr("class", "subtitle")
+      .text("adjusted revenue ratios")
+ 
+    scatterTooltipContainer.append("text")
+      .attr("x",20)
+      .attr("y", 90)
+      .attr("class", "yearName")
+      .text("1995:")
+    scatterTooltipContainer.append("text")
+      .attr("x",60)
+      .attr("y", 90)
+      .attr("class", "ratioText y1995")
+      .text("1.2")
+    scatterTooltipContainer.append("text")
+      .attr("x",20)
+      .attr("y", 110)
+      .attr("class", "yearName")
+      .text("2014:")
+    scatterTooltipContainer.append("text")
+      .attr("x",60)
+      .attr("y", 110)
+      .attr("class", "ratioText y2014")
+      .text("1.2")
+
+    outliers = {
+        "St": [{"state": "CT", "position": "SE"}, {"state": "NJ", "position": "SE"}, {"state": "NV", "position": "SW"}, {"state": "NY", "position": "NW"},{"state": "FL", "position": "SE"}],
+        "Lo": [{"state": "NJ", "position": "S"},{"state": "CT", "position": "SW"},{"state": "LA", "position": "NW"},{"state": "UT", "position": "SE"},{"state": "NY", "position": "NW"},{"state": "FL", "position": "W"}],
+        "Fe": [{"state": "NV", "position": "SE"},{"state": "FL", "position": "SE"},{"state": "NY", "position": "NW"},{"state": "WY", "position": "SE"},{"state": "CT", "position": "SW"},{"state": "SD", "position": "SE"}],
+        "StLo": [{"state": "AK", "position": "NE"}, {"state": "MO", "position": "SE"}, {"state": "IL", "position": "SW"}, {"state": "NY", "position": "SW"}, {"state": "FL", "position": "N"}],
+        "StFe": [{"state": "FL", "position": "SE"},{"state": "CT", "position": "SE"},{"state": "NJ", "position": "NE"},{"state": "NV", "position": "SW"}, {"state": "NY", "position": "N"}],
+        "LoFe": [{"state": "NY", "position": "NW"},{"state": "FL", "position": "NW"},{"state": "NJ", "position": "SW"}, {"state": "CT", "position": "SW"}, {"state": "AK", "position": "N"}, {"state": "MI", "position": "NW"}],
+        "StLoFe": [{"state": "NY", "position": "N"},{"state": "FL", "position": "S"},{"state": "AK", "position": "SW"},{"state": "MO", "position": "SE"},{"state": "IL", "position": "SE"}],
+        "": []
+      }
 
     function moveScatterLabels(cat){
       if(cat == "StLo" || cat == "StLoFe" || cat == ""){
@@ -506,7 +583,6 @@ var scrollVis = function () {
     }
     function updateScatter(button){
       svg._voronoi = null;
-
       var domains = {
         "St": [.8,1.8],
         "Lo": [.6,1.2],
@@ -544,6 +620,12 @@ var scrollVis = function () {
         d3.select(button).classed("active", true)
       }
 
+      d3.selectAll(".scatterOutlierLabel")
+        .transition()
+        .style("opacity", 0)
+        .on("end", function(){
+          d3.select(this).remove()
+        })
 
       var cat = getScatterCat();
       scatterPlotY.domain(domains[cat])
@@ -585,29 +667,33 @@ var scrollVis = function () {
       g.selectAll(".scatterDot")
         .transition()
         .duration(1000)
-        // .ease(d3.easeElastic)
         .attr("cx", function(d){ return scatterPlotX(getScatterValue(d, "1995")) })
         .attr("cy", function(d){ return scatterPlotY(getScatterValue(d, "2014")) })
+        .on("end", function(d, i){
+          if(i == 48){
+            drawOutlierLabels(cat, outliers)
+          }
+        })
     }
 
 
     d3.select("#vis")
       .append("div")
-      .attr("class", "scatterButton stateButton active")
+      .attr("class", "scatterButton stateButton active nonInteractive")
       .text("State")
       .on("click", function(){ updateScatter(this)})
       .style("opacity",0)
 
     d3.select("#vis")
       .append("div")
-      .attr("class", "scatterButton localButton active")
+      .attr("class", "scatterButton localButton active nonInteractive")
       .text("Local")
       .on("click", function(){ updateScatter(this)})
       .style("opacity",0)
 
     d3.select("#vis")
       .append("div")
-      .attr("class", "scatterButton federalButton")
+      .attr("class", "scatterButton federalButton nonInteractive")
       .text("Federal")
       .on("click", function(){ updateScatter(this)})
       .style("opacity",0)
@@ -620,22 +706,27 @@ var scrollVis = function () {
     .attr("class","floridaTractsImg mapImg mapFL")
     .attr("src","images/fl_tract.png")
     .style("opacity",0)
+    .style("z-index",-1)
+    
   d3.select("#vis")
     .append("img")
     .attr("class","floridaDistrictsImg mapImg mapFL")
     .attr("src","images/fl_dist.png")
     .style("opacity",0)
+    .style("z-index",-1)
 
   d3.select("#vis")
     .append("img")
     .attr("class","newYorkTractsImg mapImg mapNY")
     .attr("src","images/ny_tract.png")
     .style("opacity",0)
+    .style("z-index",-1)
   d3.select("#vis")
     .append("img")
     .attr("class","newYorkDistrictsImg mapImg mapNY")
     .attr("src","images/ny_dist.png")
     .style("opacity",0)
+    .style("z-index",-1)
 
   var mapLegend = g.append("g")
     .attr("transform", "translate(" + (width - 45) + ",-20)")
@@ -749,6 +840,7 @@ svg
     removeDotTooltip();
   })
   .on("click", function(){
+    d3.event.stopPropagation();
     if(d3.selectAll(".dotChartClicked.dotChartSelected").nodes().length == 1){
     //if already clicked, re-click to deselect
       d3.selectAll(".dotChartClicked")
@@ -760,14 +852,58 @@ svg
       .classed("dotChartClicked", false)
     d3.selectAll(".stateG.dotChartSelected")
       .classed("dotChartClicked", true)
+
+
+
+    if(d3.selectAll(".scatterClicked.scatterSelected").nodes().length == 1){
+    //if already clicked, re-click to deselect
+      d3.selectAll(".scatterClicked")
+        .classed("scatterClicked", false)
+      d3.selectAll(".scatterSelected")
+        .classed("scatterSelected", false)
+    }
+    d3.selectAll(".scatterClicked")
+      .classed("scatterClicked", false)
+    d3.selectAll(".scatterSelected")
+      .classed("scatterClicked", true)
   })
+
+  d3.select("body").on("click", function(){
+    clearClicked();
+  })
+  $(document).keyup(function(e) {
+       if (e.keyCode == 27) { // escape key maps to keycode `27`
+          clearClicked();
+      }
+  });
+
 
 function showScatterTooltip (d, i) {
   d3.select(".scatterDot." + d.state)
     .classed("scatterSelected", true)
+  var ttX = scatterPlotX(getScatterValue(d, "1995")),
+      ttY = scatterPlotY(getScatterValue(d, "2014")),
+      newX = 0,
+      newY = 0
+  if( (ttX + 158) >= scatterPlotX.range()[1]){ newX = ttX - (158+6)}
+  else{ console.log("foo"); newX = ttX + 6}
+  d3.select("#scatterTooltipContainer")
+    .style("opacity",1)
+    .attr("transform", "translate(" + (newX) + "," + (ttY + 6) + ")")
+  d3.select(".ratioText.y1995")
+    .text(RATIOS(getScatterValue(d, "1995")))
+  d3.select(".ratioText.y2014")
+    .text(RATIOS(getScatterValue(d, "2014")))
+  d3.select("#scatterTooltipContainer .stateName")
+    .text(fullNames[d.state])
+
 }
 function removeScatterTooltip(d, i){
-  d3.select(".scatterDot." + d.state)
+  d3.selectAll(".scatterClicked")
+    .classed("scatterSelected", false)
+  d3.select("#scatterTooltipContainer")
+    .style("opacity",0)
+  d3.selectAll(".scatterDot." + d.state)
     .classed("scatterSelected", false)
 }
 function showDotTooltip(m, sectionIndex){
@@ -790,6 +926,13 @@ function showDotTooltip(m, sectionIndex){
       // d3.selectAll(".dotTooltip")
     }
 }
+function clearClicked(){
+  d3.selectAll(".dotChartClicked")
+    .classed("dotChartClicked", false)
+  d3.selectAll(".dotChartSelected")
+    .classed("dotChartSelected", false)
+
+}
 function removeDotTooltip(){
   d3.selectAll(".stateG")
       .classed("dotChartSelected", false)
@@ -801,7 +944,29 @@ function removeDotTooltip(){
 
   };
 
+var  drawOutlierLabels = function(cat, outliers){
+  d3.selectAll(".scatterOutlierLabel").transition().style("opacity",0).on("end", function(){ d3.select(this).remove()}) 
 
+  for(var j =0; j < outliers[cat].length; j++){
+    var dot = d3.select(".scatterDot." +  outliers[cat][j]["state"])
+    var lx = parseFloat(dot.attr("cx")) - 8
+    var ly = parseFloat(dot.attr("cy")) + 6
+    var position =  outliers[cat][j]["position"]
+    if(position.search("N") != -1){ ly -= 11}
+    if(position.search("S") != -1){ ly += 11}
+    if(position.search("E") != -1){ lx += 11}
+    if(position.search("W") != -1){ lx -= 11}
+    var label = g.append("text")
+      .attr("x",lx)
+      .attr("y",ly)
+      .attr("class","scatterOutlierLabel")
+      .text(outliers[cat][j]["state"])
+      .style("opacity",0)
+    label.transition()
+      .duration(1000)
+      .style("opacity",1)
+  }
+}
   /**
    * setupSections - each section is activated
    * by a separate function. Here we associate
@@ -1022,6 +1187,10 @@ function removeDotTooltip(){
   }
 
   function federalDots(dotChartData){
+    d3.select("#vis svg").classed("nonInteractive", false)
+
+    d3.select(".newYorkDistrictsImg").style("z-index",-1)
+    d3.select(".newYorkTractsImg").style("z-index",-1)
 
     d3.selectAll(".dotChartClicked")
       .classed("dotChartSelected", true)
@@ -1149,10 +1318,12 @@ function removeDotTooltip(){
       .transition()
       .duration(500)
       .style("opacity",0)
+      .style("z-index",-1)
     d3.select(".floridaDistrictsImg")
       .transition()
       .duration(500)
       .style("opacity",0)
+      .style("z-index",-1)
     d3.selectAll(".mapElements")
       .transition()
       .duration(500)
@@ -1173,6 +1344,11 @@ function removeDotTooltip(){
       })
   }
   function floridaTracts(histData){
+    d3.select("#vis svg").classed("nonInteractive", true)
+
+    d3.select(".newYorkDistrictsImg").style("z-index",2)
+    d3.select(".newYorkTractsImg").style("z-index",2)
+
     histY.domain([0, d3.max(histData, function(d) { return d.tractFlCount; })]);
     d3.selectAll(".mapElements")
       .transition()
@@ -1249,12 +1425,14 @@ function removeDotTooltip(){
       .transition()
       .duration(2000)
       .style("opacity",0)
+      .style("z-index",2)
 
     d3.select(".floridaTractsImg")
       .transition()
       .delay(1500)
       .duration(1000)
       .style("opacity",1)
+      .style("z-index",2)
   }
 
   function floridaDistricts(histData){
@@ -1318,6 +1496,17 @@ function removeDotTooltip(){
 
   }
   function newYorkDistricts(histData){
+    d3.selectAll(".scatterOutlierLabel").transition().style("opacity",0)
+
+    d3.selectAll(".scatterClicked").classed("scatterClicked", false)
+
+    d3.select(".floridaTractsImg").style("z-index",2)
+    d3.select(".floridaDistrictsImg").style("z-index",2)
+    d3.select(".newYorkTractsImg").style("z-index",2)
+
+    d3.select("#scatterTooltipContainer")
+      .style("opacity",0)
+
     d3.selectAll(".mapElements")
       .transition()
       .duration(500)
@@ -1340,6 +1529,7 @@ function removeDotTooltip(){
       .transition()
       .duration(2000)
       .style("opacity",1)
+      .style("z-index",2)
     d3.selectAll(".scatterDot")
       .classed("scatterSelected", false)
       .transition()
@@ -1364,6 +1554,11 @@ function removeDotTooltip(){
       .style("opacity",0)
   }
   function dotsOverTime(){
+    d3.select("#vis svg").classed("nonInteractive", false)
+
+    d3.select(".floridaTractsImg").style("z-index",-1)
+    d3.select(".floridaDistrictsImg").style("z-index",-1)
+
     d3.selectAll(".mapElements")
       .transition()
       .duration(500)
@@ -1371,14 +1566,19 @@ function removeDotTooltip(){
     d3.selectAll(".scatterButton")
       .transition()
       .style("opacity",0)
+      .on("end", function(){
+        d3.select(this).classed("nonInteractive", true)
+      })
     d3.select(".newYorkDistrictsImg")
       .transition()
       .duration(500)
       .style("opacity",0)
+      .style("z-index",-1)
     d3.select(".newYorkTractsImg")
       .transition()
       .duration(500)
       .style("opacity",0)
+      .style("z-index",-1)
 
     g.selectAll(".scatterDot")
         .transition()
@@ -1388,6 +1588,11 @@ function removeDotTooltip(){
         .ease(d3.easeElastic)
         .attr("cx", function(d){ return scatterPlotX(getScatterValue(d, "1995")) })
         .attr("cy", function(d){ return scatterPlotY(getScatterValue(d, "2014")) })
+        .on("end", function(d, i){
+          if(i == 48){
+            drawOutlierLabels(cat, outliers)
+          }
+        })
 
     d3.select("#scatterPlotXAxis")
       .transition()
@@ -1404,10 +1609,14 @@ function removeDotTooltip(){
     d3.selectAll(".largeScatterplotLabel")
       .transition()
       .style("opacity",1)
+
+    var cat = getScatterCat();
+    
   }
 
   function dotsOverTimeControls(){
     d3.selectAll(".scatterButton")
+      .classed("nonInteractive", false)
       .transition()
       .duration(1000)
       .style("opacity",1)

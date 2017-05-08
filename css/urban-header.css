@@ -79,6 +79,8 @@ body{
 /*#header-pinned .title a:hover{
      color:#1696d2;
 }
+
+
 .subnav a {
    color:#1696d2;    
 }*/
@@ -92,11 +94,6 @@ body{
     width: 60px;
     position: absolute;
     right: 0;
-    display: block;
-}
-#header-pinned .share-icons.spanish {
-    /*display: none;*/
-    display: none; 
 }
 
 #header-pinned .share-icons .shareThisP {
@@ -281,9 +278,10 @@ display: inline-block;
 }
 
 ul{
-     
+        list-style: outside none none;
     width: 100%;
     margin: 0 auto;
+    text-align: center;
 }
 
 #subhead ul li{
@@ -334,47 +332,6 @@ ul{
     }
 }
 
-@media(max-width:480px) {
-    #header-pinned .title{
-        font-size: 15px !important;
-        width:350px;
-     line-height: 20px;
-    white-space: normal;
-    overflow:visible;
-    margin-top:3px;
-    margin-bottom:3px;
-    }
-}
-
-@media(max-width:400px) {
-    #header-pinned .title{
-        font-size: 15px !important;
-        margin-left: 55px !important;
-        width:250px;
-     line-height: 20px;
-    white-space: normal;
-    overflow:visible;
-    margin-top:3px;
-    margin-bottom:3px;
-    }
-}
-
-
-@media(max-width:320px) {
-    #header-pinned .title{
-        font-size: 12px !important;
-        margin-left: 55px !important;
-        width:200px;
-     line-height: 20px;
-    white-space: normal;
-    overflow:visible;
-    margin-top:3px;
-    margin-bottom:3px;
-    }
-}
-
-
-
 .header-links a {
     color: #fff;
 }
@@ -386,3 +343,4 @@ ul{
 
 /*end css for header*/
 
+ 
