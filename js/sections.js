@@ -1529,6 +1529,14 @@ function display(dotChartData, scatterplotData, histData) {
   // pass in .step selection as the steps
   scroll(d3.selectAll('.step'));
 
+  scroll.on('resized', function(){
+    console.log("foo")
+    d3.select("#vis svg").remove()
+    d3.selectAll(".scatterButton").remove()
+    d3.selectAll(".mapImg").remove()
+    display(dotChartData, scatterplotData, histData)
+  })
+
   // setup event handling
   scroll.on('active', function (index) {
     // highlight current step text

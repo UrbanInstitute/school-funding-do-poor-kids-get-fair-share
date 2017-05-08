@@ -10,7 +10,7 @@ function scroller() {
 
   var container = d3.select('body');
   // event dispatcher
-  var dispatch = d3.dispatch('active');
+  var dispatch = d3.dispatch('active','resized');
 
   // d3 selection of all the
   // text sections that will
@@ -115,6 +115,7 @@ function scroller() {
       sectionPositions.push(top - startPos);
     });
     containerStart = container.node().getBoundingClientRect().top + window.pageYOffset;
+    dispatch.call('resized', this);
   }
 
 
