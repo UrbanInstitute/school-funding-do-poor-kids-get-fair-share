@@ -10,6 +10,7 @@ var scrollVis = function () {
   var width;
   var height;
   
+
   if ( IS_PHONE() ){ width = PHONE_VIS_WIDTH }
   else if ( IS_SHORT() ){ width = SHORT_VIS_WIDTH }
   else{ width = VIS_WIDTH} 
@@ -17,6 +18,13 @@ var scrollVis = function () {
   if ( IS_PHONE() ){ height = PHONE_VIS_HEIGHT }
   else if ( IS_SHORT() ){ height = SHORT_VIS_HEIGHT }
   else{ height = VIS_HEIGHT} 
+
+  margin = ( IS_PHONE() ) ? PHONE_MARGIN : MARGIN;
+  DOT_RADIUS = (IS_PHONE()) ? 4 : 5;
+  SMALL_DOT_RADIUS = (IS_PHONE()) ? 2 : 3;
+  histMargin = (IS_PHONE()) ? phoneHistMargin : desktopHistMargin;
+  histWidth = (IS_PHONE()) ? phoneHistWidth : desktopHistWidth;
+  histHeight = (IS_PHONE()) ? phoneHistHeight : desktopHistHeight;
 
   // Keep track of which visualization
   // we are on and which was the last
@@ -48,7 +56,16 @@ var scrollVis = function () {
   var dotChartX = d3.scaleLinear()
             .range([width, 0]);
 
-  var scatterWidth = IS_SHORT() ? SHORT_SCATTER_WIDTH : width;
+  if(IS_PHONE()){
+    scatterWidth = PHONE_SCATTER_WIDTH;
+  }
+  else if(IS_SHORT()){    
+    scatterWidth = SHORT_SCATTER_WIDTH;
+  }else{
+    console.log("c")
+    scatterWidth = width;
+  }
+
   var scatterPlotY = d3.scaleLinear()
             .range([scatterWidth, 0]);
   var scatterPlotX = d3.scaleLinear()
@@ -90,9 +107,10 @@ var scrollVis = function () {
       g = svg.select('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
+      var histAdjust = (IS_PHONE()) ? 50 : 0;
       histG = svg.append("g")
         .attr("class", "mapElements")
-        .attr("transform", "translate(" + histMargin.left + "," + (height -histHeight) + ")")
+        .attr("transform", "translate(" + histMargin.left + "," + (height - histHeight + histAdjust) + ")")
         .style("opacity",0);
 
       // perform some preprocessing on raw data
@@ -201,13 +219,37 @@ var scrollVis = function () {
 
     g.append("text")
       .attr("class", "largeChartLabel dotChartComponents")
-      .attr("x",dotChartX(-4500))
-      .attr("y", 200)
+      .attr("x",function(){
+        if(IS_PHONE()){
+          return dotChartX(-5500)  
+        }else{
+          return dotChartX(-4500)  
+        }
+      })
+      .attr("y", function(){
+        if(IS_PHONE()){
+          return 165
+        }else{
+          return 200
+        }
+      })
       .text("REGRESSIVE")
     g.append("text")
       .attr("class", "largeChartLabel dotChartComponents")
-      .attr("x",dotChartX(2200))
-      .attr("y", 200)
+      .attr("x",function(){
+        if(IS_PHONE()){
+          return dotChartX(1200)  
+        }else{
+          return dotChartX(2200)  
+        }
+      })
+      .attr("y", function(){
+        if(IS_PHONE()){
+          return 165
+        }else{
+          return 200
+        }
+      })
       .text("PROGRESSIVE")
 
     stateG
@@ -225,7 +267,13 @@ var scrollVis = function () {
 
     var legend = svg.append("g")
       .attr("class", "legend")
-      .attr("transform",function(d){ return "translate(150,50)" })
+      .attr("transform",function(d){
+        if(IS_PHONE()){
+          return "translate(10,55)"  
+        }else{
+          return "translate(150,50)"
+        }
+      })
 
 
     legend.append("circle")
@@ -399,15 +447,32 @@ var scrollVis = function () {
 
 
     // add the x Axis
+    var tickCount = (IS_PHONE()) ? 7 : 13
     g.append("g")
         .attr("id", "dotChartXAxis")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(dotChartX).tickFormat(d3.format("$,")));
+        .call(d3.axisBottom(dotChartX)
+          .tickFormat(function(d){
+            if(IS_PHONE()){
+              return d3.format("$.0s")(d)
+            }else{
+              return d3.format("$,")(d)
+            }
+          })
+          .ticks(tickCount)
+        ) 
+
 
     // add the y Axis
     g.append("g")
       .attr("id", "dotChartYAxis")
-      .call(d3.axisLeft(dotChartY).tickFormat(function(t){return fullNames[t]}));
+      .call(d3.axisLeft(dotChartY).tickFormat(function(t){
+        if(IS_PHONE()){
+          return t
+        }else{
+          return fullNames[t]
+        }
+      }));  
 
 
 
@@ -456,53 +521,98 @@ var scrollVis = function () {
         .attr("cy", scatterPlotY(1) )
         .attr("r", DOT_RADIUS)
         .style("opacity",0)
+
+    var x1, x2a, x2b, x3a, x3b, x4, y1, y2a, y2b, y3a, y3b, y4, extraClass, xAxisX, xAxisY, yAxisX, yAxisY;
+    if(IS_SHORT()){ extraClass = " shortGraphLargeLabel"}
+    else{ extraClass = ""}
+
+    if(IS_SHORT()){ x1 = 265}
+    else{ x1 = 335}  
+    if(IS_SHORT()){ x2a = 16}
+    else{ x2a = 35}
+    if(IS_SHORT()){ x2b = 99}
+    else{ x2b = 124}  
+    if(IS_SHORT()){ x3a = 16}
+    else{ x3a = 35}  
+    if(IS_SHORT()){ x3b = 91}
+    else{ x3b = 118}  
+    if(IS_SHORT()){ x4 = 265}
+    else{ x4 = 335}  
+
+    if(IS_SHORT()){ y1 = 120}
+    else{ y1 = 150}  
+    if(IS_SHORT()){ y2a = 120}
+    else{ y2a = 150}
+    if(IS_SHORT()){ y2b = 120}
+    else{ y2b = 150}  
+    if(IS_SHORT()){ y3a = 360}
+    else{ y3a = 450}  
+    if(IS_SHORT()){ y3b = 360}
+    else{ y3b = 450}  
+    if(IS_SHORT()){ y4 = 360}
+    else{ y4 = 450}  
+
+    if(IS_PHONE()){ xAxisX = -47 }
+    else if(IS_SHORT()){ xAxisX = 100}
+    else{ xAxisX = 150}
+    if(IS_PHONE()){ xAxisY = 40 }  
+    else if(IS_SHORT()){ xAxisY = 40}
+    else{ xAxisY = 50}
+    if(IS_PHONE()){ yAxisX = -40 }  
+    else if(IS_SHORT()){ yAxisX = -50}
+    else{ yAxisX = -60}
+    if(IS_PHONE()){ yAxisY = 253 }  
+    else if(IS_SHORT()){ yAxisY = 385}
+    else{ yAxisY = 430}  
+
     g.append("text")
-      .attr("class", "largeScatterplotLabel q1")
-      .attr("x",335)
-      .attr("y", 150)
+      .attr("class", "largeScatterplotLabel q1" + extraClass)
+      .attr("x",x1)
+      .attr("y", y1)
       .text("STAYED PROGRESSIVE")
       .style("opacity",0)
     g.append("text")
-      .attr("class", "largeScatterplotLabel q2a")
-      .attr("x",35)
-      .attr("y", 150)
+      .attr("class", "largeScatterplotLabel q2a" + extraClass)
+      .attr("x",x2a)
+      .attr("y", y2a)
       .text("BECAME")
       .style("opacity",0)
     g.append("text")
-      .attr("class", "largeScatterplotLabel q2b")
-      .attr("x",124)
-      .attr("y", 150)
+      .attr("class", "largeScatterplotLabel q2b" + extraClass)
+      .attr("x",x2b)
+      .attr("y", y2b)
       .text("PROGRESSIVE")
       .style("opacity",0)
     g.append("text")
-      .attr("class", "largeScatterplotLabel q3a")
-      .attr("x",35)
-      .attr("y", 450)
+      .attr("class", "largeScatterplotLabel q3a" + extraClass)
+      .attr("x",x3a)
+      .attr("y", y3a)
       .text("STAYED")
       .style("opacity",0)
     g.append("text")
-      .attr("class", "largeScatterplotLabel q3b")
-      .attr("x",118)
-      .attr("y", 450)
+      .attr("class", "largeScatterplotLabel q3b" + extraClass)
+      .attr("x",x3b)
+      .attr("y", y3b)
       .text("REGRESSIVE")
       .style("opacity",0)
     g.append("text")
-      .attr("class", "largeScatterplotLabel q4")
-      .attr("x",335)
-      .attr("y", 450)
+      .attr("class", "largeScatterplotLabel q4" + extraClass)
+      .attr("x",x4)
+      .attr("y", y4)
       .text("BECAME REGRESSIVE")
       .style("opacity",0)
+
 
     g.append("text")
       .attr("class", "scatterAxisLabel")
       .text("Poverty/Non Poverty adjusted revenue ratio, 1995")
-      .attr("y", scatterWidth + 50)
-      .attr("x", 150)
+      .attr("y", scatterWidth + xAxisY)
+      .attr("x", xAxisX)
       .style("opacity",0)
     g.append("text")
       .attr("class", "scatterAxisLabel")
       .text("Poverty/Non Poverty adjusted revenue ratio, 2014")
-      .attr("transform", "translate(" + -60 + "," + 430 + ")rotate(270)")
+      .attr("transform", "translate(" + yAxisX + "," + yAxisY + ")rotate(270)")
       .style("opacity",0)
       
 
@@ -579,47 +689,90 @@ var scrollVis = function () {
         "Lo": [{"state": "NJ", "position": "S"},{"state": "CT", "position": "SW"},{"state": "LA", "position": "NW"},{"state": "UT", "position": "SE"},{"state": "NY", "position": "NW"},{"state": "FL", "position": "W"}],
         "Fe": [{"state": "NV", "position": "SE"},{"state": "FL", "position": "SE"},{"state": "NY", "position": "NW"},{"state": "WY", "position": "SE"},{"state": "CT", "position": "SW"},{"state": "SD", "position": "SE"}],
         "StLo": [{"state": "AK", "position": "NE"}, {"state": "MO", "position": "SE"}, {"state": "IL", "position": "SW"}, {"state": "NY", "position": "SW"}, {"state": "FL", "position": "N"}],
-        "StFe": [{"state": "FL", "position": "SE"},{"state": "CT", "position": "SE"},{"state": "NJ", "position": "NE"},{"state": "NV", "position": "SW"}, {"state": "NY", "position": "N"}],
+        "StFe": [{"state": "FL", "position": "SE"},{"state": "CT", "position": "SE"},{"state": "NJ", "position": "SE"},{"state": "NV", "position": "SW"}, {"state": "NY", "position": "N"}],
         "LoFe": [{"state": "NY", "position": "NW"},{"state": "FL", "position": "NW"},{"state": "NJ", "position": "SW"}, {"state": "CT", "position": "SW"}, {"state": "AK", "position": "N"}, {"state": "MI", "position": "NW"}],
         "StLoFe": [{"state": "NY", "position": "N"},{"state": "FL", "position": "S"},{"state": "AK", "position": "SW"},{"state": "MO", "position": "SE"},{"state": "IL", "position": "SE"}],
         "": []
       }
 
     function moveScatterLabels(cat){
-      if(cat == "StLo" || cat == "StLoFe" || cat == ""){
-        d3.select(".largeScatterplotLabel.q1").transition().attr("x", 335).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
-        d3.select(".largeScatterplotLabel.q2a").transition().attr("x", 35).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
-        d3.select(".largeScatterplotLabel.q2b").transition().attr("x", 124).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
-        d3.select(".largeScatterplotLabel.q3a").transition().attr("x", 35).attr("y", 450).style("letter-spacing","4px").style("font-size","14px")
-        d3.select(".largeScatterplotLabel.q3b").transition().attr("x", 118).attr("y", 450).style("letter-spacing","4px").style("font-size","14px")
-        d3.select(".largeScatterplotLabel.q4").transition().attr("x", 335).attr("y", 450).style("letter-spacing","4px").style("font-size","14px")
+      if(IS_SHORT()){
+        if(cat == "StLo" || cat == "StLoFe" || cat == ""){
+          d3.select(".largeScatterplotLabel.q1").transition().attr("x", 265).attr("y", 120).style("letter-spacing","3px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q2a").transition().attr("x", 16).attr("y", 120).style("letter-spacing","3px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q2b").transition().attr("x", 99).attr("y", 120).style("letter-spacing","3px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q3a").transition().attr("x", 16).attr("y", 360).style("letter-spacing","3px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q3b").transition().attr("x", 91).attr("y", 360).style("letter-spacing","3px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q4").transition().attr("x", 265).attr("y", 360).style("letter-spacing","3px").style("font-size","14px")
+        }
+        else if(cat == "Lo" || cat == "LoFe"){
+          //.6 1.2
+          d3.select(".largeScatterplotLabel.q1").transition().attr("x", 325).attr("y", 120).style("letter-spacing","1px").style("font-size","13px")
+          d3.select(".largeScatterplotLabel.q2a").transition().attr("x", 16).attr("y", 120).style("letter-spacing","3px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q2b").transition().attr("x", 99).attr("y", 120).style("letter-spacing","3px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q3a").transition().attr("x", 16).attr("y", 360).style("letter-spacing","3px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q3b").transition().attr("x", 91).attr("y", 360).style("letter-spacing","3px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q4").transition().attr("x", 325).attr("y", 360).style("letter-spacing","1px").style("font-size","13px")
+        }
+        else if(cat == "St" || cat == "StFe"){
+          //.8 1.8
+          d3.select(".largeScatterplotLabel.q1").transition().attr("x", 265).attr("y", 120).style("letter-spacing","3px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q2a").transition().attr("x", 21).attr("y", 120).style("letter-spacing","1px").style("font-size","12px")
+          d3.select(".largeScatterplotLabel.q2b").transition().attr("x", 4).attr("y", 136).style("letter-spacing","1px").style("font-size","12px")
+          d3.select(".largeScatterplotLabel.q3a").transition().attr("x", 26).attr("y", 431).style("letter-spacing","1px").style("font-size","12px")
+          d3.select(".largeScatterplotLabel.q3b").transition().attr("x", 8).attr("y", 447).style("letter-spacing","1px").style("font-size","12px")
+          d3.select(".largeScatterplotLabel.q4").transition().attr("x", 265).attr("y", 431).style("letter-spacing","3px").style("font-size","14px")
+        }
+        else if(cat == "Fe"){
+          //.8 2.3
+          d3.select(".largeScatterplotLabel.q1").transition().attr("x", 265).attr("y", 120).style("letter-spacing","3px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q2a").transition().attr("x", 13).attr("y", 120).style("letter-spacing","1px").style("font-size","8px")
+          d3.select(".largeScatterplotLabel.q2b").transition().attr("x", 1).attr("y", 130).style("letter-spacing","1px").style("font-size","8px")
+          d3.select(".largeScatterplotLabel.q3a").transition().attr("x", 15).attr("y", 448).style("letter-spacing","1px").style("font-size","8px")
+          d3.select(".largeScatterplotLabel.q3b").transition().attr("x", 4).attr("y", 458).style("letter-spacing","1px").style("font-size","8px")
+          d3.select(".largeScatterplotLabel.q4").transition().attr("x", 265).attr("y", 448).style("letter-spacing","3px").style("font-size","14px")
+        }
+
       }
-      else if(cat == "Lo" || cat == "LoFe"){
-        //.6 1.2
-        d3.select(".largeScatterplotLabel.q1").transition().attr("x", 430).attr("y", 150).style("letter-spacing","1px").style("font-size","14px")
-        d3.select(".largeScatterplotLabel.q2a").transition().attr("x", 35).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
-        d3.select(".largeScatterplotLabel.q2b").transition().attr("x", 124).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
-        d3.select(".largeScatterplotLabel.q3a").transition().attr("x", 35).attr("y", 450).style("letter-spacing","4px").style("font-size","14px")
-        d3.select(".largeScatterplotLabel.q3b").transition().attr("x", 118).attr("y", 450).style("letter-spacing","4px").style("font-size","14px")
-        d3.select(".largeScatterplotLabel.q4").transition().attr("x", 430).attr("y", 450).style("letter-spacing","1px").style("font-size","14px")
-      }
-      else if(cat == "St" || cat == "StFe"){
-        //.8 1.8
-        d3.select(".largeScatterplotLabel.q1").transition().attr("x", 335).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
-        d3.select(".largeScatterplotLabel.q2a").transition().attr("x", 24).attr("y", 150).style("letter-spacing","1px").style("font-size","14px")
-        d3.select(".largeScatterplotLabel.q2b").transition().attr("x", 6).attr("y", 170).style("letter-spacing","1px").style("font-size","14px")
-        d3.select(".largeScatterplotLabel.q3a").transition().attr("x", 29).attr("y", 540).style("letter-spacing","1px").style("font-size","14px")
-        d3.select(".largeScatterplotLabel.q3b").transition().attr("x", 11).attr("y", 560).style("letter-spacing","1px").style("font-size","14px")
-        d3.select(".largeScatterplotLabel.q4").transition().attr("x", 335).attr("y", 540).style("letter-spacing","4px").style("font-size","14px")
-      }
-      else if(cat == "Fe"){
-        //.8 2.3
-        d3.select(".largeScatterplotLabel.q1").transition().attr("x", 335).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
-        d3.select(".largeScatterplotLabel.q2a").transition().attr("x", 16).attr("y", 147).style("letter-spacing","1px").style("font-size","10px")
-        d3.select(".largeScatterplotLabel.q2b").transition().attr("x", 2).attr("y", 162).style("letter-spacing","1px").style("font-size","10px")
-        d3.select(".largeScatterplotLabel.q3a").transition().attr("x", 25).attr("y", 537).style("letter-spacing","1px").style("font-size","10px")
-        d3.select(".largeScatterplotLabel.q3b").transition().attr("x", 7).attr("y", 552).style("letter-spacing","1px").style("font-size","10px")
-        d3.select(".largeScatterplotLabel.q4").transition().attr("x", 335).attr("y", 540).style("letter-spacing","4px").style("font-size","14px")
+      else if(IS_PHONE()){
+
+      }else{
+        if(cat == "StLo" || cat == "StLoFe" || cat == ""){
+          d3.select(".largeScatterplotLabel.q1").transition().attr("x", 335).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q2a").transition().attr("x", 35).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q2b").transition().attr("x", 124).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q3a").transition().attr("x", 35).attr("y", 450).style("letter-spacing","4px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q3b").transition().attr("x", 118).attr("y", 450).style("letter-spacing","4px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q4").transition().attr("x", 335).attr("y", 450).style("letter-spacing","4px").style("font-size","14px")
+        }
+        else if(cat == "Lo" || cat == "LoFe"){
+          //.6 1.2
+          d3.select(".largeScatterplotLabel.q1").transition().attr("x", 430).attr("y", 150).style("letter-spacing","1px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q2a").transition().attr("x", 35).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q2b").transition().attr("x", 124).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q3a").transition().attr("x", 35).attr("y", 450).style("letter-spacing","4px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q3b").transition().attr("x", 118).attr("y", 450).style("letter-spacing","4px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q4").transition().attr("x", 430).attr("y", 450).style("letter-spacing","1px").style("font-size","14px")
+        }
+        else if(cat == "St" || cat == "StFe"){
+          //.8 1.8
+          d3.select(".largeScatterplotLabel.q1").transition().attr("x", 335).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q2a").transition().attr("x", 24).attr("y", 150).style("letter-spacing","1px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q2b").transition().attr("x", 6).attr("y", 170).style("letter-spacing","1px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q3a").transition().attr("x", 29).attr("y", 540).style("letter-spacing","1px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q3b").transition().attr("x", 11).attr("y", 560).style("letter-spacing","1px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q4").transition().attr("x", 335).attr("y", 540).style("letter-spacing","4px").style("font-size","14px")
+        }
+        else if(cat == "Fe"){
+          //.8 2.3
+          d3.select(".largeScatterplotLabel.q1").transition().attr("x", 335).attr("y", 150).style("letter-spacing","4px").style("font-size","14px")
+          d3.select(".largeScatterplotLabel.q2a").transition().attr("x", 16).attr("y", 147).style("letter-spacing","1px").style("font-size","10px")
+          d3.select(".largeScatterplotLabel.q2b").transition().attr("x", 2).attr("y", 162).style("letter-spacing","1px").style("font-size","10px")
+          d3.select(".largeScatterplotLabel.q3a").transition().attr("x", 25).attr("y", 537).style("letter-spacing","1px").style("font-size","10px")
+          d3.select(".largeScatterplotLabel.q3b").transition().attr("x", 7).attr("y", 552).style("letter-spacing","1px").style("font-size","10px")
+          d3.select(".largeScatterplotLabel.q4").transition().attr("x", 335).attr("y", 540).style("letter-spacing","4px").style("font-size","14px")
+        }
+
       }
     }
     function updateScatter(button){
@@ -646,11 +799,11 @@ var scrollVis = function () {
       }
       var tf = d3.format(".2f")
       var tickFormats = {
-        "St": tf,
+        "St": function(d,i){ if (i%2 == 0){ return tf(d)} else{ return ""}},
         "Lo": tf,
         "Fe": function(d,i){ if (i%2 == 0){ return tf(d)} else{ return ""}},
         "StLo": tf,
-        "StFe": tf,
+        "StFe": function(d,i){ if (i%2 == 0){ return tf(d)} else{ return ""}},
         "LoFe": tf,
         "StLoFe": tf,
         "": tf,
@@ -769,34 +922,81 @@ var scrollVis = function () {
     .style("opacity",0)
     .style("z-index",-1)
 
-  var mapLegend = g.append("g")
-    .attr("transform", "translate(" + (width - 45) + ",-20)")
-    .attr("id","mapLegend")
-    .attr("class", "mapElements")
-    .style("opacity",0)
-
+  var mapLegend =  null;
   var percent = d3.format(".0%")
   var breaks = mapColor.domain()
   breaks.push(1)
-    mapLegend.append("text")
-      .attr("x",24)
-      .attr("y", 5)
-      .text(percent(0))
-      .attr("class","keyLabel")
-  for(var i=1; i < mapColor.range().length; i++){
-    mapLegend.append("rect")
-      .attr("width",15)
-      .attr("height",20)
-      .attr("x",0)
-      .attr("y",(i-1)*20)
-      .style("fill", mapColor.range()[i])
+
+  if(IS_PHONE()){
+    mapLegend = g.append("g")
+      .attr("transform", "translate(0,-20)")
+      .attr("id","mapLegend")
+      .attr("class", "mapElements")
+      .style("opacity",0)
+
 
     mapLegend.append("text")
-      .attr("x",24)
-      .attr("y", (i)*20+5)
-      .text(percent(breaks[i]))
+        .attr("x",-2)
+        .attr("y",-5)
+        .text(percent(0))
+        .attr("class","keyLabel")
+    for(var i=1; i < mapColor.range().length; i++){
+      mapLegend.append("rect")
+        .attr("width",25)
+        .attr("height",20)
+        .attr("x",(i-1)*25)
+        .attr("y",0)
+        .style("fill", mapColor.range()[i])
+
+      mapLegend.append("text")
+        .attr("x",(i)*25-7)
+        .attr("y",-5)
+        .text(function(){
+          if(i%2 != 0){ return "" }
+          else{ return percent(breaks[i])}
+        })
+        .attr("class","keyLabel")
+    }
+
+    mapLegend.append("rect")
+      .attr("width",25)
+      .attr("height",20)
+      .attr("x",0)
+      .attr("y", 30)
+      .style("fill", mapColor.range()[0])
+
+    mapLegend.append("text")
+      .attr("x",30)
+      .attr("y", 45)
+      .text("No data")
       .attr("class","keyLabel")
-  }
+  }else{
+    mapLegend = g.append("g")
+      .attr("transform", "translate(" + (width - 45) + ",-20)")
+      .attr("id","mapLegend")
+      .attr("class", "mapElements")
+      .style("opacity",0)
+
+
+    mapLegend.append("text")
+        .attr("x",24)
+        .attr("y", 5)
+        .text(percent(0))
+        .attr("class","keyLabel")
+    for(var i=1; i < mapColor.range().length; i++){
+      mapLegend.append("rect")
+        .attr("width",15)
+        .attr("height",20)
+        .attr("x",0)
+        .attr("y",(i-1)*20)
+        .style("fill", mapColor.range()[i])
+
+      mapLegend.append("text")
+        .attr("x",24)
+        .attr("y", (i)*20+5)
+        .text(percent(breaks[i]))
+        .attr("class","keyLabel")
+    }
 
     mapLegend.append("rect")
       .attr("width",15)
@@ -810,6 +1010,7 @@ var scrollVis = function () {
       .attr("y",(mapColor.range().length)*20 + 15)
       .text("No data")
       .attr("class","keyLabel")
+  }
 
     //histograms
   histG.append("g")
@@ -827,11 +1028,14 @@ var scrollVis = function () {
     .attr("y",-9)
     .attr("class", "axisLabel")
 
+  var histLabelX = (IS_PHONE()) ? 10 : 150,
+      histLabelY = (IS_PHONE()) ? 192 : 307,
+      histLabelText = (IS_PHONE()) ? "% families with children 5–17 in poverty" : "Percentage of families with children 5–17 in poverty"
   histG.append("text")
-    .text("Percentage of families with children 5–17 in poverty")
-    .attr("x",150)
-    .attr("y",307)
-    .attr("class", "axisLabel")
+    .text(histLabelText)
+    .attr("x",histLabelX)
+    .attr("y",histLabelY)
+    .attr("class", "axisLabel histXAxisLabel")
 
   histG.selectAll(".histBar")
     .data(histData)
@@ -1099,7 +1303,13 @@ var  drawOutlierLabels = function(cat, outliers){
             g.select("#dotChartYAxis")
               .transition()
               .duration(1000)
-              .call(d3.axisLeft(dotChartY).tickFormat(function(t){return fullNames[t]}));
+              .call(d3.axisLeft(dotChartY).tickFormat(function(t){
+                if(IS_PHONE()){
+                  return t
+                }else{
+                  return fullNames[t]
+                }
+              }));
           }
 
         })
@@ -1148,14 +1358,29 @@ var  drawOutlierLabels = function(cat, outliers){
     d3.select(".legendTotalTextFederal")
       .transition()
       .style("opacity",0)
-    d3.select(".legendStateText")
-      .transition()
-      .style("opacity",1)
-      .attr("x",270)
-    d3.select(".legendStateDot")
-      .transition()
-      .style("opacity",1)
-      .attr("cx",260)
+    if(IS_PHONE()){
+      d3.select(".legendStateText")
+        .transition()
+        .style("opacity",1)
+        .attr("x",10)
+        .attr("y",24)
+      d3.select(".legendStateDot")
+        .transition()
+        .style("opacity",1)
+        .attr("cx",0)
+        .attr("cy",20)
+    }else{
+      d3.select(".legendStateText")
+        .transition()
+        .style("opacity",1)
+        .attr("x",270)
+        .attr("y",4)
+      d3.select(".legendStateDot")
+        .transition()
+        .style("opacity",1)
+        .attr("cx",260)
+        .attr("cy",0)
+    }
     d3.select(".legendFederalText")
       .transition()
       .style("opacity",0)
@@ -1185,7 +1410,13 @@ var  drawOutlierLabels = function(cat, outliers){
             g.select("#dotChartYAxis")
               .transition()
               .duration(1000)
-              .call(d3.axisLeft(dotChartY).tickFormat(function(t){return fullNames[t]}));
+              .call(d3.axisLeft(dotChartY).tickFormat(function(t){
+                if(IS_PHONE()){
+                  return t
+                }else{
+                  return fullNames[t]
+                }
+              }));
           }
 
         })
@@ -1263,20 +1494,51 @@ var  drawOutlierLabels = function(cat, outliers){
     d3.select(".legendTotalTextFederal")
       .transition()
       .style("opacity",1)
-    d3.select(".legendStateText")
-      .transition()
-      .style("opacity",1)
-      .attr("x",295)
-    d3.select(".legendStateDot")
-      .transition()
-      .style("opacity",1)
-      .attr("cx",285)
-    d3.select(".legendFederalText")
-      .transition()
-      .style("opacity",1)
-    d3.select(".legendFederalDot")
-      .transition()
-      .style("opacity",1)
+    if(IS_PHONE()){
+      d3.select(".legendStateText")
+        .transition()
+        .style("opacity",1)
+        .attr("x",10)
+        .attr("y",24)
+      d3.select(".legendStateDot")
+        .transition()
+        .style("opacity",1)
+        .attr("cx",0)
+        .attr("cy",20)
+      d3.select(".legendFederalText")
+        .transition()
+        .style("opacity",1)
+        .attr("x",195)
+        .attr("y",24)
+      d3.select(".legendFederalDot")
+        .transition()
+        .style("opacity",1)
+        .attr("cx", 185)
+        .attr("cy", 20)
+    }else{
+      d3.select(".legendStateText")
+        .transition()
+        .style("opacity",1)
+        .attr("x",295)
+        .attr("y",4)
+      d3.select(".legendStateDot")
+        .transition()
+        .style("opacity",1)
+        .attr("cx",285)
+        .attr("cy",0)
+      d3.select(".legendFederalText")
+        .transition()
+        .style("opacity",1)
+        .attr("x",395)
+        .attr("y",4)
+      d3.select(".legendFederalDot")
+        .transition()
+        .style("opacity",1)
+        .attr("cx", 385)
+        .attr("cy", 0)
+    }
+
+
 
 
     dotChartData.sort(function(a, b){ return (b.localRevenue + b.stateRevenue + b.federalRevenue) - (a.localRevenue + a.stateRevenue + a.federalRevenue)})
@@ -1298,7 +1560,13 @@ var  drawOutlierLabels = function(cat, outliers){
             g.select("#dotChartYAxis")
               .transition()
               .duration(1000)
-              .call(d3.axisLeft(dotChartY).tickFormat(function(t){return fullNames[t]}));
+              .call(d3.axisLeft(dotChartY).tickFormat(function(t){
+                if(IS_PHONE()){
+                  return t
+                }else{
+                  return fullNames[t]
+                }
+              }));
           }
 
         })
@@ -1544,6 +1812,11 @@ var  drawOutlierLabels = function(cat, outliers){
 
   }
   function newYorkDistricts(histData){
+    if(IS_PHONE()){
+      g
+        .transition()
+        .attr('transform', 'translate(' + (margin.left+0) + ',' + margin.top + ')');
+    }
     d3.selectAll(".scatterOutlierLabel").transition().style("opacity",0)
 
     d3.selectAll(".scatterClicked").classed("scatterClicked", false)
@@ -1605,6 +1878,11 @@ var  drawOutlierLabels = function(cat, outliers){
       .style("opacity",0)
   }
   function dotsOverTime(){
+    if(IS_PHONE()){
+      g
+        .transition()
+        .attr('transform', 'translate(' + (margin.left+20) + ',' + margin.top + ')');
+    }
     d3.select("#vis svg").classed("nonInteractive", false)
 
     d3.select(".floridaTractsImg").style("z-index",-1)
@@ -1761,6 +2039,7 @@ function display(dotChartData, scatterplotData, histData) {
   // create a new plot and
   // display it
   var plot = scrollVis();
+
   d3.select('#vis')
       .style("left", function(){
         if(IS_PHONE()){

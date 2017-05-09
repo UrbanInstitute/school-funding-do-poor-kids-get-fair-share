@@ -11,24 +11,36 @@ var SECTION_INDEX = function(){
   return d3.select("#sectionIndex").attr("data-index")
 }
 
-var PHONE_VIS_WIDTH = 330;
-var PHONE_VIS_HEIGHT = 460;
+var PHONE_VIS_WIDTH = 230;
+var PHONE_VIS_HEIGHT = 450;
 var SHORT_VIS_WIDTH = 600;
 var SHORT_VIS_HEIGHT = 560;
 var SHORT_SCATTER_WIDTH = 480;
+var PHONE_SCATTER_WIDTH = 235
 var VIS_WIDTH = 600;
 var VIS_HEIGHT = 700;
 
-var DOT_RADIUS = 5;
-var SMALL_DOT_RADIUS = 3;
 
-var margin = { top: 60, left: 120, bottom: 104, right: 20 };
+var MARGIN = { top: 60, left: 120, bottom: 104, right: 20 };
+var PHONE_MARGIN = { top: 90, left: 30, bottom: 20, right: 30 };
 
-var histMargin = {top: 20, right: 20, bottom: 120, left: 120},
-  histWidth = 600 - histMargin.left - histMargin.right,
-  histHeight = 380 - histMargin.top - histMargin.bottom,
-  histBinWidth = 5;
 
+
+var desktopHistMargin = {top: 20, right: 20, bottom: 120, left: 120},
+  desktopHistWidth = 600 - desktopHistMargin.left - desktopHistMargin.right,
+  desktopHistHeight = 380 - desktopHistMargin.top - desktopHistMargin.bottom;
+var phoneHistMargin = {top: 20, right: 20, bottom: 40, left: 35},
+  phoneHistWidth = 300 - phoneHistMargin.left - phoneHistMargin.right,
+  phoneHistHeight = 210 - phoneHistMargin.top - phoneHistMargin.bottom;
+var histBinWidth = 5;
+
+
+var margin = ( IS_PHONE() ) ? PHONE_MARGIN : MARGIN;
+var DOT_RADIUS = (IS_PHONE()) ? 4 : 5;
+var SMALL_DOT_RADIUS = (IS_PHONE()) ? 2 : 3;
+var histMargin = (IS_PHONE()) ? phoneHistMargin : desktopHistMargin;
+var histWidth = (IS_PHONE()) ? phoneHistWidth : desktopHistWidth;
+var histHeight = (IS_PHONE()) ? phoneHistHeight : desktopHistHeight;
 
 var fullNames = {
   "AL": "Alabama",

@@ -38,24 +38,7 @@ function scroller() {
         return "inherit"
       }
     })
-    .style("top", function(){
-      if(IS_PHONE()){
-        return ( (window.innerHeight - PHONE_VIS_HEIGHT - margin.top - margin.bottom)*.5 ) + "px"
-      }
-      if(IS_MOBILE()){
-        return ( (window.innerHeight - VIS_HEIGHT - margin.top - margin.bottom)*.5 ) + "px"
-      }else{
-        if(d3.select(this).classed("posFixed")){
-          return "20px"  
-        }else{
-          if(d3.select(this).classed("posRel")){
-            return "30px"  
-          }else{
-            return "730px"  
-          }
-        }
-      }
-    })
+
   }
   /**
    * scroll - constructor function.
@@ -122,21 +105,27 @@ function scroller() {
   function fixVis(){
     if(d3.select(".step").node().getBoundingClientRect().top <= 0){
       if(d3.selectAll(".step").nodes()[d3.selectAll(".step").nodes().length-1].getBoundingClientRect().bottom <= VIS_WIDTH+margin.top+margin.bottom+20+50){
-        d3.select("#vis").classed("posRel", true)
-        d3.select("#vis").classed("posFixed", false)  
+        d3.select("#vis")
+          .classed("posRelBottom", true)
+          .classed("posRelTop", false)
+          .classed("posFixed", false)  
       }else{
-        d3.select("#vis").classed("posRel", false)
-        d3.select("#vis").classed("posFixed", true)  
+        d3.select("#vis")
+          .classed("posRelBottom", false)
+          .classed("posRelTop", false)
+          .classed("posFixed", true)  
       }
     }else{
-      d3.select("#vis").classed("posRel", false)
-      d3.select("#vis").classed("posFixed", false)
+        d3.select("#vis")
+          .classed("posRelBottom", false)
+          .classed("posRelTop", true)
+          .classed("posFixed", false)  
     }    
   }
   window.setInterval(function(){
     fixVis()
     visPosition()
-  }, 200);
+  }, 20);
   /**
    * position - get current users position.
    * if user has scrolled to new section,

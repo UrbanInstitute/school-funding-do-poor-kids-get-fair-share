@@ -1,10 +1,6 @@
 - Mobile charts
-	- fix size
-	- Axis labels (fewer, state abbrevs)
-	- Hide various scatter elements
-	- scale map down
-- Resize events for height as well as width
-- Labels:
-	- scatterplot axes
+	- scatter
 - when text draft, fix scrolling (mobile and desktop)
+- force hide dot axis labels, when needed
+- scrolling up, z-index gridline map issue
 - IE
