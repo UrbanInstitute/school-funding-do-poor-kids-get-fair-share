@@ -374,20 +374,6 @@ footer h3, footer h4{
 
 
 
-#isMobile, #isPhone{
-    display: none;
-    pointer-events: none;
-    width: 0;
-    height: 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-}
-@media (max-width: 600px){
-    #isPhone{
-        display: block;
-    }
-}
 @media (max-width: 993px){
     #axis_label{
         top: 25px;
@@ -399,9 +385,6 @@ footer h3, footer h4{
     }
     .slope_line.selected, .slope_line.hover{
         stroke: #ec008b !important;
-    }
-    #isMobile{
-        display: block;
     }
     .key_box{
         margin-left: 0px;

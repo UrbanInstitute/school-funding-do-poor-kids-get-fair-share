@@ -136,7 +136,7 @@ function scroller() {
   window.setInterval(function(){
     fixVis()
     visPosition()
-  }, 100);
+  }, 200);
   /**
    * position - get current users position.
    * if user has scrolled to new section,

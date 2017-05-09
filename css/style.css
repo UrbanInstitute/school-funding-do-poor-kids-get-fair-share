@@ -111,8 +111,8 @@ g.dotChartSelected .dotHoverText.hidden, g.dotChartSelected .dotSumLine.hidden {
 #scatterPlotXAxis path, #scatterPlotYAxis path, #histXAxis path, #histYAxis path{
   display: none;
 }
-.axisLabel{
-  font-size: 12px;
+.axisLabel, .scatterAxisLabel{
+  font-size: 14px;
   font-style: italic;
 }
 .scatterAxis, .histAxis{
@@ -197,7 +197,7 @@ g.dotChartSelected .dotHoverText.hidden, g.dotChartSelected .dotSumLine.hidden {
   font-size: 12px;
 }
 
-#isMobile, #isPhone, #sectionIndex{
+#isMobile, #isPhone, #isShort, #sectionIndex{
     display: none;
     pointer-events: none;
     width: 0;
@@ -206,6 +206,32 @@ g.dotChartSelected .dotHoverText.hidden, g.dotChartSelected .dotSumLine.hidden {
     top: 0;
     left: 0;
 }
+
+@media (max-height: 880px){
+  #isShort{
+    display: block;
+  }
+  .mapFL{
+    top: 0px;
+    left: 160px;
+    width: 493px;
+  }
+  .mapNY{
+    top: -70px;
+    left: 166px;
+    width: 563px;
+  }
+  .scatterButton{
+    bottom: 80px;
+  }
+}
+
+@media (max-height: 670px){
+  #isPhone{
+    display: block;
+  }
+}
+
 @media (max-width: 1200px){
   .container{
     margin-left: 10px;

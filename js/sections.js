@@ -7,9 +7,16 @@
 var scrollVis = function () {
   // constants to define the size
   // and margins of the vis area.
-  var width = IS_PHONE() ? PHONE_VIS_WIDTH : VIS_WIDTH;
-  var height = IS_PHONE() ? PHONE_VIS_HEIGHT : VIS_HEIGHT;
+  var width;
+  var height;
   
+  if ( IS_PHONE() ){ width = PHONE_VIS_WIDTH }
+  else if ( IS_SHORT() ){ width = SHORT_VIS_WIDTH }
+  else{ width = VIS_WIDTH} 
+
+  if ( IS_PHONE() ){ height = PHONE_VIS_HEIGHT }
+  else if ( IS_SHORT() ){ height = SHORT_VIS_HEIGHT }
+  else{ height = VIS_HEIGHT} 
 
   // Keep track of which visualization
   // we are on and which was the last
@@ -41,10 +48,11 @@ var scrollVis = function () {
   var dotChartX = d3.scaleLinear()
             .range([width, 0]);
 
+  var scatterWidth = IS_SHORT() ? SHORT_SCATTER_WIDTH : width;
   var scatterPlotY = d3.scaleLinear()
-            .range([width, 0]);
+            .range([scatterWidth, 0]);
   var scatterPlotX = d3.scaleLinear()
-            .range([0, width]);
+            .range([0, scatterWidth]);
 
 
   var histX = d3.scaleLinear().rangeRound([0, histWidth + histMargin.right + histMargin.left]),
@@ -163,8 +171,25 @@ var scrollVis = function () {
     var stateG = g.selectAll(".stateG")
         .data(dotChartData)
         .enter().append("g")
-        .attr("class", function(d){ return "stateG " + d.state })
+        .attr("class", function(d){ return "includeHighlight stateG " + d.state })
         .attr("transform",function(d){ return "translate(0," + dotChartY(d.state) + ")" })
+    var shortStateG = g.selectAll(".shortStateG")
+        .data(dotChartData)
+        .enter().append("g")
+        .attr("class", function(d){ return "noHighlight shortStateG " + d.state })
+        .attr("transform",function(d){ return "translate(0," + (height-55) + ")" })
+    var highlightShortStateG = g.selectAll(".shortStateG.highlight")
+        .data(dotChartData)
+        .enter().append("g")
+        .attr("class", function(d){ return "includeHighlight highlight shortStateG " + d.state })
+        .attr("transform",function(d){ return "translate(0," + dotChartY(d.state) + ")" })
+
+    highlightShortStateG.append("rect")
+      .attr("width",width+100)
+      .attr("height",14)
+      .attr("x",-100)
+      .attr("y",-7)
+      .attr("class", "dotHoverRect")
 
     stateG.append("rect")
       .attr("width",width+100)
@@ -300,72 +325,75 @@ var scrollVis = function () {
         .attr("cx", function(d) { return dotChartX(d.localRevenue); })
         .attr("r", SMALL_DOT_RADIUS)
 
+    function appendTooltip(group){
+      group.append("rect")
+        .attr("width",200)
+        .attr("height",44)
+        .attr("x",width-200)
+        .attr("y",7)
+        .attr("class", "dotHoverRect dotTooltip dotTooltipBg")
+        .style("opacity",.8)
 
-    stateG.append("rect")
-      .attr("width",200)
-      .attr("height",44)
-      .attr("x",width-200)
-      .attr("y",7)
-      .attr("class", "dotHoverRect dotTooltip dotTooltipBg")
-      .style("opacity",.8)
+      group.append("text")
+        .attr("x",width-180)
+        .attr("y",34)
+        .text("Local: ")
+        .attr("class", "dotHoverText dotTooltip")
 
-    stateG.append("text")
-      .attr("x",width-180)
-      .attr("y",34)
-      .text("Local: ")
-      .attr("class", "dotHoverText dotTooltip")
+      group.append("text")
+        .attr("x",width-180)
+        .attr("y",54)
+        .text("State: ")
+        .attr("class", "dotHoverText dotTooltip hidden show1")
 
-    stateG.append("text")
-      .attr("x",width-180)
-      .attr("y",54)
-      .text("State: ")
-      .attr("class", "dotHoverText dotTooltip hidden show1")
+      group.append("text")
+        .attr("x",width-180)
+        .attr("y",74)
+        .text("Federal: ")
+        .attr("class", "dotHoverText dotTooltip hidden show2")
 
-    stateG.append("text")
-      .attr("x",width-180)
-      .attr("y",74)
-      .text("Federal: ")
-      .attr("class", "dotHoverText dotTooltip hidden show2")
+      group.append("text")
+        .attr("x",width-20)
+        .attr("y",34)
+        .attr("text-anchor","end")
+        .text(function(d){ return DOLLARS(d.localRevenue)})
+        .attr("class", "dotHoverText dotTooltip localValue")
+      group.append("text")
+        .attr("x",width-20)
+        .attr("y",54)
+        .attr("text-anchor","end")
+        .text(function(d){ return DOLLARS(d.stateRevenue)})
+        .attr("class", "dotHoverText dotTooltip stateValue hidden show1")
+      group.append("text")
+        .attr("x",width-20)
+        .attr("y",74)
+        .attr("text-anchor","end")
+        .text(function(d){ return DOLLARS(d.federalRevenue)})
+        .attr("class", "dotHoverText dotTooltip federalValue hidden show2")
 
-    stateG.append("text")
-      .attr("x",width-20)
-      .attr("y",34)
-      .attr("text-anchor","end")
-      .text(function(d){ return DOLLARS(d.localRevenue)})
-      .attr("class", "dotHoverText dotTooltip localValue")
-    stateG.append("text")
-      .attr("x",width-20)
-      .attr("y",54)
-      .attr("text-anchor","end")
-      .text(function(d){ return DOLLARS(d.stateRevenue)})
-      .attr("class", "dotHoverText dotTooltip stateValue hidden show1")
-    stateG.append("text")
-      .attr("x",width-20)
-      .attr("y",74)
-      .attr("text-anchor","end")
-      .text(function(d){ return DOLLARS(d.federalRevenue)})
-      .attr("class", "dotHoverText dotTooltip federalValue hidden show2")
-
-    stateG.append("line")
-      .attr("x1",width - 110)
-      .attr("x2",width - 20)
-      .attr("y1", 84)
-      .attr("y2", 84)
-      .attr("class", "dotSumLine hidden show1")
-      .style("stroke","#333")
-    stateG.append("text")
-      .attr("x",width-100 )
-      .attr("y",74)
-      .text("+")
-      .attr("class", "dotHoverText dotSumPlus dotTooltip hidden show1")
+      group.append("line")
+        .attr("x1",width - 110)
+        .attr("x2",width - 20)
+        .attr("y1", 84)
+        .attr("y2", 84)
+        .attr("class", "dotSumLine hidden show1")
+        .style("stroke","#333")
+      group.append("text")
+        .attr("x",width-100 )
+        .attr("y",74)
+        .text("+")
+        .attr("class", "dotHoverText dotSumPlus dotTooltip hidden show1")
 
 
-    stateG.append("text")
-      .attr("x",width-20)
-      .attr("y",104)
-      .attr("text-anchor","end")
-      .text(function(d){ return DOLLARS(d.federalRevenue + d.stateRevenue + d.localRevenue)})
-      .attr("class", "dotHoverText dotTooltip totalValue hidden show1")
+      group.append("text")
+        .attr("x",width-20)
+        .attr("y",104)
+        .attr("text-anchor","end")
+        .text(function(d){ return DOLLARS(d.federalRevenue + d.stateRevenue + d.localRevenue)})
+        .attr("class", "dotHoverText dotTooltip totalValue hidden show1")
+    }
+    appendTooltip(stateG)
+    appendTooltip(shortStateG)
 
 
 
@@ -387,7 +415,7 @@ var scrollVis = function () {
     // scatter plot
     g.append("g")
         .attr("id", "scatterPlotXAxis")
-        .attr("transform", "translate(0," + (width)  + ")")
+        .attr("transform", "translate(0," + (scatterWidth)  + ")")
         .call(d3.axisBottom(scatterPlotX))
         .style("opacity",0)
 
@@ -399,7 +427,7 @@ var scrollVis = function () {
 
     d3.selectAll("#scatterPlotYAxis .tick line")
       .attr("x1", 0)
-      .attr("x2", width)
+      .attr("x2", scatterWidth)
       .attr("class", function(d){
         if (d == 1){
           return "scatterAxis"
@@ -464,6 +492,19 @@ var scrollVis = function () {
       .attr("y", 450)
       .text("BECAME REGRESSIVE")
       .style("opacity",0)
+
+    g.append("text")
+      .attr("class", "scatterAxisLabel")
+      .text("Poverty/Non Poverty adjusted revenue ratio, 1995")
+      .attr("y", scatterWidth + 50)
+      .attr("x", 150)
+      .style("opacity",0)
+    g.append("text")
+      .attr("class", "scatterAxisLabel")
+      .text("Poverty/Non Poverty adjusted revenue ratio, 2014")
+      .attr("transform", "translate(" + -60 + "," + 430 + ")rotate(270)")
+      .style("opacity",0)
+      
 
     var defs = svg.append("defs");
     var filter = defs.append("filter")
@@ -643,7 +684,7 @@ var scrollVis = function () {
     d3.selectAll("#scatterPlotYAxis .tick line")
       .transition()
       .attr("x1", 0)
-      .attr("x2", width)
+      .attr("x2", scatterWidth)
       .attr("class", function(d){
         if (d == 1){
           return "scatterAxis"
@@ -654,7 +695,7 @@ var scrollVis = function () {
     d3.selectAll("#scatterPlotXAxis .tick line")
       .transition()
       .attr("y2", 0)
-      .attr("y1", -width)
+      .attr("y1", -scatterWidth)
       .attr("class", function(d){
         if (d == 1){
           return "scatterAxis"
@@ -841,16 +882,17 @@ svg
   })
   .on("click", function(){
     d3.event.stopPropagation();
+    var groupSelector = (IS_PHONE() || IS_SHORT()) ? ".shortStateG" : ".stateG"
     if(d3.selectAll(".dotChartClicked.dotChartSelected").nodes().length == 1){
     //if already clicked, re-click to deselect
       d3.selectAll(".dotChartClicked")
         .classed("dotChartClicked", false)
-      d3.selectAll(".stateG.dotChartSelected")
+      d3.selectAll(groupSelector + ".dotChartSelected")
         .classed("dotChartSelected", false)
     }
     d3.selectAll(".dotChartClicked")
       .classed("dotChartClicked", false)
-    d3.selectAll(".stateG.dotChartSelected")
+    d3.selectAll(groupSelector + ".dotChartSelected")
       .classed("dotChartClicked", true)
 
 
@@ -907,16 +949,17 @@ function removeScatterTooltip(d, i){
     .classed("scatterSelected", false)
 }
 function showDotTooltip(m, sectionIndex){
+    var groupSelector = (IS_PHONE() || IS_SHORT()) ? ".shortStateG" : ".stateG"
     var yCoord = m[1] - margin.top
     var states = dotChartY.domain()
     var band = dotChartY.step()
     for(var i = 0; i < states.length; i++){
       var state = dotChartY(states[i]);
       if(yCoord < (state + band/2) && yCoord > (state - band/2)){
-        d3.selectAll(".stateG")
+        d3.selectAll(groupSelector)
           .classed("dotChartSelected", false)
 
-        var selectedG = d3.select(".stateG." + states[i])
+        var selectedG = d3.selectAll(groupSelector + "." + states[i])
           .classed("dotChartSelected", true)
         selectedG.node().parentNode.appendChild(selectedG.node())
         // selectedG.select(".dotTooltip.stateValue")
@@ -934,7 +977,7 @@ function clearClicked(){
 
 }
 function removeDotTooltip(){
-  d3.selectAll(".stateG")
+  d3.selectAll(".dotChartSelected")
       .classed("dotChartSelected", false)
   if(SECTION_INDEX() < 3){
       d3.selectAll(".dotChartClicked")
@@ -1012,6 +1055,8 @@ var  drawOutlierLabels = function(cat, outliers){
    *
    */
   function localDots(dotChartData) {
+    d3.selectAll(".shortStateG.noHighlight").transition().attr("transform",function(d){ return "translate(0," + (height-55) + ")" })
+
     d3.selectAll(".show2").classed("hidden", true)
     d3.selectAll(".show1").classed("hidden", true)
     d3.selectAll(".dotTooltipBg").transition().attr("height",44)
@@ -1047,7 +1092,7 @@ var  drawOutlierLabels = function(cat, outliers){
         .style("opacity",0)
         .on("end", function(d, i){
           if(d.state == "NJ"){
-            d3.selectAll(".stateG")
+            d3.selectAll(".includeHighlight")
               .transition()
               .duration(1000)
               .attr("transform",function(d){ return "translate(0," + dotChartY(d.state) + ")" })
@@ -1080,6 +1125,8 @@ var  drawOutlierLabels = function(cat, outliers){
   }
 
   function stateDots(dotChartData){
+    d3.selectAll(".shortStateG.noHighlight").transition().attr("transform",function(d){ return "translate(0," + (height-105) + ")" })
+
     d3.selectAll(".show2").classed("hidden", true)
     d3.selectAll(".show1").classed("hidden", false)
     d3.selectAll(".dotTooltipBg").transition().attr("height",94)
@@ -1131,7 +1178,7 @@ var  drawOutlierLabels = function(cat, outliers){
         .attr("cx", function(d) { return dotChartX(d.stateRevenue); })
         .on("end", function(d, i){
           if(d.state == "NJ"){
-            d3.selectAll(".stateG")
+            d3.selectAll(".includeHighlight")
               .transition()
               .duration(1000)
               .attr("transform",function(d){ return "translate(0," + dotChartY(d.state) + ")" })
@@ -1195,6 +1242,7 @@ var  drawOutlierLabels = function(cat, outliers){
     d3.selectAll(".dotChartClicked")
       .classed("dotChartSelected", true)
 
+    d3.selectAll(".shortStateG.noHighlight").transition().attr("transform",function(d){ return "translate(0," + (height-125) + ")" })
     d3.selectAll(".show2").classed("hidden", false)
     d3.selectAll(".show1").classed("hidden", false)
     d3.selectAll(".dotTooltipBg").transition().attr("height",114)
@@ -1243,7 +1291,7 @@ var  drawOutlierLabels = function(cat, outliers){
         .attr("cx", function(d) { return dotChartX(d.federalRevenue); })
         .on("end", function(d, i){
           if(d.state == "AK"){
-            d3.selectAll(".stateG")
+            d3.selectAll(".includeHighlight")
               .transition()
               .duration(1000)
               .attr("transform",function(d){ return "translate(0," + dotChartY(d.state) + ")" })
@@ -1371,7 +1419,7 @@ var  drawOutlierLabels = function(cat, outliers){
       .attr("height", function(d) { return histHeight - histY(d.tractFlCount); })
 
 
-    d3.selectAll(".stateG")
+    d3.selectAll(".dotChartSelected")
       .classed("dotChartSelected", false)
     d3.selectAll(".stateG:not(.FL) .dotChartDot")
       .transition()
@@ -1552,6 +1600,9 @@ var  drawOutlierLabels = function(cat, outliers){
     d3.selectAll(".largeScatterplotLabel")
       .transition()
       .style("opacity",0)
+    d3.selectAll(".scatterAxisLabel")
+      .transition()
+      .style("opacity",0)
   }
   function dotsOverTime(){
     d3.select("#vis svg").classed("nonInteractive", false)
@@ -1607,6 +1658,9 @@ var  drawOutlierLabels = function(cat, outliers){
       .transition()
       .style("opacity",1)
     d3.selectAll(".largeScatterplotLabel")
+      .transition()
+      .style("opacity",1)
+    d3.selectAll(".scatterAxisLabel")
       .transition()
       .style("opacity",1)
 
