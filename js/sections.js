@@ -192,6 +192,27 @@ var scrollVis = function () {
       var morphG = svg.append("g").attr("transform","translate(90,0)")
       var morphPath = morphG.append("path").attr("id","morphPath");
       var morphCircles = morphG.append("g").attr("id","morphCircles");
+  
+      var defs = svg.append("defs");
+      var filter = defs.append("filter")
+        .attr("id", "drop-shadow")
+        .attr("height", "130%");
+      filter.append("feGaussianBlur")
+          .attr("in", "SourceAlpha")
+          .attr("stdDeviation", 5)
+      filter.append("feOffset")
+          .attr("dx", 5)
+          .attr("dy", 5)
+      filter.append("feComponentTransfer")
+          .append("feFuncA")
+          .attr("type", "linear")
+          .attr("slope",.5)
+
+      var feMerge = filter.append("feMerge");
+
+      feMerge.append("feMergeNode")
+      feMerge.append("feMergeNode")
+          .attr("in", "SourceGraphic");
 
       
       function draw() {
@@ -222,6 +243,11 @@ var scrollVis = function () {
 
       }
       draw();
+    var highlightBar = g.selectAll(".highlightBar")
+        .data(dotChartData)
+        .enter().append("g")
+        .attr("class", function(d){ return "includeHighlight highlightBar " + d.state })
+        .attr("transform",function(d){ return "translate(0," + dotChartY(d.state) + ")" })
 
     var stateG = g.selectAll(".stateG")
         .data(dotChartData)
@@ -233,25 +259,21 @@ var scrollVis = function () {
         .enter().append("g")
         .attr("class", function(d){ return "noHighlight shortStateG " + d.state })
         .attr("transform",function(d){ return "translate(0," + (height-55) + ")" })
-    var highlightShortStateG = g.selectAll(".shortStateG.highlight")
-        .data(dotChartData)
-        .enter().append("g")
-        .attr("class", function(d){ return "includeHighlight highlight shortStateG " + d.state })
-        .attr("transform",function(d){ return "translate(0," + dotChartY(d.state) + ")" })
 
-    highlightShortStateG.append("rect")
+
+    highlightBar.append("rect")
       .attr("width",width+100)
       .attr("height",14)
       .attr("x",-100)
       .attr("y",-7)
       .attr("class", "dotHoverRect")
 
-    stateG.append("rect")
-      .attr("width",width+100)
-      .attr("height",14)
-      .attr("x",-100)
-      .attr("y",-7)
-      .attr("class", "dotHoverRect")
+    // stateG.append("rect")
+    //   .attr("width",width+100)
+    //   .attr("height",14)
+    //   .attr("x",-100)
+    //   .attr("y",-7)
+    //   .attr("class", "dotHoverRect")
 
 
     g.append("text")
@@ -412,66 +434,73 @@ var scrollVis = function () {
 
     function appendTooltip(group){
       group.append("rect")
-        .attr("width",200)
+        .attr("width",180)
         .attr("height",44)
-        .attr("x",width-200)
+        .attr("x",width-180)
         .attr("y",7)
         .attr("class", "dotHoverRect dotTooltip dotTooltipBg")
-        .style("opacity",.8)
+        .style("filter", "url(#drop-shadow)")
+
 
       group.append("text")
-        .attr("x",width-180)
+        .attr("x",width-70)
         .attr("y",34)
-        .text("Local: ")
-        .attr("class", "dotHoverText dotTooltip")
+        .text("(local)")
+        .attr("class", "dotHoverText text dotTooltip")
 
       group.append("text")
-        .attr("x",width-180)
+        .attr("x",width-70)
         .attr("y",54)
-        .text("State: ")
-        .attr("class", "dotHoverText dotTooltip hidden show1")
+        .text("(state)")
+        .attr("class", "dotHoverText text dotTooltip hidden show1")
 
       group.append("text")
-        .attr("x",width-180)
+        .attr("x",width-70)
         .attr("y",74)
-        .text("Federal: ")
-        .attr("class", "dotHoverText dotTooltip hidden show2")
+        .text("(federal)")
+        .attr("class", "dotHoverText text dotTooltip hidden show2")
 
       group.append("text")
-        .attr("x",width-20)
+        .attr("x",width-70)
+        .attr("y",104)
+        .text("(total)")
+        .attr("class", "dotHoverText text dotTooltip totalLabel hidden show1")
+
+      group.append("text")
+        .attr("x",width-80)
         .attr("y",34)
         .attr("text-anchor","end")
         .text(function(d){ return DOLLARS(d.localRevenue)})
         .attr("class", "dotHoverText dotTooltip localValue")
       group.append("text")
-        .attr("x",width-20)
+        .attr("x",width-80)
         .attr("y",54)
         .attr("text-anchor","end")
         .text(function(d){ return DOLLARS(d.stateRevenue)})
         .attr("class", "dotHoverText dotTooltip stateValue hidden show1")
       group.append("text")
-        .attr("x",width-20)
+        .attr("x",width-80)
         .attr("y",74)
         .attr("text-anchor","end")
         .text(function(d){ return DOLLARS(d.federalRevenue)})
         .attr("class", "dotHoverText dotTooltip federalValue hidden show2")
 
       group.append("line")
-        .attr("x1",width - 110)
-        .attr("x2",width - 20)
+        .attr("x1",width - 160)
+        .attr("x2",width - 80)
         .attr("y1", 84)
         .attr("y2", 84)
         .attr("class", "dotSumLine hidden show1")
         .style("stroke","#333")
       group.append("text")
-        .attr("x",width-100 )
+        .attr("x",width-160 )
         .attr("y",74)
         .text("+")
         .attr("class", "dotHoverText dotSumPlus dotTooltip hidden show1")
 
 
       group.append("text")
-        .attr("x",width-20)
+        .attr("x",width-80)
         .attr("y",104)
         .attr("text-anchor","end")
         .text(function(d){ return DOLLARS(d.federalRevenue + d.stateRevenue + d.localRevenue)})
@@ -653,26 +682,6 @@ var scrollVis = function () {
       .style("opacity",0)
       
 
-    var defs = svg.append("defs");
-    var filter = defs.append("filter")
-      .attr("id", "drop-shadow")
-      .attr("height", "130%");
-    filter.append("feGaussianBlur")
-        .attr("in", "SourceAlpha")
-        .attr("stdDeviation", 5)
-    filter.append("feOffset")
-        .attr("dx", 5)
-        .attr("dy", 5)
-    filter.append("feComponentTransfer")
-        .append("feFuncA")
-        .attr("type", "linear")
-        .attr("slope",.5)
-
-    var feMerge = filter.append("feMerge");
-
-    feMerge.append("feMergeNode")
-    feMerge.append("feMergeNode")
-        .attr("in", "SourceGraphic");
 
     var scatterTooltipContainer = g.append("g")
       .attr("id","scatterTooltipContainer")
@@ -1199,12 +1208,14 @@ function showDotTooltip(m, sectionIndex){
     for(var i = 0; i < states.length; i++){
       var state = dotChartY(states[i]);
       if(yCoord < (state + band/2) && yCoord > (state - band/2)){
-        d3.selectAll(groupSelector)
+        d3.selectAll(".dotChartSelected")
           .classed("dotChartSelected", false)
 
         var selectedG = d3.selectAll(groupSelector + "." + states[i])
           .classed("dotChartSelected", true)
         selectedG.node().parentNode.appendChild(selectedG.node())
+        d3.selectAll(".highlightBar." + states[i])
+          .classed("dotChartSelected", true)
         // selectedG.select(".dotTooltip.stateValue")
 
         break;
@@ -1380,6 +1391,7 @@ var  drawOutlierLabels = function(cat, outliers){
     d3.selectAll(".show1").classed("hidden", false)
     d3.selectAll(".dotTooltipBg").transition().attr("height",94)
     d3.selectAll(".totalValue").text(function(d){ return DOLLARS(d.stateRevenue + d.localRevenue)}).transition().attr("y", 84)
+    d3.selectAll(".totalLabel").transition().attr("y", 84)
     d3.selectAll(".dotSumLine").transition().attr("y1", 64).attr("y2", 64)
     d3.selectAll(".dotSumPlus").transition().attr("y", 54)
 
@@ -1517,6 +1529,7 @@ var  drawOutlierLabels = function(cat, outliers){
     d3.selectAll(".show1").classed("hidden", false)
     d3.selectAll(".dotTooltipBg").transition().attr("height",114)
     d3.selectAll(".totalValue").text(function(d){ return DOLLARS(d.federalRevenue + d.stateRevenue + d.localRevenue)}).transition().attr("y", 104)
+    d3.selectAll(".totalLabel").transition().attr("y", 104)
     d3.selectAll(".dotSumLine").transition().attr("y1", 84).attr("y2", 84)
     d3.selectAll(".dotSumPlus").transition().attr("y", 74)
 
