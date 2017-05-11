@@ -189,36 +189,57 @@ var scrollVis = function () {
    * @param histData - binned histogram data
    */
   var setupVis = function (dotChartData, scatterplotData, histData) {
-      var morphG = svg.append("g").attr("transform","translate(90,0)")
+      var coords = (IS_SHORT()) ? "translate(180,19)" : "translate(90,0)"
+      var morphG = svg.append("g").attr("id","morphG").attr("transform",coords)
       var morphPath = morphG.append("path").attr("id","morphPath");
       var morphCircles = morphG.append("g").attr("id","morphCircles");
   
       var defs = svg.append("defs");
-      var filter = defs.append("filter")
-        .attr("id", "drop-shadow")
+      var filterLeft = defs.append("filter")
+        .attr("id", "drop-shadow-left")
         .attr("height", "130%");
-      filter.append("feGaussianBlur")
+      filterLeft.append("feGaussianBlur")
           .attr("in", "SourceAlpha")
           .attr("stdDeviation", 5)
-      filter.append("feOffset")
-          .attr("dx", 5)
+      filterLeft.append("feOffset")
+          .attr("dx", -5)
           .attr("dy", 5)
-      filter.append("feComponentTransfer")
+      filterLeft.append("feComponentTransfer")
           .append("feFuncA")
           .attr("type", "linear")
-          .attr("slope",.5)
+          .attr("slope",.2)
 
-      var feMerge = filter.append("feMerge");
+      var feMergeLeft = filterLeft.append("feMerge");
 
-      feMerge.append("feMergeNode")
-      feMerge.append("feMergeNode")
+      feMergeLeft.append("feMergeNode")
+      feMergeLeft.append("feMergeNode")
+          .attr("in", "SourceGraphic");
+
+      var filterRight = defs.append("filter")
+        .attr("id", "drop-shadow-right")
+        .attr("height", "130%");
+      filterRight.append("feGaussianBlur")
+          .attr("in", "SourceAlpha")
+          .attr("stdDeviation", 5)
+      filterRight.append("feOffset")
+          .attr("dx", 5)
+          .attr("dy", 5)
+      filterRight.append("feComponentTransfer")
+          .append("feFuncA")
+          .attr("type", "linear")
+          .attr("slope",.2)
+
+      var feMergeRight = filterRight.append("feMerge");
+
+      feMergeRight.append("feMergeNode")
+      feMergeRight.append("feMergeNode")
           .attr("in", "SourceGraphic");
 
       
       function draw() {
 
-        var a = floridaShape,
-            b = newYorkShape;
+        var a = (IS_SHORT()) ? floridaShortShape : floridaShape,
+            b = (IS_SHORT()) ? newYorkShortShape : newYorkShape
 
         // Same number of points on each ring
         if (a.length < b.length) {
@@ -242,7 +263,9 @@ var scrollVis = function () {
 
 
       }
-      draw();
+      if( ! IS_PHONE()){
+        draw();
+      }
     var highlightBar = g.selectAll(".highlightBar")
         .data(dotChartData)
         .enter().append("g")
@@ -432,14 +455,14 @@ var scrollVis = function () {
         .attr("cx", function(d) { return dotChartX(d.localRevenue); })
         .attr("r", SMALL_DOT_RADIUS)
 
-    function appendTooltip(group){
+    function appendTooltip(group, direction){
       group.append("rect")
         .attr("width",180)
         .attr("height",44)
         .attr("x",width-180)
         .attr("y",7)
         .attr("class", "dotHoverRect dotTooltip dotTooltipBg")
-        .style("filter", "url(#drop-shadow)")
+        .style("filter", "url(#drop-shadow-" + direction + ")")
 
 
       group.append("text")
@@ -506,8 +529,8 @@ var scrollVis = function () {
         .text(function(d){ return DOLLARS(d.federalRevenue + d.stateRevenue + d.localRevenue)})
         .attr("class", "dotHoverText dotTooltip totalValue hidden show1")
     }
-    appendTooltip(stateG)
-    appendTooltip(shortStateG)
+    appendTooltip(stateG, "left")
+    appendTooltip(shortStateG, "right")
 
 
 
@@ -692,7 +715,7 @@ var scrollVis = function () {
       .attr("height",130)
       .attr("fill","#fff")
       .style("opacity",.85)
-      .style("filter", "url(#drop-shadow)")
+      .style("filter", "url(#drop-shadow-right)")
     scatterTooltipContainer.append("text")
       .attr("x",20)
       .attr("y", 30)
@@ -1019,7 +1042,7 @@ var scrollVis = function () {
       .attr("class","keyLabel")
   }else{
     mapLegend = g.append("g")
-      .attr("transform", "translate(" + (width - 45) + ",-20)")
+      .attr("transform", "translate(" + (width - 45) + ",0)")
       .attr("id","mapLegend")
       .attr("class", "mapElements")
       .style("opacity",0)
@@ -1822,7 +1845,12 @@ var  drawOutlierLabels = function(cat, outliers){
       
       gridlines()
 
-    if (parseInt(d3.select("#morphPath").style("opacity")) == 1){
+    if (parseInt(d3.select("#morphPath").style("opacity")) == 1 && ! IS_PHONE()){
+      var coords = (IS_SHORT()) ? "translate(180,19)" : "translate(90,0)"
+      d3.select("#morphG")
+        .transition()
+        .duration(1000)
+        .attr("transform", coords)
       d3.select("#morphPath")
         .transition()
         .duration(1000)
@@ -1896,28 +1924,33 @@ var  drawOutlierLabels = function(cat, outliers){
 
     gridlines()
 
-        //   var t = d3.transition()
-        // .duration(3000);
+    if(! IS_PHONE()){
+    var coords = (IS_SHORT()) ? "translate(180,-43)" : "translate(90,-73)"
+      d3.select("#morphG")
+        .transition()
+        .duration(1000)
+        .attr("transform", coords)
 
-    d3.select("#morphPath")
-      .transition()
-      .duration(100)
-      .style("opacity",1)
-      .transition()
-      .duration(1000)
-      .attr("d", join(newYorkMorphData))
-      .style("fill","#73bfe2");
+      d3.select("#morphPath")
+        .transition()
+        .duration(100)
+        .style("opacity",1)
+        .transition()
+        .duration(1000)
+        .attr("d", join(newYorkMorphData))
+        .style("fill","#73bfe2");
 
-    d3.select("#morphCircles").selectAll("circle").data(newYorkMorphData)
-      .transition()
-      .delay(100)
-      .duration(1000)
-      .attr("cx",function(d){
-        return d[0];
-      })
-      .attr("cy",function(d){
-        return d[1];
-      });
+      d3.select("#morphCircles").selectAll("circle").data(newYorkMorphData)
+        .transition()
+        .delay(100)
+        .duration(1000)
+        .attr("cx",function(d){
+          return d[0];
+        })
+        .attr("cy",function(d){
+          return d[1];
+        });
+    }
 
     d3.select(".floridaDistrictsImg")
       .transition()

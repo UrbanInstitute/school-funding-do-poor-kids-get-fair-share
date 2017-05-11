@@ -206,7 +206,7 @@ circle.morph{
 }
 .mapNY{
     position: absolute;
-    top: 0px;
+    top: -73px;
     left: 90px;
     width: 600px;
 }
@@ -235,14 +235,14 @@ circle.morph{
     display: block;
   }
   .mapFL{
-    top: 0px;
-    left: 160px;
-    width: 493px;
+    top: 19px;
+    left: 180px;
+    width: 473px;
   }
   .mapNY{
-    top: -70px;
-    left: 176px;
-    width: 543px;
+    top: -43px;
+    left: 180px;
+    width: 473px;
   }
   .scatterButton{
     bottom: 80px;
