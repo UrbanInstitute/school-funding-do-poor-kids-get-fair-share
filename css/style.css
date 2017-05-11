@@ -192,19 +192,23 @@ g.dotChartSelected .dotHoverText.hidden, g.dotChartSelected .dotSumLine.hidden {
   left: 287px;
 }
 
+circle.morph{
+  fill: none;
+  stroke: none;
+}
 .mapImg{
   /*pointer-events: none;*/
 }
 .mapNY{
     position: absolute;
     top: 0px;
-    left: 130px;
+    left: 90px;
     width: 600px;
 }
 .mapFL{
     position: absolute;
     top: 0px;
-    left: 130px;
+    left: 90px;
     width: 600px;
 }
 .keyLabel{

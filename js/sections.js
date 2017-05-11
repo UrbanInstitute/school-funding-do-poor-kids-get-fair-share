@@ -50,6 +50,9 @@ var scrollVis = function () {
 
   var histG = null;
 
+  var newYorkMorphData = null;
+  var floridaMorphData = null;
+
   var dotChartY = d3.scaleBand()
             .range([0, height])
             .padding(0.95);
@@ -186,6 +189,40 @@ var scrollVis = function () {
    * @param histData - binned histogram data
    */
   var setupVis = function (dotChartData, scatterplotData, histData) {
+      var morphG = svg.append("g").attr("transform","translate(90,0)")
+      var morphPath = morphG.append("path").attr("id","morphPath");
+      var morphCircles = morphG.append("g").attr("id","morphCircles");
+
+      
+      function draw() {
+
+        var a = floridaShape,
+            b = newYorkShape;
+
+        // Same number of points on each ring
+        if (a.length < b.length) {
+          addPoints(a, b.length - a.length);
+        } else if (b.length < a.length) {
+          addPoints(b, a.length - b.length);
+        }
+
+        // Pick optimal winding
+        a = wind(a, b);
+        newYorkMorphData = b;
+        floridaMorphData = a;
+
+        morphPath.attr("d", join(a))
+        .style("fill","#12719e")
+        .style("opacity",0);
+
+        // Redraw points
+        morphCircles.datum(a)
+          .call(updateCircles);
+
+
+      }
+      draw();
+
     var stateG = g.selectAll(".stateG")
         .data(dotChartData)
         .enter().append("g")
@@ -645,7 +682,7 @@ var scrollVis = function () {
       .attr("width",158)
       .attr("height",130)
       .attr("fill","#fff")
-      .style("opacity",.7)
+      .style("opacity",.85)
       .style("filter", "url(#drop-shadow)")
     scatterTooltipContainer.append("text")
       .attr("x",20)
@@ -895,6 +932,7 @@ var scrollVis = function () {
 
 
       //florida maps
+
   d3.select("#vis")
     .append("img")
     .attr("class","floridaTractsImg mapImg mapFL")
@@ -929,7 +967,7 @@ var scrollVis = function () {
 
   if(IS_PHONE()){
     mapLegend = g.append("g")
-      .attr("transform", "translate(0,-20)")
+      .attr("transform", "translate(0,0)")
       .attr("id","mapLegend")
       .attr("class", "mapElements")
       .style("opacity",0)
@@ -1133,6 +1171,7 @@ function showScatterTooltip (d, i) {
       newY = 0
   if( (ttX + 158) >= scatterPlotX.range()[1]){ newX = ttX - (158+6)}
   else{ console.log("foo"); newX = ttX + 6}
+  d3.select("#scatterTooltipContainer").node().parentNode.appendChild(d3.select("#scatterTooltipContainer").node());
   d3.select("#scatterTooltipContainer")
     .style("opacity",1)
     .attr("transform", "translate(" + (newX) + "," + (ttY + 6) + ")")
@@ -1665,6 +1704,11 @@ var  drawOutlierLabels = function(cat, outliers){
     d3.select(".newYorkDistrictsImg").style("z-index",2)
     d3.select(".newYorkTractsImg").style("z-index",2)
 
+
+      d3.select("#morphPath")
+        .transition()
+        .style("opacity",0)
+
     histY.domain([0, d3.max(histData, function(d) { return d.tractFlCount; })]);
     d3.selectAll(".mapElements")
       .transition()
@@ -1765,18 +1809,64 @@ var  drawOutlierLabels = function(cat, outliers){
       
       gridlines()
 
-    d3.select(".floridaTractsImg")
-      .transition()
-      .duration(100)
-      .style("opacity",1)
-    d3.select(".floridaDistrictsImg")
-      .transition()
-      .duration(2000)
-      .style("opacity",1)
-    d3.select(".newYorkTractsImg")
-      .transition()
-      .duration(500)
-      .style("opacity",0)
+    if (parseInt(d3.select("#morphPath").style("opacity")) == 1){
+      d3.select("#morphPath")
+        .transition()
+        .duration(1000)
+        .attr("d", join(floridaMorphData))
+        .style("fill","#12719e")
+        .transition()
+        .delay(1000)
+        .duration(100)
+        .style("opacity",0)
+
+      d3.select("#morphCircles").selectAll("circle").data(floridaMorphData)
+        .transition()
+        .delay(100)
+        .duration(1000)
+        .attr("cx",function(d){
+          return d[0];
+        })
+        .attr("cy",function(d){
+          return d[1];
+        });
+        d3.select(".floridaTractsImg")
+          .style("z-index",2)
+          .transition()
+          .delay(2100)
+          .duration(100)
+          .style("opacity",1)
+        d3.select(".floridaDistrictsImg")
+          .style("z-index",2)
+          .transition()
+          .delay(1100)
+          .duration(1000)
+          .style("opacity",1)
+        d3.select(".newYorkTractsImg")
+          .style("z-index",2)
+          .transition()
+          // .delay(1100)
+          .duration(500)
+          .style("opacity",0)
+    }else{
+      d3.select(".floridaTractsImg")
+        .style("z-index",2)
+        .transition()
+        .duration(100)
+        .style("opacity",1)
+      d3.select(".floridaDistrictsImg")
+        .style("z-index",2)
+        .transition()
+        .duration(2000)
+        .style("opacity",1)
+      d3.select(".newYorkTractsImg")
+        .transition()
+        .duration(500)
+        .style("opacity",0)
+    }
+
+
+
 
   }
   function newYorkTracts(histData){
@@ -1793,6 +1883,29 @@ var  drawOutlierLabels = function(cat, outliers){
 
     gridlines()
 
+        //   var t = d3.transition()
+        // .duration(3000);
+
+    d3.select("#morphPath")
+      .transition()
+      .duration(100)
+      .style("opacity",1)
+      .transition()
+      .duration(1000)
+      .attr("d", join(newYorkMorphData))
+      .style("fill","#73bfe2");
+
+    d3.select("#morphCircles").selectAll("circle").data(newYorkMorphData)
+      .transition()
+      .delay(100)
+      .duration(1000)
+      .attr("cx",function(d){
+        return d[0];
+      })
+      .attr("cy",function(d){
+        return d[1];
+      });
+
     d3.select(".floridaDistrictsImg")
       .transition()
       .duration(500)
@@ -1803,10 +1916,12 @@ var  drawOutlierLabels = function(cat, outliers){
       .style("opacity",0)
     d3.select(".newYorkTractsImg")
       .transition()
-      .duration(2000)
+      .delay(800)
+      .duration(1500)
       .style("opacity",1)
     d3.select(".newYorkDistrictsImg")
       .transition()
+      .delay(800)
       .duration(1000)
       .style("opacity",0)
 
@@ -1847,10 +1962,11 @@ var  drawOutlierLabels = function(cat, outliers){
     gridlines()
 
     d3.select(".newYorkDistrictsImg")
+      .style("z-index",2)
       .transition()
       .duration(2000)
       .style("opacity",1)
-      .style("z-index",2)
+      
     d3.selectAll(".scatterDot")
       .classed("scatterSelected", false)
       .transition()
@@ -1878,6 +1994,11 @@ var  drawOutlierLabels = function(cat, outliers){
       .style("opacity",0)
   }
   function dotsOverTime(){
+
+    d3.select("#morphPath")
+      .transition()
+      .style("opacity",0)
+
     if(IS_PHONE()){
       g
         .transition()
@@ -2051,16 +2172,16 @@ function display(dotChartData, scatterplotData, histData) {
           return "inherit"
         }
       })
-      .style("top", function(){
-        if(IS_PHONE()){
-          return ( (window.innerHeight - PHONE_VIS_HEIGHT - margin.top - margin.bottom)*.5 ) + "px"
-        }
-        if(IS_MOBILE()){
-          return ( (window.innerHeight - VIS_HEIGHT - margin.top - margin.bottom)*.5 ) + "px"
-        }else{
-          return "20px"
-        }
-      })
+      // .style("top", function(){
+      //   if(IS_PHONE()){
+      //     return ( (window.innerHeight - PHONE_VIS_HEIGHT - margin.top - margin.bottom)*.5 ) + "px"
+      //   }
+      //   if(IS_MOBILE()){
+      //     return ( (window.innerHeight - VIS_HEIGHT - margin.top - margin.bottom)*.5 ) + "px"
+      //   }else{
+      //     return "20px"
+      //   }
+      // })
     .datum([dotChartData, scatterplotData, histData])
     .call(plot);
 

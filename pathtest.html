@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <style>
+    path {
+      fill: #e3e3e3;
+      stroke-width: 1px;
+      stroke: #666;
+    }
+
+    circle {
+      stroke: none;
+      fill: none;
+    }
+
+    .added {
+      fill: none;
+    }
+  </style>
+</head>
+<body>
+<svg width="960" height="500"></svg>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.3/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.20/topojson.min.js"></script>
+<script src="js/state_svgs.js"></script>
+<script src="js/shapeMorph.js"></script>
+<script>
+
+  var svg = d3.select("svg"),
+      morphPath = svg.append("path"),
+      morphCircles = svg.append("g");
+
+  // d3.json("us.topo.json", function(err, topo){
+
+    // var states = topojson.feature(topo, topo.objects.states).features.map(function(d){
+    //   return d.geometry.coordinates[0];
+    // });
+
+    // d3.shuffle(states);
+
+    draw();
+
+    function draw() {
+
+      var a = floridaShape,
+          b = californiaShape;
+
+      // Same number of points on each ring
+      if (a.length < b.length) {
+        addPoints(a, b.length - a.length);
+      } else if (b.length < a.length) {
+        addPoints(b, a.length - b.length);
+      }
+
+      // Pick optimal winding
+      a = wind(a, b);
+
+      morphPath.attr("d", join(a));
+
+      // Redraw points
+      morphCircles.datum(a)
+        .call(updateCircles);
+
+      // Morph
+      var t = d3.transition()
+        .duration(3000);
+
+      morphPath.transition(t)
+        .attr("d", join(b));
+
+      morphCircles.selectAll("circle").data(b)
+        .transition(t)
+        .attr("cx",function(d){
+          return d[0];
+        })
+        .attr("cy",function(d){
+          return d[1];
+        });
+
+    }
+
+  // });
+
+
+
+</script>
