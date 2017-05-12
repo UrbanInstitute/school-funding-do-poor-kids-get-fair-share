@@ -26,6 +26,7 @@ body{
   top: 0px;
   z-index: 90;
   padding-bottom: 20px;
+  pointer-events: none;
 }
 
 .step {
@@ -41,7 +42,7 @@ body{
   margin-bottom: 10px;
 }
 #extra-space {
-  height: 300px;
+  height: 0px;
 }
 
 #vis {
@@ -71,7 +72,18 @@ body{
 #vis.posRelBottom{
   position: relative;
   float: inherit;
-  padding-left: inherit;
+  padding-left: 6px;
+  /*bottom: 100px;*/
+}
+#vis.posRelBottomSingleCol{
+  position: absolute;
+  float: inherit;
+  padding-left: 10px;
+}
+#vis.posRelTopSingleCol{
+   position: absolute;
+  float: inherit;
+  padding-left: 10px; 
 }
 .axis path,
 .axis line {
@@ -210,7 +222,7 @@ circle.morph{
 .mapNY{
     position: absolute;
     top: -73px;
-    left: 90px;
+    left: 100px;
     width: 600px;
 }
 .mapFL{
@@ -265,13 +277,13 @@ circle.morph{
   }
   .mapNY {
     top: 50px;
-    left: 7px;
-    width: 283px;
+    left: 17px;
+    width: 280px;
   }
   .mapFL {
     top: 110px;
-    left: 10px;
-    width: 280px;
+    left: 19px;
+    width: 270px;
   }
   .scatterButton:hover{
     background-color: #f2f2f2;
@@ -311,18 +323,25 @@ circle.morph{
   #isMobile{
     display: block;
   }
+#extra-space {
+  height: 680px;
+  z-index: -1;
+}
   #sections{
     display: inherit;
     width: 400px;
     margin: 0 auto;
   }
   .step {
-    margin-bottom: 600px;
+    margin-bottom: 1000px;
     opacity: 1;
     background: rgba(255, 255, 255, 0.9);
     box-shadow: rgb(136, 136, 136) 4px 4px 16px;
     padding: 30px;
     z-index: 2;
+  }
+  .step.lastStep{
+    margin-bottom: 0px;
   }
   #vis{
     /*position: fixed;*/

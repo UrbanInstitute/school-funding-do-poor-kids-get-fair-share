@@ -103,24 +103,80 @@ function scroller() {
 
 
   function fixVis(){
-    if(d3.select(".step").node().getBoundingClientRect().top <= 24){
-      if(d3.selectAll(".step").nodes()[d3.selectAll(".step").nodes().length-1].getBoundingClientRect().bottom <= VIS_WIDTH+margin.top+margin.bottom+20+50){
-        d3.select("#vis")
-          .classed("posRelBottom", true)
-          .classed("posRelTop", false)
-          .classed("posFixed", false)  
+    if(! IS_MOBILE()){
+      if(d3.select(".step").node().getBoundingClientRect().top <= 24){
+        if(d3.selectAll(".step").nodes()[d3.selectAll(".step").nodes().length-1].getBoundingClientRect().bottom <= VIS_WIDTH+margin.top+margin.bottom+20+80){
+          d3.select("#vis")
+            .classed("posRelBottomSingleCol", false)
+            .classed("posRelTopSingleCol", false)
+            .classed("posRelBottom", true)
+            .classed("posRelTop", false)
+            .classed("posFixed", false)
+            .style("top", "inherit")
+          d3.select("#sections")
+            .style("z-index",90)
+        }else{
+          d3.select("#vis")
+            .classed("posRelBottomSingleCol", false)
+            .classed("posRelTopSingleCol", false)
+            .classed("posRelBottom", false)
+            .classed("posRelTop", false)
+            .classed("posFixed", true)
+            .style("top", "20px")  
+          d3.select("#sections")
+            .style("z-index",90)
+
+        }
       }else{
-        d3.select("#vis")
-          .classed("posRelBottom", false)
-          .classed("posRelTop", false)
-          .classed("posFixed", true)  
-      }
+          d3.select("#vis")
+            .classed("posRelBottomSingleCol", false)
+            .classed("posRelTopSingleCol", false)
+            .classed("posRelBottom", false)
+            .classed("posRelTop", true)
+            .classed("posFixed", false)  
+            .style("top", "inherit")
+          d3.select("#sections")
+            .style("z-index",90)
+      }    
     }else{
-        d3.select("#vis")
-          .classed("posRelBottom", false)
-          .classed("posRelTop", true)
-          .classed("posFixed", false)  
-    }    
+      if(d3.select(".lastStep").node().getBoundingClientRect().bottom <= 24){
+
+          d3.select("#vis")
+            .classed("posRelBottomSingleCol", true)
+            .classed("posRelTopSingleCol", false)
+            .classed("posRelTop", false)
+            .classed("posFixed", false)
+            .style("top", function(){
+              return (d3.select(".headerimage").node().getBoundingClientRect().height + d3.select(".container").node().getBoundingClientRect().height - VIS_HEIGHT - MARGIN.top - MARGIN.bottom + 165) + "px"
+            })  
+          d3.select("#sections")
+            .style("z-index",-1)
+      }else{
+          if(d3.select(".step").node().getBoundingClientRect().top >= 62){
+            d3.select("#vis")
+              .classed("posRelBottomSingleCol", false)
+              .classed("posRelTopSingleCol", true)
+              .classed("posRelBottom", false)
+              .classed("posRelTop", false)
+              .classed("posFixed", false)
+              .style("top", function(){
+              return (d3.select(".headerimage").node().getBoundingClientRect().height + d3.select("#topText").node().getBoundingClientRect().height +30) + "px"
+            }) 
+            d3.select("#sections")
+              .style("z-index",90)
+          }else{
+            d3.select("#vis")
+              .classed("posRelBottomSingleCol", false)
+              .classed("posRelTopSingleCol", false)
+              .classed("posRelBottom", false)
+              .classed("posRelTop", false)
+              .classed("posFixed", true)
+              .style("top", "20px")  
+            d3.select("#sections")
+              .style("z-index",90)
+          }
+      }    
+    }
   }
   window.setInterval(function(){
     fixVis()

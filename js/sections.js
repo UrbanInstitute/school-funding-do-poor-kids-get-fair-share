@@ -189,7 +189,7 @@ var scrollVis = function () {
    * @param histData - binned histogram data
    */
   var setupVis = function (dotChartData, scatterplotData, histData) {
-      var coords = (IS_SHORT()) ? "translate(180,19)" : "translate(90,0)"
+      var coords = (IS_SHORT()) ? "translate(169,20)" : "translate(80,0)"
       var morphG = svg.append("g").attr("id","morphG").attr("transform",coords)
       var morphPath = morphG.append("path").attr("id","morphPath");
       var morphCircles = morphG.append("g").attr("id","morphCircles");
@@ -1157,35 +1157,41 @@ svg
   .on("click", function(){
     d3.event.stopPropagation();
     var groupSelector = (IS_PHONE() || IS_SHORT()) ? ".shortStateG" : ".stateG"
-    if(d3.selectAll(".dotChartClicked.dotChartSelected").nodes().length == 1){
-    //if already clicked, re-click to deselect
-      d3.selectAll(".dotChartClicked")
-        .classed("dotChartClicked", false)
-      d3.selectAll(groupSelector + ".dotChartSelected")
-        .classed("dotChartSelected", false)
-      d3.selectAll(".highlightBar.dotChartSelected")
-          .classed("dotChartSelected", false)
+    if(SECTION_INDEX() < 3){
+      var m = d3.mouse(this)
+      var yCoord = m[1] - margin.top
+      var states = dotChartY.domain()
+      var band = dotChartY.step()
+      for(var i = 0; i < states.length; i++){
+        var state = dotChartY(states[i]);
+        if(yCoord < (state + band/2) && yCoord > (state - band/2)){
+          var selectedG = d3.selectAll(".highlightBar" + "." + states[i])
+          console.log(selectedG, states[i])
+          selectedG.classed("dotChartClicked", ! selectedG.classed("dotChartClicked"))
+          d3.select(".scatterDot." + states[i]).classed("scatterClicked",  selectedG.classed("dotChartClicked")).style("display","none")
+          break;
+        }          
+      }
     }
-    d3.selectAll(".dotChartClicked")
-      .classed("dotChartClicked", false)
-    d3.selectAll(groupSelector + ".dotChartSelected")
-      .classed("dotChartClicked", true)
-    d3.selectAll(".highlightBar.dotChartSelected")
-          .classed("dotChartClicked", true)
-
-
-
-    if(d3.selectAll(".scatterClicked.scatterSelected").nodes().length == 1){
-    //if already clicked, re-click to deselect
-      d3.selectAll(".scatterClicked")
-        .classed("scatterClicked", false)
-      d3.selectAll(".scatterSelected")
-        .classed("scatterSelected", false)
+    else if((SECTION_INDEX() == "7" || SECTION_INDEX() == 8) && getScatterCat() != ""){
+      if (!svg._voronoi) {
+        svg._voronoi = d3.voronoi()
+        .x(function(d) { return scatterPlotX(getScatterValue(d, "1995")); })
+        .y(function(d) { return scatterPlotY(getScatterValue(d, "2014")); })
+        (scatterplotData);
+      }
+      var p = d3.mouse(this), site;
+      p[0] -= margin.left;
+      p[1] -= margin.top;
+      // don't react if the mouse is close to one of the axis
+      if (p[0] < 5 || p[1] < 5) {
+        site = null;
+      } else {
+        site = svg._voronoi.find(p[0], p[1], maxDistanceFromPoint);
+      }
+      d3.select(".scatterDot." + site.data.state).classed("scatterClicked",  ! d3.select(".scatterDot." + site.data.state).classed("scatterClicked"))
+      d3.select(".highlightBar." + site.data.state).classed("dotChartClicked", ! ! d3.select(".scatterDot." + site.data.state).classed("scatterClicked"))
     }
-    d3.selectAll(".scatterClicked")
-      .classed("scatterClicked", false)
-    d3.selectAll(".scatterSelected")
-      .classed("scatterClicked", true)
   })
 
   d3.select("body").on("click", function(){
@@ -1267,12 +1273,17 @@ function clearClicked(){
   d3.selectAll(".dotChartSelected")
     .classed("dotChartSelected", false)
 
+  d3.selectAll(".scatterClicked")
+    .classed("scatterClicked", false)
+  d3.selectAll(".scatterSelected")
+    .classed("scatterSelected", false)
+
 }
 function removeDotTooltip(){
   d3.selectAll(".dotChartSelected")
       .classed("dotChartSelected", false)
   if(SECTION_INDEX() < 3){
-      d3.selectAll(".dotChartClicked")
+      d3.selectAll(".dotChartClicked.highlightBar")
       .classed("dotChartSelected", true)
   }
 }
@@ -1847,6 +1858,9 @@ var  drawOutlierLabels = function(cat, outliers){
   }
 
   function floridaDistricts(histData){
+    d3.selectAll("#dotChartYAxis .tick text")
+      .transition()
+      .style("opacity", 0) 
     histY.domain([0, d3.max(histData, function(d) { return d.distFlCount; })]);
     d3.select("#histYAxis")
       .transition()
@@ -1861,7 +1875,7 @@ var  drawOutlierLabels = function(cat, outliers){
       gridlines()
 
     if (parseFloat(d3.select("#morphPath").style("opacity")) != 0 && ! IS_PHONE()){
-      var coords = (IS_SHORT()) ? "translate(180,19)" : "translate(90,0)"
+      var coords = (IS_SHORT()) ? "translate(169,20)" : "translate(80,0)"
       d3.select("#morphG")
         .transition()
         .duration(1000)
@@ -1940,7 +1954,7 @@ var  drawOutlierLabels = function(cat, outliers){
     gridlines()
 
     if(! IS_PHONE()){
-    var coords = (IS_SHORT()) ? "translate(180,-43)" : "translate(90,-73)"
+    var coords = (IS_SHORT()) ? "translate(170,-43)" : "translate(90,-73)"
       d3.select("#morphG")
         .transition()
         .duration(1000)
@@ -1995,7 +2009,7 @@ var  drawOutlierLabels = function(cat, outliers){
     }
     d3.selectAll(".scatterOutlierLabel").transition().style("opacity",0)
 
-    d3.selectAll(".scatterClicked").classed("scatterClicked", false)
+    d3.selectAll(".scatterClicked").style("display", "none")
 
     d3.select(".floridaTractsImg").style("z-index",2)
     d3.select(".floridaDistrictsImg").style("z-index",2)
@@ -2055,6 +2069,7 @@ var  drawOutlierLabels = function(cat, outliers){
       .style("opacity",0)
   }
   function dotsOverTime(){
+    d3.selectAll(".scatterClicked").style("display", "block")
 
     d3.select("#morphPath")
       .transition()
@@ -2264,8 +2279,9 @@ function display(dotChartData, scatterplotData, histData) {
   // setup event handling
   scroll.on('active', function (index) {
     // highlight current step text
+    var offOpacity = (IS_MOBILE()) ? 1 : .1
     d3.selectAll('.step')
-      .style('opacity', function (d, i) { return i === index ? 1 : 0.1; });
+      .style('opacity', function (d, i) { return i === index ? 1 : offOpacity; });
     // activate current section
     plot.activate(index);  
     

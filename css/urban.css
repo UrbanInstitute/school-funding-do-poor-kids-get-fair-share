@@ -295,7 +295,7 @@ h2 div{
 
 footer {
     background-color: #f1f2f2;
-    margin-top: 25px;
+    margin-top: 185px;
     padding-top: 50px;
     padding-bottom: 25px;
     bottom: 0;
@@ -303,7 +303,11 @@ footer {
      height:auto;
  
 }
-
+@media (max-height: 880px){
+  footer{
+    margin-top: 25px;
+  }
+}
 footer .content{
   
     max-width: 1100px;
