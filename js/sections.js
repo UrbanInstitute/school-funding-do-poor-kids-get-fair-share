@@ -310,7 +310,7 @@ var scrollVis = function () {
       })
       .attr("y", function(){
         if(IS_PHONE()){
-          return 165
+          return 160
         }else{
           return 200
         }
@@ -327,7 +327,7 @@ var scrollVis = function () {
       })
       .attr("y", function(){
         if(IS_PHONE()){
-          return 165
+          return 160
         }else{
           return 200
         }
@@ -999,7 +999,7 @@ var scrollVis = function () {
 
   if(IS_PHONE()){
     mapLegend = g.append("g")
-      .attr("transform", "translate(0,0)")
+      .attr("transform", "translate(-20,0)")
       .attr("id","mapLegend")
       .attr("class", "mapElements")
       .style("opacity",0)
@@ -1163,11 +1163,15 @@ svg
         .classed("dotChartClicked", false)
       d3.selectAll(groupSelector + ".dotChartSelected")
         .classed("dotChartSelected", false)
+      d3.selectAll(".highlightBar.dotChartSelected")
+          .classed("dotChartSelected", false)
     }
     d3.selectAll(".dotChartClicked")
       .classed("dotChartClicked", false)
     d3.selectAll(groupSelector + ".dotChartSelected")
       .classed("dotChartClicked", true)
+    d3.selectAll(".highlightBar.dotChartSelected")
+          .classed("dotChartClicked", true)
 
 
 
@@ -1201,8 +1205,17 @@ function showScatterTooltip (d, i) {
       ttY = scatterPlotY(getScatterValue(d, "2014")),
       newX = 0,
       newY = 0
-  if( (ttX + 158) >= scatterPlotX.range()[1]){ newX = ttX - (158+6)}
-  else{ console.log("foo"); newX = ttX + 6}
+  if( (ttX + 158) >= scatterPlotX.range()[1]){
+    newX = ttX - (158+6)
+    d3.select("#scatterTooltipContainer rect")
+      .style("filter", "url(#drop-shadow-left)")
+  }
+  else{
+    newX = ttX + 6
+    d3.select("#scatterTooltipContainer rect")
+      .style("filter", "url(#drop-shadow-right)")
+
+  }
   d3.select("#scatterTooltipContainer").node().parentNode.appendChild(d3.select("#scatterTooltipContainer").node());
   d3.select("#scatterTooltipContainer")
     .style("opacity",1)
@@ -1238,6 +1251,8 @@ function showDotTooltip(m, sectionIndex){
           .classed("dotChartSelected", true)
         selectedG.node().parentNode.appendChild(selectedG.node())
         d3.selectAll(".highlightBar." + states[i])
+          .classed("dotChartSelected", true)
+        d3.selectAll(".highlightBar.dotChartClicked")
           .classed("dotChartSelected", true)
         // selectedG.select(".dotTooltip.stateValue")
 
@@ -1845,7 +1860,7 @@ var  drawOutlierLabels = function(cat, outliers){
       
       gridlines()
 
-    if (parseInt(d3.select("#morphPath").style("opacity")) == 1 && ! IS_PHONE()){
+    if (parseFloat(d3.select("#morphPath").style("opacity")) != 0 && ! IS_PHONE()){
       var coords = (IS_SHORT()) ? "translate(180,19)" : "translate(90,0)"
       d3.select("#morphG")
         .transition()

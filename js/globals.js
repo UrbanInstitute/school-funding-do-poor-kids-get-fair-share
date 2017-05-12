@@ -12,7 +12,7 @@ var SECTION_INDEX = function(){
 }
 
 var PHONE_VIS_WIDTH = 230;
-var PHONE_VIS_HEIGHT = 450;
+var PHONE_VIS_HEIGHT = 430;
 var SHORT_VIS_WIDTH = 600;
 var SHORT_VIS_HEIGHT = 560;
 var SHORT_SCATTER_WIDTH = 480;
@@ -22,7 +22,7 @@ var VIS_HEIGHT = 700;
 
 
 var MARGIN = { top: 60, left: 120, bottom: 104, right: 20 };
-var PHONE_MARGIN = { top: 90, left: 30, bottom: 20, right: 30 };
+var PHONE_MARGIN = { top: 100, left: 30, bottom: 30, right: 30 };
 
 
 
