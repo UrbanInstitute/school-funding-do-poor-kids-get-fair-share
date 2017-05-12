@@ -261,14 +261,14 @@ circle.morph{
     font-size: 13px;
   }
   .mapNY {
-    top: 90px;
+    top: 50px;
     left: 7px;
     width: 283px;
   }
   .mapFL {
-    top: 150px;
+    top: 110px;
     left: 10px;
-    width: 260px;
+    width: 280px;
   }
   .scatterButton:hover{
     background-color: #f2f2f2;

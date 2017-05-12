@@ -310,7 +310,7 @@ var scrollVis = function () {
       })
       .attr("y", function(){
         if(IS_PHONE()){
-          return 160
+          return 145
         }else{
           return 200
         }
@@ -327,7 +327,7 @@ var scrollVis = function () {
       })
       .attr("y", function(){
         if(IS_PHONE()){
-          return 160
+          return 145
         }else{
           return 200
         }
@@ -999,7 +999,7 @@ var scrollVis = function () {
 
   if(IS_PHONE()){
     mapLegend = g.append("g")
-      .attr("transform", "translate(-20,0)")
+      .attr("transform", "translate(-20,-40)")
       .attr("id","mapLegend")
       .attr("class", "mapElements")
       .style("opacity",0)
