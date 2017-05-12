@@ -30,10 +30,10 @@ function scroller() {
     d3.select("#vis")
     .style("left", function(){
       if(IS_PHONE()){
-        return ( (window.innerWidth - PHONE_VIS_WIDTH - margin.left - margin.right)*.5 ) + "px"
+        return ( (window.innerWidth - PHONE_VIS_WIDTH - PHONE_MARGIN.left - PHONE_MARGIN.right)*.5 ) + "px"
       }
       if(IS_MOBILE()){
-        return ( (window.innerWidth - VIS_WIDTH - margin.left - margin.right)*.5 ) + "px"
+        return ( (window.innerWidth - VIS_WIDTH - MARGIN.left - MARGIN.right - 40)*.5 ) + "px"
       }else{
         return "inherit"
       }
