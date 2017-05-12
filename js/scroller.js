@@ -103,7 +103,7 @@ function scroller() {
 
 
   function fixVis(){
-    if(d3.select(".step").node().getBoundingClientRect().top <= 0){
+    if(d3.select(".step").node().getBoundingClientRect().top <= 24){
       if(d3.selectAll(".step").nodes()[d3.selectAll(".step").nodes().length-1].getBoundingClientRect().bottom <= VIS_WIDTH+margin.top+margin.bottom+20+50){
         d3.select("#vis")
           .classed("posRelBottom", true)

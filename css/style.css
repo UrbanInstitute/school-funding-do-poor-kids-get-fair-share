@@ -61,14 +61,17 @@ body{
 #vis.posFixed{
   position: fixed;
   top: 20px;
+  padding-left: 10px;
 }
 #vis.posRelTop{
   position: relative;
   float: right;
+  padding-left: 10px;
 }
 #vis.posRelBottom{
   position: relative;
   float: inherit;
+  padding-left: inherit;
 }
 .axis path,
 .axis line {
@@ -279,16 +282,16 @@ circle.morph{
     color: #fff !important;
   }
   .scatterButton{
-    bottom: 130px;
+    bottom: 80px;
   }
   .stateButton{
     left: 0px;
   }
   .localButton{
-    left: 76px;
+    left: 96px;
   }
   .federalButton{
-    left: 157px;
+    left: 196px;
   }
   .largeScatterplotLabel{
     display: none;
