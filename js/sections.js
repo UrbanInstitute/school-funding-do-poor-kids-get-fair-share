@@ -65,7 +65,6 @@ var scrollVis = function () {
   else if(IS_SHORT()){    
     scatterWidth = SHORT_SCATTER_WIDTH;
   }else{
-    console.log("c")
     scatterWidth = width;
   }
 
@@ -1166,7 +1165,6 @@ svg
         var state = dotChartY(states[i]);
         if(yCoord < (state + band/2) && yCoord > (state - band/2)){
           var selectedG = d3.selectAll(".highlightBar" + "." + states[i])
-          console.log(selectedG, states[i])
           selectedG.classed("dotChartClicked", ! selectedG.classed("dotChartClicked"))
           d3.select(".scatterDot." + states[i]).classed("scatterClicked",  selectedG.classed("dotChartClicked")).style("display","none")
           break;
@@ -1192,9 +1190,11 @@ svg
       d3.select(".scatterDot." + site.data.state).classed("scatterClicked",  ! d3.select(".scatterDot." + site.data.state).classed("scatterClicked"))
       d3.select(".highlightBar." + site.data.state).classed("dotChartClicked", ! ! d3.select(".scatterDot." + site.data.state).classed("scatterClicked"))
     }
+    var clearColor = (d3.selectAll(".dotChartClicked").nodes().length == 0) ? "#9d9d9d" : "#1696d2";
+    d3.select("#clearSelected").transition().style("color", clearColor)
   })
 
-  d3.select("body").on("click", function(){
+  d3.select("#clearSelected").on("click", function(){
     clearClicked();
   })
   $(document).keyup(function(e) {
@@ -1268,6 +1268,7 @@ function showDotTooltip(m, sectionIndex){
     }
 }
 function clearClicked(){
+  d3.select("#clearSelected").transition().style("color", "#9d9d9d")
   d3.selectAll(".dotChartClicked")
     .classed("dotChartClicked", false)
   d3.selectAll(".dotChartSelected")
@@ -2269,7 +2270,6 @@ function display(dotChartData, scatterplotData, histData) {
   scroll(d3.selectAll('.step'));
 
   scroll.on('resized', function(){
-    console.log("foo")
     d3.select("#vis svg").remove()
     d3.selectAll(".scatterButton").remove()
     d3.selectAll(".mapImg").remove()

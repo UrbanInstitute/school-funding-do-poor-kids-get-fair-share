@@ -85,6 +85,18 @@ body{
   float: inherit;
   padding-left: 10px; 
 }
+#clearSelected{
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  font-size: 14px;
+  font-style: italic;
+  color: #9d9d9d;
+  cursor: pointer;
+  z-index: 999;
+  background: rgba(255,255,255,.8);
+  padding: 10px;
+}
 .axis path,
 .axis line {
   fill: none;
