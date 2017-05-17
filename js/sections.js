@@ -109,7 +109,7 @@ var scrollVis = function () {
       g = svg.select('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-      var histAdjust = (IS_PHONE()) ? 50 : 0;
+      var histAdjust = (IS_SHORT() || IS_PHONE()) ? 50 : 0;
       histG = svg.append("g")
         .attr("class", "mapElements")
         .attr("transform", "translate(" + histMargin.left + "," + (height - histHeight + histAdjust) + ")")
@@ -456,9 +456,9 @@ var scrollVis = function () {
 
     function appendTooltip(group, direction){
       group.append("rect")
-        .attr("width",180)
+        .attr("width",160)
         .attr("height",44)
-        .attr("x",width-180)
+        .attr("x",width-160)
         .attr("y",7)
         .attr("class", "dotHoverRect dotTooltip dotTooltipBg")
         .style("filter", "url(#drop-shadow-" + direction + ")")
@@ -508,14 +508,14 @@ var scrollVis = function () {
         .attr("class", "dotHoverText dotTooltip federalValue hidden show2")
 
       group.append("line")
-        .attr("x1",width - 160)
+        .attr("x1",width - 140)
         .attr("x2",width - 80)
         .attr("y1", 84)
         .attr("y2", 84)
         .attr("class", "dotSumLine hidden show1")
         .style("stroke","#333")
       group.append("text")
-        .attr("x",width-160 )
+        .attr("x",width-140 )
         .attr("y",74)
         .text("+")
         .attr("class", "dotHoverText dotSumPlus dotTooltip hidden show1")
@@ -1092,13 +1092,14 @@ var scrollVis = function () {
       .call(d3.axisLeft(histY).ticks(10, "s"))
 
   histG.append("text")
-    .text("Frequency")
+    .attr("id","histYLabel")
+    .text("Number of tracts")
     .attr("x",-30)
     .attr("y",-9)
     .attr("class", "axisLabel")
 
   var histLabelX = (IS_PHONE()) ? 10 : 150,
-      histLabelY = (IS_PHONE()) ? 192 : 307,
+      histLabelY = (IS_PHONE()) ? 192 : 287,
       histLabelText = (IS_PHONE()) ? "% families with children 5–17 in poverty" : "Percentage of families with children 5–17 in poverty"
   histG.append("text")
     .text(histLabelText)
@@ -1122,38 +1123,41 @@ var  maxDistanceFromPoint = 50;
 svg._tooltipped = svg._voronoi = null;
 svg
   .on('mousemove', function() {
-  if((SECTION_INDEX() == "7" || SECTION_INDEX() == 8) && getScatterCat() != ""){
-    if (!svg._voronoi) {
-      svg._voronoi = d3.voronoi()
-      .x(function(d) { return scatterPlotX(getScatterValue(d, "1995")); })
-      .y(function(d) { return scatterPlotY(getScatterValue(d, "2014")); })
-      (scatterplotData);
+    if(IS_PHONE()) return false;
+    if((SECTION_INDEX() == "7" || SECTION_INDEX() == 8) && getScatterCat() != ""){
+      if (!svg._voronoi) {
+        svg._voronoi = d3.voronoi()
+        .x(function(d) { return scatterPlotX(getScatterValue(d, "1995")); })
+        .y(function(d) { return scatterPlotY(getScatterValue(d, "2014")); })
+        (scatterplotData);
+      }
+      var p = d3.mouse(this), site;
+      p[0] -= margin.left;
+      p[1] -= margin.top;
+      // don't react if the mouse is close to one of the axis
+      if (p[0] < 5 || p[1] < 5) {
+        site = null;
+      } else {
+        site = svg._voronoi.find(p[0], p[1], maxDistanceFromPoint);
+      }
+      if (site !== svg._tooltipped) {
+        if (svg._tooltipped) removeScatterTooltip(svg._tooltipped.data)
+        if (site) showScatterTooltip(site.data);
+        svg._tooltipped = site;
+      }
     }
-    var p = d3.mouse(this), site;
-    p[0] -= margin.left;
-    p[1] -= margin.top;
-    // don't react if the mouse is close to one of the axis
-    if (p[0] < 5 || p[1] < 5) {
-      site = null;
-    } else {
-      site = svg._voronoi.find(p[0], p[1], maxDistanceFromPoint);
+    else if(SECTION_INDEX() < 3){
+      var m = d3.mouse(this)
+      showDotTooltip(m, SECTION_INDEX())
     }
-    if (site !== svg._tooltipped) {
-      if (svg._tooltipped) removeScatterTooltip(svg._tooltipped.data)
-      if (site) showScatterTooltip(site.data);
-      svg._tooltipped = site;
-    }
-  }
-  else if(SECTION_INDEX() < 3){
-    var m = d3.mouse(this)
-    showDotTooltip(m, SECTION_INDEX())
-  }
 
   })
   .on("mouseout", function(){
+    if(IS_PHONE()) return false;
     removeDotTooltip();
   })
   .on("click", function(){
+    if(IS_PHONE()) return false;
     d3.event.stopPropagation();
     var groupSelector = (IS_PHONE() || IS_SHORT()) ? ".shortStateG" : ".stateG"
     if(SECTION_INDEX() < 3){
@@ -1327,12 +1331,12 @@ var  drawOutlierLabels = function(cat, outliers){
     activateFunctions[0] = function(){ localDots(dotChartData) };
     activateFunctions[1] = function(){ stateDots(dotChartData) };
     activateFunctions[2] = function(){ federalDots(dotChartData) };
-    activateFunctions[3] = function(){ floridaTracts(histData) };
-    activateFunctions[4] = function(){ floridaDistricts(histData) };
-    activateFunctions[5] = function(){ newYorkTracts(histData) };
-    activateFunctions[6] = function(){ newYorkDistricts(histData) };
-    activateFunctions[7] = function(){ dotsOverTime(dotChartData) };
-    activateFunctions[8] = function(){ dotsOverTimeControls(dotChartData) };
+    activateFunctions[3] = function(){ floridaNewYorkDots(dotChartData) };
+    activateFunctions[4] = function(){ floridaTracts(histData) };
+    activateFunctions[5] = function(){ floridaDistricts(histData) };
+    activateFunctions[6] = function(){ newYorkTracts(histData) };
+    activateFunctions[7] = function(){ newYorkDistricts(histData) };
+    activateFunctions[8] = function(){ dotsOverTime(dotChartData) };
     };
 
   /**
@@ -1761,48 +1765,18 @@ var  drawOutlierLabels = function(cat, outliers){
         }
       })
   }
-  function floridaTracts(histData){
-    d3.select("#vis svg").classed("nonInteractive", true)
-
-    d3.select(".newYorkDistrictsImg").style("z-index",2)
-    d3.select(".newYorkTractsImg").style("z-index",2)
-
-
-      d3.select("#morphPath")
-        .transition()
-        .style("opacity",0)
-
-    histY.domain([0, d3.max(histData, function(d) { return d.tractFlCount; })]);
-    d3.selectAll(".mapElements")
-      .transition()
-      .delay(1500)
-      .duration(1000)
-      .style("opacity",1)
-    d3.select("#histYAxis")
-      .transition()
-      .delay(1500)
-      .duration(1000)
-      .call(d3.axisLeft(histY).ticks(10, "s"))
-
-    gridlines()
-
-    d3.selectAll(".histBar")
-      .transition()
-      .delay(1500)
-      .duration(1000)
-      .attr("y", function(d) { return histY(d.tractFlCount); })
-      .attr("height", function(d) { return histHeight - histY(d.tractFlCount); })
-
-
-    d3.selectAll(".dotChartSelected")
+  function floridaNewYorkDots(dotChartData){
+        d3.selectAll(".dotChartSelected")
       .classed("dotChartSelected", false)
-    d3.selectAll(".stateG:not(.FL) .dotChartDot")
+    d3.selectAll(".stateG:not(.FL):not(.NY) .dotChartDot")
       .transition()
+      .duration(1000)
       .attr("cx", dotChartX(0))
       .transition()
       .style("opacity",0)
-    d3.selectAll(".stateG:not(.FL) .dotChartLine")
+    d3.selectAll(".stateG:not(.FL):not(.NY) .dotChartLine")
       .transition()
+      .duration(1000)
       .attr("x1", dotChartX(0))
       .attr("x2", dotChartX(0))
       .transition()
@@ -1810,55 +1784,144 @@ var  drawOutlierLabels = function(cat, outliers){
     d3.selectAll("#dotChartYAxis .tick text")
       .transition()
       .style("opacity", function(d){
-        if(d == "FL"){ return 1; }
+        if(d == "FL" || d == "NY"){ return 1; }
         else{ return 0; }
-      })  
+      }) 
+    d3.select(".floridaTractsImg")
+      .transition()
+      .duration(500)
+      .style("opacity",0)
+      .style("z-index",-1)
+    d3.select(".floridaDistrictsImg")
+      .transition()
+      .duration(500)
+      .style("opacity",0)
+      .style("z-index",-1)
+    d3.selectAll(".mapElements")
+      .transition()
+      .duration(500)
+      .style("opacity",0)
+
+
     d3.selectAll(".stateG.FL .dotChartDot")
       .transition()
-      .delay(1500)
       .duration(1000)
-      .attr("r",1000)
-      .style("opacity",0)
+      .style("opacity",1)
     d3.selectAll(".stateG.FL .dotChartLine")
       .transition()
-      .delay(1500)
+      .duration(1000)
+      .style("opacity",1)
+    d3.selectAll(".stateG.NY .dotChartDot")
+      .transition()
+      .duration(1000)
+      .style("opacity",1)
+    d3.selectAll(".stateG.NY .dotChartLine")
+      .transition()
+      .duration(1000)
+      .style("opacity",1)
+
+    d3.select(".zeroLine")
+      .transition()
+      .duration(1000)
+      .style("opacity",1)
+    d3.select(".legend")
+      .transition()
+      .duration(1000)
+      .style("opacity",1)
+    d3.selectAll(".largeChartLabel")
+      .transition()
+      .duration(1000)
+      .style("opacity",1)
+    d3.select("#dotChartXAxis")
+      .transition()
+      .duration(1000)
+      .style("opacity",1)
+
+  }
+  function floridaTracts(histData){
+    d3.select("#vis svg").classed("nonInteractive", true)
+
+    d3.select(".newYorkDistrictsImg").style("z-index",2)
+    d3.select(".newYorkTractsImg").style("z-index",2)
+
+    d3.select("#histYLabel")
+      .text("Number of tracts")
+
+    d3.select("#morphPath")
+      .transition()
+      .style("opacity",0)
+
+    d3.selectAll(".stateG .dotChartDot")
+      .transition()
+      .duration(1000)
+      .style("opacity",0)
+    d3.selectAll(".stateG .dotChartLine")
+      .transition()
+      .duration(1000)
       .style("opacity",0)
     d3.selectAll("#dotChartYAxis .tick text")
       .transition()
-      .delay(1500)
+      .duration(1000)
       .style("opacity",0)
     d3.select(".zeroLine")
       .transition()
-      .delay(1500)
+      .duration(1000)
       .style("opacity",0)
     d3.select(".legend")
       .transition()
-      .delay(1500)
+      .duration(1000)
       .style("opacity",0)
     d3.selectAll(".largeChartLabel")
       .transition()
-      .delay(1500)
+      .duration(1000)
       .style("opacity",0)
     d3.select("#dotChartXAxis")
       .transition()
-      .delay(1500)
+      .duration(1000)
       .style("opacity",0)
+
+
+    histY.domain([0, d3.max(histData, function(d) { return d.tractFlCount; })]);
+    d3.selectAll(".mapElements")
+      .transition()
+      // .delay(1500)
+      .duration(1000)
+      .style("opacity",1)
+    d3.select("#histYAxis")
+      .transition()
+      // .delay(1500)
+      .duration(1000)
+      .call(d3.axisLeft(histY).ticks(10, "s"))
+
+    gridlines()
+
+    d3.selectAll(".histBar")
+      .transition()
+      // .delay(1500)
+      .duration(1000)
+      .attr("y", function(d) { return histY(d.tractFlCount); })
+      .attr("height", function(d) { return histHeight - histY(d.tractFlCount); })
+
+
     //draw map
     d3.select(".floridaDistrictsImg")
       .transition()
-      .duration(2000)
+      .duration(500)
       .style("opacity",0)
       .style("z-index",2)
 
     d3.select(".floridaTractsImg")
       .transition()
-      .delay(1500)
+      // .delay(1500)
       .duration(1000)
       .style("opacity",1)
       .style("z-index",2)
   }
 
   function floridaDistricts(histData){
+    d3.select("#histYLabel")
+      .text("Number of districts")
+
     d3.selectAll("#dotChartYAxis .tick text")
       .transition()
       .style("opacity", 0) 
@@ -1941,6 +2004,9 @@ var  drawOutlierLabels = function(cat, outliers){
 
   }
   function newYorkTracts(histData){
+    d3.select("#histYLabel")
+      .text("Number of tracts")
+
     histY.domain([0, d3.max(histData, function(d) { return d.tractNyCount; })]);
     d3.select("#histYAxis")
       .transition()
@@ -2003,6 +2069,9 @@ var  drawOutlierLabels = function(cat, outliers){
 
   }
   function newYorkDistricts(histData){
+    d3.select("#histYLabel")
+      .text("Number of districts")
+
     if(IS_PHONE()){
       g
         .transition()
@@ -2068,6 +2137,14 @@ var  drawOutlierLabels = function(cat, outliers){
     d3.selectAll(".scatterAxisLabel")
       .transition()
       .style("opacity",0)
+
+    d3.selectAll(".scatterButton")
+      .transition()
+      .style("opacity",0)
+      .on("end", function(){
+        d3.select(this).classed("nonInteractive", true)
+      })
+
   }
   function dotsOverTime(){
     d3.selectAll(".scatterClicked").style("display", "block")
@@ -2090,12 +2167,6 @@ var  drawOutlierLabels = function(cat, outliers){
       .transition()
       .duration(500)
       .style("opacity",0)
-    d3.selectAll(".scatterButton")
-      .transition()
-      .style("opacity",0)
-      .on("end", function(){
-        d3.select(this).classed("nonInteractive", true)
-      })
     d3.select(".newYorkDistrictsImg")
       .transition()
       .duration(500)
@@ -2141,16 +2212,15 @@ var  drawOutlierLabels = function(cat, outliers){
       .style("opacity",1)
 
     var cat = getScatterCat();
-    
-  }
 
-  function dotsOverTimeControls(){
-    d3.selectAll(".scatterButton")
+        d3.selectAll(".scatterButton")
       .classed("nonInteractive", false)
       .transition()
       .duration(1000)
       .style("opacity",1)
+    
   }
+
 
 
   /**

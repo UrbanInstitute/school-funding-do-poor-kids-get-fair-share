@@ -36,6 +36,9 @@ body{
   line-height: 23px;
   color: #000;
 }
+.smallStep{
+  /*margin-bottom: 400px;*/
+}
 .title{
   font-weight: bold;
   font-size: 16px;
@@ -86,6 +89,7 @@ body{
   padding-left: 10px; 
 }
 #clearSelected{
+  display: block;
   position: fixed;
   right: 10px;
   bottom: 10px;
@@ -203,6 +207,21 @@ g.dotChartSelected .dotHoverText.hidden, g.dotChartSelected .dotSumLine.hidden {
     font-size: 15px;
     border: solid 1px #e1e1e1;
 }
+.mapButton{
+    display: block;
+    bottom: 60px;
+    background-color: #1696d2;
+    color: #fff;
+    text-transform: uppercase;
+    padding: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    border: solid 1px #e1e1e1;
+    margin: 0 auto;
+    width: 125px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
 .scatterButton.active{
   background-color: #1696d2;
   color: #fff;
@@ -279,6 +298,9 @@ circle.morph{
 @media (max-height: 667px) , (max-width: 768px){
   #isPhone{
     display: block;
+  }
+  #clearSelected{
+    display: none;
   }
   #dotChartYAxis .tick text{
     font-size: 10px;

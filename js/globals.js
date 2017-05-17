@@ -100,5 +100,5 @@ var mapColor = d3.scaleThreshold()
     .domain([0,.05, .1, .15, .2, .25, .3,.35,.4])
     .range(["#9d9d9d","#cfe8f3","#a2d4ec","#73bfe2","#46abdb","#1696d2","#12719e","#0a4c6a","#062635","#000"]);
 
-var DOLLARS = d3.format("$,.2f")
+var DOLLARS = d3.format("$,.0f")
 var RATIOS = d3.format(".2f")
