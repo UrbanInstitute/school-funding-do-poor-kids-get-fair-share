@@ -367,7 +367,7 @@ var scrollVis = function () {
       .attr("class", "dotChartLegend legendLocalText dotChartComponents")
       .attr("x",10)
       .attr("y",4)
-      .text("Local revenue")
+      .text("Local funding")
 
     legend.append("circle")
       .attr("class", "dotChartLegend legendTotalDot dotChartComponents")
@@ -379,13 +379,13 @@ var scrollVis = function () {
       .attr("class", "dotChartLegend legendTotalTextState dotChartComponents")
       .attr("x",10)
       .attr("y",4)
-      .text("Local + state revenue")
+      .text("Local + state funding")
       .style("opacity",0)
     legend.append("text")
       .attr("class", "dotChartLegend legendTotalTextFederal dotChartComponents")
       .attr("x",10)
       .attr("y",4)
-      .text("Local + state + federal revenue")
+      .text("Local + state + federal funding")
       .style("opacity",0)
 
     legend.append("circle")
@@ -399,7 +399,7 @@ var scrollVis = function () {
       .attr("class", "dotChartLegend legendStateText dotChartComponents")
       .attr("x",270)
       .attr("y",4)
-      .text("State revenue")
+      .text("State funding")
       .style("opacity",0)
 
     legend.append("circle")
@@ -413,7 +413,7 @@ var scrollVis = function () {
       .attr("class", "dotChartLegend legendFederalText dotChartComponents")
       .attr("x",395)
       .attr("y",4)
-      .text("Federal revenue")
+      .text("Federal funding")
       .style("opacity",0)
 
 
@@ -642,7 +642,7 @@ var scrollVis = function () {
 
     if(IS_PHONE()){ xAxisX = -47 }
     else if(IS_SHORT()){ xAxisX = 100}
-    else{ xAxisX = 150}
+    else{ xAxisX = 205}
     if(IS_PHONE()){ xAxisY = 40 }  
     else if(IS_SHORT()){ xAxisY = 40}
     else{ xAxisY = 50}
@@ -651,7 +651,7 @@ var scrollVis = function () {
     else{ yAxisX = -60}
     if(IS_PHONE()){ yAxisY = 253 }  
     else if(IS_SHORT()){ yAxisY = 385}
-    else{ yAxisY = 430}  
+    else{ yAxisY = 395}  
 
     g.append("text")
       .attr("class", "largeScatterplotLabel q1" + extraClass)
@@ -693,13 +693,13 @@ var scrollVis = function () {
 
     g.append("text")
       .attr("class", "scatterAxisLabel")
-      .text("Poverty/Non Poverty adjusted revenue ratio, 1995")
+      .text("Funding progressivity ratio, 1995")
       .attr("y", scatterWidth + xAxisY)
       .attr("x", xAxisX)
       .style("opacity",0)
     g.append("text")
       .attr("class", "scatterAxisLabel")
-      .text("Poverty/Non Poverty adjusted revenue ratio, 2014")
+      .text("Funding progressivity ratio, 2014")
       .attr("transform", "translate(" + yAxisX + "," + yAxisY + ")rotate(270)")
       .style("opacity",0)
       
@@ -724,12 +724,12 @@ var scrollVis = function () {
       .attr("x",20)
       .attr("y", 50)
       .attr("class", "subtitle")
-      .text("Poverty/Non Poverty")
+      .text("Funding progressivity")
     scatterTooltipContainer.append("text")
       .attr("x",20)
       .attr("y", 63)
       .attr("class", "subtitle")
-      .text("adjusted revenue ratios")
+      .text("ratios:")
  
     scatterTooltipContainer.append("text")
       .attr("x",20)
@@ -1093,16 +1093,16 @@ var scrollVis = function () {
 
   histG.append("text")
     .attr("id","histYLabel")
-    .text("Number of tracts")
+    .text("Number of neighborhoods")
     .attr("x",-30)
     .attr("y",-9)
     .attr("class", "axisLabel")
 
-  var histLabelX = (IS_PHONE()) ? 10 : 150,
+  var histLabelX = (IS_PHONE()) ? -30 : 150,
       histLabelY = (IS_PHONE()) ? 192 : 287,
-      histLabelText = (IS_PHONE()) ? "% families with children 5–17 in poverty" : "Percentage of families with children 5–17 in poverty"
+      histLabelText = (IS_PHONE()) ? "Poverty rate among families with children 5&ndash;17" : "Poverty rate among families with children 5&ndash;17"
   histG.append("text")
-    .text(histLabelText)
+    .html(histLabelText)
     .attr("x",histLabelX)
     .attr("y",histLabelY)
     .attr("class", "axisLabel histXAxisLabel")
@@ -1337,7 +1337,56 @@ var  drawOutlierLabels = function(cat, outliers){
     activateFunctions[6] = function(){ newYorkTracts(histData) };
     activateFunctions[7] = function(){ newYorkDistricts(histData) };
     activateFunctions[8] = function(){ dotsOverTime(dotChartData) };
-    };
+
+    d3.select("#floridaButton").on("click", function(){
+      if(d3.select(this).classed("tracts")){
+        d3.select(this)
+          .classed("tracts",false)
+          .classed("districts",true)
+          .transition()
+          .style("color", "rgba(255,255,255,0)")
+          .on("end", function(){
+            d3.select(this)
+              .text("a")
+              .transition()
+              .style("width","142px")
+              .on("end", function(){
+                d3.select(this)
+                  .text("view districts")
+                  .transition()
+                  .style("color", "#fff")
+              })
+          })
+        floridaTracts(histData)  
+      }else{
+        floridaDistricts(histData)
+      }
+    })
+    d3.select("#newYorkButton").on("click", function(){
+      if(d3.select(this).classed("tracts")){
+      d3.select("#newYorkButton")
+        .classed("tracts",false)
+        .classed("districts",true)
+        .transition()
+        .style("color", "rgba(255,255,255,0)")
+        .on("end", function(){
+          d3.select(this)
+            .text("a")
+            .transition()
+            .style("width","142px")
+            .on("end", function(){
+              d3.select(this)
+                .text("view districts")
+                .transition()
+                .style("color", "#fff")
+            })
+        })
+        newYorkTracts(histData)  
+      }else{
+        newYorkDistricts(histData)
+      }
+    })
+  };
 
   /**
    * ACTIVATE FUNCTIONS
@@ -1839,13 +1888,15 @@ var  drawOutlierLabels = function(cat, outliers){
 
   }
   function floridaTracts(histData){
+
+
     d3.select("#vis svg").classed("nonInteractive", true)
 
     d3.select(".newYorkDistrictsImg").style("z-index",2)
     d3.select(".newYorkTractsImg").style("z-index",2)
 
     d3.select("#histYLabel")
-      .text("Number of tracts")
+      .text("Number of neighborhoods")
 
     d3.select("#morphPath")
       .transition()
@@ -1919,6 +1970,27 @@ var  drawOutlierLabels = function(cat, outliers){
   }
 
   function floridaDistricts(histData){
+    if(d3.select("#floridaButton").classed("districts")){
+      d3.select("#floridaButton")
+        .classed("tracts",true)
+        .classed("districts",false)
+        .transition()
+        .style("color", "rgba(255,255,255,0)")
+        .on("end", function(){
+          d3.select(this)
+            .text("a")
+            .transition()
+            .style("width","202px")
+            .on("end", function(){
+              d3.select(this)
+                .text("view neighborhoods")
+                .transition()
+                .style("color", "#fff")
+            })
+        })
+      }
+
+
     d3.select("#histYLabel")
       .text("Number of districts")
 
@@ -2004,8 +2076,10 @@ var  drawOutlierLabels = function(cat, outliers){
 
   }
   function newYorkTracts(histData){
+
+
     d3.select("#histYLabel")
-      .text("Number of tracts")
+      .text("Number of neighborhoods")
 
     histY.domain([0, d3.max(histData, function(d) { return d.tractNyCount; })]);
     d3.select("#histYAxis")
@@ -2069,6 +2143,26 @@ var  drawOutlierLabels = function(cat, outliers){
 
   }
   function newYorkDistricts(histData){
+    if(d3.select("#newYorkButton").classed("districts")){
+      d3.select("#newYorkButton")
+        .classed("tracts",true)
+        .classed("districts",false)
+        .transition()
+        .style("color", "rgba(255,255,255,0)")
+        .on("end", function(){
+          d3.select(this)
+            .text("a")
+            .transition()
+            .style("width","202px")
+            .on("end", function(){
+              d3.select(this)
+                .text("view neighborhoods")
+                .transition()
+                .style("color", "#fff")
+            })
+        })
+      }
+
     d3.select("#histYLabel")
       .text("Number of districts")
 

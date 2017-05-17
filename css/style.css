@@ -18,7 +18,18 @@ body{
   padding-top: 60px;
 }
 
+#topText{
+margin-bottom:30px;
+font-size:21px;
+font-weight:400;
+color:#000;
+}
 
+
+p{
+  line-height:1.6;
+  margin-bottom:15px !important;
+}
 #sections {
   position: relative;
   display: inline-block;
@@ -26,7 +37,7 @@ body{
   top: 0px;
   z-index: 90;
   padding-bottom: 20px;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .step {
@@ -40,8 +51,9 @@ body{
   /*margin-bottom: 400px;*/
 }
 .title{
+  font-size:18px;
+   margin-top:40px;
   font-weight: bold;
-  font-size: 16px;
   margin-bottom: 10px;
 }
 #extra-space {
@@ -209,18 +221,14 @@ g.dotChartSelected .dotHoverText.hidden, g.dotChartSelected .dotSumLine.hidden {
 }
 .mapButton{
     display: block;
-    bottom: 60px;
-    background-color: #1696d2;
-    color: #fff;
-    text-transform: uppercase;
-    padding: 12px;
+
     cursor: pointer;
-    font-size: 15px;
-    border: solid 1px #e1e1e1;
     margin: 0 auto;
-    width: 125px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top:20px;
+    margin-bottom:5px;
+    color:#1696d2;
+    font-style:italic;
+    font-size:16px
 }
 .scatterButton.active{
   background-color: #1696d2;
@@ -365,6 +373,10 @@ circle.morph{
     display: inherit;
     width: 400px;
     margin: 0 auto;
+    pointer-events: none;
+  }
+  .mapButton{
+    display: none;
   }
   .step {
     margin-bottom: 1000px;
@@ -399,8 +411,8 @@ circle.morph{
   stroke-width: 3;
 }
 .federalLine{
-  stroke: #696969;
-  stroke-width: 1;
+  stroke: #e3e3e3;
+  stroke-width: 3;
 }
 .zeroLine{
   stroke: black;
