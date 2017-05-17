@@ -228,7 +228,7 @@ g.dotChartSelected .dotHoverText.hidden, g.dotChartSelected .dotSumLine.hidden {
     margin-bottom:5px;
     color:#1696d2;
     font-style:italic;
-    font-size:16px
+    font-size:18px
 }
 .scatterButton.active{
   background-color: #1696d2;

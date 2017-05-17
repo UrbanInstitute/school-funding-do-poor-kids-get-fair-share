@@ -1095,7 +1095,7 @@ var scrollVis = function () {
     .attr("id","histYLabel")
     .text("Number of neighborhoods")
     .attr("x",-30)
-    .attr("y",-9)
+    .attr("y",-13)
     .attr("class", "axisLabel")
 
   var histLabelX = (IS_PHONE()) ? -30 : 150,
@@ -1343,20 +1343,7 @@ var  drawOutlierLabels = function(cat, outliers){
         d3.select(this)
           .classed("tracts",false)
           .classed("districts",true)
-          .transition()
-          .style("color", "rgba(255,255,255,0)")
-          .on("end", function(){
-            d3.select(this)
-              .text("a")
-              .transition()
-              .style("width","142px")
-              .on("end", function(){
-                d3.select(this)
-                  .text("view districts")
-                  .transition()
-                  .style("color", "#fff")
-              })
-          })
+          .text("View districts")
         floridaTracts(histData)  
       }else{
         floridaDistricts(histData)
@@ -1367,20 +1354,7 @@ var  drawOutlierLabels = function(cat, outliers){
       d3.select("#newYorkButton")
         .classed("tracts",false)
         .classed("districts",true)
-        .transition()
-        .style("color", "rgba(255,255,255,0)")
-        .on("end", function(){
-          d3.select(this)
-            .text("a")
-            .transition()
-            .style("width","142px")
-            .on("end", function(){
-              d3.select(this)
-                .text("view districts")
-                .transition()
-                .style("color", "#fff")
-            })
-        })
+        .text("View districts")
         newYorkTracts(histData)  
       }else{
         newYorkDistricts(histData)
@@ -1974,20 +1948,7 @@ var  drawOutlierLabels = function(cat, outliers){
       d3.select("#floridaButton")
         .classed("tracts",true)
         .classed("districts",false)
-        .transition()
-        .style("color", "rgba(255,255,255,0)")
-        .on("end", function(){
-          d3.select(this)
-            .text("a")
-            .transition()
-            .style("width","202px")
-            .on("end", function(){
-              d3.select(this)
-                .text("view neighborhoods")
-                .transition()
-                .style("color", "#fff")
-            })
-        })
+        .text("View neighborhoods")
       }
 
 
@@ -2147,20 +2108,7 @@ var  drawOutlierLabels = function(cat, outliers){
       d3.select("#newYorkButton")
         .classed("tracts",true)
         .classed("districts",false)
-        .transition()
-        .style("color", "rgba(255,255,255,0)")
-        .on("end", function(){
-          d3.select(this)
-            .text("a")
-            .transition()
-            .style("width","202px")
-            .on("end", function(){
-              d3.select(this)
-                .text("view neighborhoods")
-                .transition()
-                .style("color", "#fff")
-            })
-        })
+        .text("View neighborhoods")
       }
 
     d3.select("#histYLabel")

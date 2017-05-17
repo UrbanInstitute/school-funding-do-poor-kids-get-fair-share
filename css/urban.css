@@ -290,6 +290,7 @@ h2 div{
 /*footer*/
 
 footer {
+  position: relative;
     background-color: #f1f2f2;
     margin-top: 185px;
     padding-top: 50px;
@@ -297,6 +298,7 @@ footer {
     bottom: 0;
    overflow: hidden;
      height:auto;
+     z-index: 10000;  
  
 }
 @media (max-height: 880px){
