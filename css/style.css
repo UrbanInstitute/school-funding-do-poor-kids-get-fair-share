@@ -304,14 +304,14 @@ circle.morph{
     bottom: 33px !important;
   }
   .stateButton {
-      left: 20px !important;
+      left: 95px !important;
       top: 17px !important;
   }
   .scatterButtonLabel.state {
       left: 95px !important;
   }
   .localButton{
-      left: 95px !important;
+      left: 20px !important;
       top: 17px !important;
   }
   .federalButton{
