@@ -564,10 +564,10 @@ circle.morph{
   display: none;
 }
 .stateButton{
-  left: 60px;
+  left: 200px;
 }
 .localButton{
-  left: 200px;
+  left: 60px;
 }
 .federalButton{
   left: 355px;
