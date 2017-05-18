@@ -274,13 +274,16 @@ var scrollVis = function () {
     var stateG = g.selectAll(".stateG")
         .data(dotChartData)
         .enter().append("g")
-        .attr("class", function(d){ return "includeHighlight stateG " + d.state })
+        .attr("class", function(d){
+          var stateClass = (d.state == "NY" || d.state == "FL") ? d.state + " specialState" : d.state
+          return "includeHighlight stateG " + stateClass
+        })
         .attr("transform",function(d){ return "translate(0," + dotChartY(d.state) + ")" })
     var shortStateG = g.selectAll(".shortStateG")
         .data(dotChartData)
         .enter().append("g")
         .attr("class", function(d){ return "noHighlight shortStateG " + d.state })
-        .attr("transform",function(d){ return "translate(0," + (height-55) + ")" })
+        .attr("transform",function(d){ return "translate(0," + (height-75) + ")" })
 
 
     highlightBar.append("rect")
@@ -640,8 +643,8 @@ var scrollVis = function () {
     if(IS_SHORT()){ y4 = 360}
     else{ y4 = 450}  
 
-    if(IS_PHONE()){ xAxisX = -47 }
-    else if(IS_SHORT()){ xAxisX = 100}
+    if(IS_PHONE()){ xAxisX = 20 }
+    else if(IS_SHORT()){ xAxisX = 143}
     else{ xAxisX = 205}
     if(IS_PHONE()){ xAxisY = 40 }  
     else if(IS_SHORT()){ xAxisY = 40}
@@ -649,8 +652,8 @@ var scrollVis = function () {
     if(IS_PHONE()){ yAxisX = -40 }  
     else if(IS_SHORT()){ yAxisX = -50}
     else{ yAxisX = -60}
-    if(IS_PHONE()){ yAxisY = 253 }  
-    else if(IS_SHORT()){ yAxisY = 385}
+    if(IS_PHONE()){ yAxisY = 213 }  
+    else if(IS_SHORT()){ yAxisY = 330}
     else{ yAxisY = 395}  
 
     g.append("text")
@@ -939,25 +942,71 @@ var scrollVis = function () {
     }
 
 
-    d3.select("#vis")
+    var buttonContainer = d3.select("#vis")
       .append("div")
-      .attr("class", "scatterButton stateButton active nonInteractive")
+      .attr("id", "buttonContainer")
+      .style("opacity",0)
+
+    buttonContainer.append("div")
+      .attr("class", "scatterButton stateButton active nonInteractive switch on")
+      .on("click", function(){
+        if(d3.select(this).classed("on")){
+          d3.select(this).classed("on", false)
+          d3.select(this).classed("off", true)
+        }else{
+          d3.select(this).classed("on", true)
+          d3.select(this).classed("off", false)
+        }
+        updateScatter(this)
+      })
+      .style("opacity",0)
+
+    buttonContainer.append("div")
+      .attr("class","scatterButtonLabel state")
       .text("State")
-      .on("click", function(){ updateScatter(this)})
-      .style("opacity",0)
-
-    d3.select("#vis")
-      .append("div")
-      .attr("class", "scatterButton localButton active nonInteractive")
+    buttonContainer.append("div")
+      .attr("class","scatterButtonLabel local")
       .text("Local")
-      .on("click", function(){ updateScatter(this)})
+    buttonContainer.append("div")
+      .attr("class","scatterButtonLabel federal")
+      .text("Federal")
+    buttonContainer.append("div")
+      .attr("class","scatterButtonLabel title")
+      .text("Revenue sources")
+    buttonContainer.append("div")
+      .attr("class", "scatterButton localButton active nonInteractive switch on")
+      .on("click", function(){
+        updateScatter(this)
+      })
+      .style("opacity",0)
+      .on("click", function(){
+        if(d3.select(this).classed("on")){
+          d3.select(this).classed("on", false)
+          d3.select(this).classed("off", true)
+        }else{
+          d3.select(this).classed("on", true)
+          d3.select(this).classed("off", false)
+        }
+        updateScatter(this)
+      })
       .style("opacity",0)
 
-    d3.select("#vis")
-      .append("div")
-      .attr("class", "scatterButton federalButton nonInteractive")
-      .text("Federal")
-      .on("click", function(){ updateScatter(this)})
+    buttonContainer.append("div")
+      .attr("class", "scatterButton federalButton nonInteractive switch off")
+      .on("click", function(){
+        updateScatter(this)
+      })
+      .style("opacity",0)
+      .on("click", function(){
+        if(d3.select(this).classed("on")){
+          d3.select(this).classed("on", false)
+          d3.select(this).classed("off", true)
+        }else{
+          d3.select(this).classed("on", true)
+          d3.select(this).classed("off", false)
+        }
+        updateScatter(this)
+      })
       .style("opacity",0)
 
 
@@ -1133,7 +1182,7 @@ svg
       }
       var p = d3.mouse(this), site;
       p[0] -= margin.left;
-      p[1] -= margin.top;
+      p[1] -= margin.top+70;
       // don't react if the mouse is close to one of the axis
       if (p[0] < 5 || p[1] < 5) {
         site = null;
@@ -1146,7 +1195,7 @@ svg
         svg._tooltipped = site;
       }
     }
-    else if(SECTION_INDEX() < 3){
+    else if(SECTION_INDEX() < 4){
       var m = d3.mouse(this)
       showDotTooltip(m, SECTION_INDEX())
     }
@@ -1160,7 +1209,7 @@ svg
     if(IS_PHONE()) return false;
     d3.event.stopPropagation();
     var groupSelector = (IS_PHONE() || IS_SHORT()) ? ".shortStateG" : ".stateG"
-    if(SECTION_INDEX() < 3){
+    if(SECTION_INDEX() < 4){
       var m = d3.mouse(this)
       var yCoord = m[1] - margin.top
       var states = dotChartY.domain()
@@ -1251,12 +1300,14 @@ function showDotTooltip(m, sectionIndex){
     var yCoord = m[1] - margin.top
     var states = dotChartY.domain()
     var band = dotChartY.step()
+    
+    
     for(var i = 0; i < states.length; i++){
       var state = dotChartY(states[i]);
       if(yCoord < (state + band/2) && yCoord > (state - band/2)){
         d3.selectAll(".dotChartSelected")
           .classed("dotChartSelected", false)
-
+        if(sectionIndex == 3 && (states[i] != "NY" && states[i] != "FL") ){ break}
         var selectedG = d3.selectAll(groupSelector + "." + states[i])
           .classed("dotChartSelected", true)
         selectedG.node().parentNode.appendChild(selectedG.node())
@@ -1287,7 +1338,7 @@ function clearClicked(){
 function removeDotTooltip(){
   d3.selectAll(".dotChartSelected")
       .classed("dotChartSelected", false)
-  if(SECTION_INDEX() < 3){
+  if(SECTION_INDEX() < 4){
       d3.selectAll(".dotChartClicked.highlightBar")
       .classed("dotChartSelected", true)
   }
@@ -1386,7 +1437,7 @@ var  drawOutlierLabels = function(cat, outliers){
    *
    */
   function localDots(dotChartData) {
-    d3.selectAll(".shortStateG.noHighlight").transition().attr("transform",function(d){ return "translate(0," + (height-55) + ")" })
+    d3.selectAll(".shortStateG.noHighlight").transition().attr("transform",function(d){ return "translate(0," + (height-75) + ")" })
 
     d3.selectAll(".show2").classed("hidden", true)
     d3.selectAll(".show1").classed("hidden", true)
@@ -1462,7 +1513,7 @@ var  drawOutlierLabels = function(cat, outliers){
   }
 
   function stateDots(dotChartData){
-    d3.selectAll(".shortStateG.noHighlight").transition().attr("transform",function(d){ return "translate(0," + (height-105) + ")" })
+    d3.selectAll(".shortStateG.noHighlight").transition().attr("transform",function(d){ return "translate(0," + (height-125) + ")" })
 
     d3.selectAll(".show2").classed("hidden", true)
     d3.selectAll(".show1").classed("hidden", false)
@@ -1601,7 +1652,7 @@ var  drawOutlierLabels = function(cat, outliers){
     d3.selectAll(".dotChartClicked")
       .classed("dotChartSelected", true)
 
-    d3.selectAll(".shortStateG.noHighlight").transition().attr("transform",function(d){ return "translate(0," + (height-125) + ")" })
+    d3.selectAll(".shortStateG.noHighlight").transition().attr("transform",function(d){ return "translate(0," + (height-145) + ")" })
     d3.selectAll(".show2").classed("hidden", false)
     d3.selectAll(".show1").classed("hidden", false)
     d3.selectAll(".dotTooltipBg").transition().attr("height",114)
@@ -1710,7 +1761,6 @@ var  drawOutlierLabels = function(cat, outliers){
         .attr("x1", function(d) { return getDotChartLineX1(d.federalRevenue); })
         .attr("x2", function(d) { return getDotChartLineX2(d.federalRevenue); })
 
-
     g.selectAll(".totalDot")
         .transition()
         .style("opacity",1)
@@ -1789,7 +1839,59 @@ var  drawOutlierLabels = function(cat, outliers){
       })
   }
   function floridaNewYorkDots(dotChartData){
-        d3.selectAll(".dotChartSelected")
+    dotChartData.sort(function(a, b){ return (b.localRevenue + b.stateRevenue + b.federalRevenue) - (a.localRevenue + a.stateRevenue + a.federalRevenue)})
+    dotChartY.domain(dotChartData.map(function(d) { return d.state; }));
+
+
+    g.selectAll(".specialState .federalDot")
+        .transition()
+        .style("opacity",1)
+        .attr("r",DOT_RADIUS)
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(function(d){ return 1000*Math.abs(d.federalRevenue/6000) })
+        .attr("cx", function(d) { return dotChartX(d.federalRevenue); })
+
+    g.selectAll(".specialState .federalLine")
+        .transition()
+        .style("opacity",1)
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(function(d){ return 1000*Math.abs(d.federalRevenue/6000) })
+        .attr("x1", function(d) { return getDotChartLineX1(d.federalRevenue); })
+        .attr("x2", function(d) { return getDotChartLineX2(d.federalRevenue); })
+
+    g.selectAll(".specialState .totalDot")
+        .transition()
+        .style("opacity",1)
+        .attr("r",SMALL_DOT_RADIUS)
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(function(d){ return 1000*Math.abs(d.federalRevenue/6000) })
+        .attr("cx", function(d) { return dotChartX(d.stateRevenue + d.localRevenue + d.federalRevenue); })
+
+    g.selectAll(".specialState .stateLine")
+        .transition()
+        .style("opacity",1)
+        .attr("x1", function(d) { return getDotChartLineX1(d.stateRevenue); })
+        .attr("x2", function(d) { return getDotChartLineX2(d.stateRevenue); })
+    g.selectAll(".specialState .localLine")
+        .transition()
+        .style("opacity",1)
+        .attr("x1", function(d) { return getDotChartLineX1(d.localRevenue); })
+        .attr("x2", function(d) { return getDotChartLineX2(d.localRevenue); })
+    g.selectAll(".specialState .stateDot")
+        .transition()
+        .style("opacity",1)
+        .attr("r",DOT_RADIUS)
+        .attr("cx", function(d) { return dotChartX(d.stateRevenue); })
+    g.selectAll(".specialState .localDot")
+        .transition()
+        .style("opacity",1)
+        .attr("r",DOT_RADIUS)
+        .attr("cx", function(d) { return dotChartX(d.localRevenue); })
+
+    d3.selectAll(".dotChartSelected:not(.FL):not(.NY)")
       .classed("dotChartSelected", false)
     d3.selectAll(".stateG:not(.FL):not(.NY) .dotChartDot")
       .transition()
@@ -1797,6 +1899,26 @@ var  drawOutlierLabels = function(cat, outliers){
       .attr("cx", dotChartX(0))
       .transition()
       .style("opacity",0)
+        .on("end", function(d, i){
+          if(d.state == "AK"){
+            d3.selectAll(".includeHighlight")
+              .transition()
+              .duration(1000)
+              .attr("transform",function(d){ return "translate(0," + dotChartY(d.state) + ")" })
+            g.select("#dotChartYAxis")
+              .transition()
+              .duration(1000)
+              .call(d3.axisLeft(dotChartY).tickFormat(function(t){
+                if(IS_PHONE()){
+                  return t
+                }else{
+                  return fullNames[t]
+                }
+              }));
+          }
+
+        })
+
     d3.selectAll(".stateG:not(.FL):not(.NY) .dotChartLine")
       .transition()
       .duration(1000)
@@ -1825,24 +1947,6 @@ var  drawOutlierLabels = function(cat, outliers){
       .duration(500)
       .style("opacity",0)
 
-
-    d3.selectAll(".stateG.FL .dotChartDot")
-      .transition()
-      .duration(1000)
-      .style("opacity",1)
-    d3.selectAll(".stateG.FL .dotChartLine")
-      .transition()
-      .duration(1000)
-      .style("opacity",1)
-    d3.selectAll(".stateG.NY .dotChartDot")
-      .transition()
-      .duration(1000)
-      .style("opacity",1)
-    d3.selectAll(".stateG.NY .dotChartLine")
-      .transition()
-      .duration(1000)
-      .style("opacity",1)
-
     d3.select(".zeroLine")
       .transition()
       .duration(1000)
@@ -1863,6 +1967,8 @@ var  drawOutlierLabels = function(cat, outliers){
   }
   function floridaTracts(histData){
 
+    d3.selectAll(".dotChartSelected")
+      .classed("dotChartSelected", false)
 
     d3.select("#vis svg").classed("nonInteractive", true)
 
@@ -2114,11 +2220,15 @@ var  drawOutlierLabels = function(cat, outliers){
     d3.select("#histYLabel")
       .text("Number of districts")
 
-    if(IS_PHONE()){
+    // if(IS_PHONE()){
       g
         .transition()
         .attr('transform', 'translate(' + (margin.left+0) + ',' + margin.top + ')');
-    }
+    // }else{
+    //    g
+    //     .transition()
+    //     .attr('transform', 'translate(120,120)');
+    // }
     d3.selectAll(".scatterOutlierLabel").transition().style("opacity",0)
 
     d3.selectAll(".scatterClicked").style("display", "none")
@@ -2186,6 +2296,7 @@ var  drawOutlierLabels = function(cat, outliers){
       .on("end", function(){
         d3.select(this).classed("nonInteractive", true)
       })
+    d3.select("#buttonContainer").transition().style("opacity",0)
 
   }
   function dotsOverTime(){
@@ -2199,6 +2310,10 @@ var  drawOutlierLabels = function(cat, outliers){
       g
         .transition()
         .attr('transform', 'translate(' + (margin.left+20) + ',' + margin.top + ')');
+    }else{
+      g
+        .transition()
+        .attr('transform', 'translate(' + (margin.left) + ',' + (margin.top+70) + ')');
     }
     d3.select("#vis svg").classed("nonInteractive", false)
 
@@ -2255,8 +2370,12 @@ var  drawOutlierLabels = function(cat, outliers){
 
     var cat = getScatterCat();
 
-        d3.selectAll(".scatterButton")
+    d3.selectAll(".scatterButton")
       .classed("nonInteractive", false)
+      .transition()
+      .duration(1000)
+      .style("opacity",1)
+    d3.select("#buttonContainer")
       .transition()
       .duration(1000)
       .style("opacity",1)
@@ -2384,6 +2503,7 @@ function display(dotChartData, scatterplotData, histData) {
   scroll.on('resized', function(){
     d3.select("#vis svg").remove()
     d3.selectAll(".scatterButton").remove()
+    d3.select("#buttonContainer").remove()
     d3.selectAll(".mapImg").remove()
     display(dotChartData, scatterplotData, histData)
   })

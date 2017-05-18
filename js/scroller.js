@@ -104,7 +104,7 @@ function scroller() {
 
   function fixVis(){
     if(! IS_MOBILE()){
-      if(d3.select(".step").node().getBoundingClientRect().top <= 24){
+      if(d3.select(".step").node().getBoundingClientRect().top <= 64){
         if(d3.selectAll(".step").nodes()[d3.selectAll(".step").nodes().length-1].getBoundingClientRect().bottom <= VIS_WIDTH+margin.top+margin.bottom+20+80){
           d3.select("#vis")
             .classed("posRelBottomSingleCol", false)

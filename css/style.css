@@ -19,10 +19,13 @@ body{
 }
 
 #topText{
-margin-bottom:30px;
-font-size:21px;
-font-weight:400;
-color:#000;
+  margin-bottom:30px;
+  font-size:21px;
+  font-weight:400;
+  color:#000;
+  background: #fff; 
+  z-index: 1000;
+  position: relative;
 }
 
 
@@ -110,7 +113,7 @@ p{
   color: #9d9d9d;
   cursor: pointer;
   z-index: 999;
-  background: rgba(255,255,255,.8);
+  background: rgba(255,255,255,.9);
   padding: 10px;
 }
 .axis path,
@@ -207,18 +210,7 @@ g.dotChartSelected .dotHoverText.hidden, g.dotChartSelected .dotSumLine.hidden {
   font-size: 12px;
   font-style: italic;
 }
-.scatterButton{
-    display: block;
-    position: absolute;
-    bottom: 60px;
-    background-color: #f2f2f2;
-    color: #333;
-    text-transform: uppercase;
-    padding: 12px;
-    cursor: pointer;
-    font-size: 15px;
-    border: solid 1px #e1e1e1;
-}
+
 .mapButton{
     display: block;
 
@@ -230,26 +222,8 @@ g.dotChartSelected .dotHoverText.hidden, g.dotChartSelected .dotSumLine.hidden {
     font-style:italic;
     font-size:18px
 }
-.scatterButton.active{
-  background-color: #1696d2;
-  color: #fff;
-}
-.scatterButton:hover{
-  background-color: #333;
-  color: #fff;
-}
-.scatterButton.nonInteractive{
-  display: none;
-}
-.stateButton{
-  left: 130px;
-}
-.localButton{
-  left: 206px;
-}
-.federalButton{
-  left: 287px;
-}
+
+
 
 circle.morph{
   fill: none;
@@ -298,15 +272,56 @@ circle.morph{
     left: 180px;
     width: 473px;
   }
-  .scatterButton{
+/*  .scatterButton{
     bottom: 80px;
-  }
+  }*/
 }
 
 @media (max-height: 667px) , (max-width: 768px){
   #isPhone{
     display: block;
   }
+  .switch{
+    width: 55px !important;
+    height: 18px !important;
+    border-radius: 10px !important;
+  }
+  .switch.off {
+      background-position: -47.2px 0px !important;
+  }
+
+  .switch.on {
+      background-position: -10px 0px !important;
+  }
+
+  #buttonContainer{
+    left: 26px !important;
+    top: 55px !important;
+    width: 252px !important;
+    height: 40px !important;
+  }
+  .scatterButtonLabel.title{
+    bottom: 33px !important;
+  }
+  .stateButton {
+      left: 20px !important;
+      top: 17px !important;
+  }
+  .scatterButtonLabel.state {
+      left: 95px !important;
+  }
+  .localButton{
+      left: 95px !important;
+      top: 17px !important;
+  }
+  .federalButton{
+      left: 170px !important;
+      top: 17px !important;
+  }
+  .scatterButtonLabel.federal {
+      left: 170px !important;
+  }
+
   #clearSelected{
     display: none;
   }
@@ -327,17 +342,7 @@ circle.morph{
     left: 19px;
     width: 270px;
   }
-  .scatterButton:hover{
-    background-color: #f2f2f2;
-    color: #333;
-  }
-  .scatterButton.active{
-    background-color: #1696d2 !important;
-    color: #fff !important;
-  }
-  .scatterButton{
-    bottom: 80px;
-  }
+
   .stateButton{
     left: 0px;
   }
@@ -364,6 +369,9 @@ circle.morph{
   }
   #isMobile{
     display: block;
+  }
+  #topText{
+    font-size: 18px;
   }
 #extra-space {
   height: 680px;
@@ -401,7 +409,8 @@ circle.morph{
 }
 @media (max-width: 500px){
   #sections{
-    width: 260px;
+    width: 300px;
+    left: -20px;
     pointer-events: none;
   }
 }
@@ -497,3 +506,89 @@ circle.morph{
 }
 
 
+
+
+
+
+.switch {
+    background-image: url(../images/off-on.png);
+    background-color: #696969;
+    background-repeat: no-repeat;
+    width: 83px;
+    height: 26px;
+    border-radius: 20px;
+
+    /*display: inline-block;*/
+    background-size: cover;
+    cursor: pointer;
+    /*margin-right: 9px;*/
+    /*top: 4px;*/
+    /*left: 4px;*/
+    /*position: relative;*/
+
+    -webkit-transition:background-position .1s ease-in;  
+    -moz-transition:background-position .1s ease-in;  
+    -o-transition:background-position .1s ease-in;  
+    transition:background-position .1s ease-in; 
+}
+.switch.off {
+    background-position: -68px 0px;
+    background-color: #696969;
+}
+
+.switch.on {
+    background-position: -10px 0px;
+    background-color: #1696d2;
+}
+.switch.off:hover{ 
+  background-color: #333 !important;
+}
+.switch.on:hover{ 
+  background-color: #12719e !important;
+}
+#buttonContainer{
+  position: absolute;
+  top: 58px;
+  left: 130px;
+  background: #f8f8f8;
+  border: 1px solid #dcdbdb;
+  width: 456px;
+  height: 60px;
+}
+.scatterButton{
+    display: block;
+    position: absolute;
+    bottom: 16px;
+}
+.scatterButton.nonInteractive{
+  display: none;
+}
+.stateButton{
+  left: 60px;
+}
+.localButton{
+  left: 200px;
+}
+.federalButton{
+  left: 355px;
+}
+.scatterButtonLabel{
+  position: absolute;
+  font-size: 14px;
+  font-weight: bold;
+  bottom: 20px;
+}
+.scatterButtonLabel.local{
+  left: 20px;
+}
+.scatterButtonLabel.state{
+  left: 160px;
+}
+.scatterButtonLabel.federal{
+  left: 300px;
+}
+.scatterButtonLabel.title{
+  bottom: 53px;
+  left: 0px;
+  font-size: 16px;
+}
