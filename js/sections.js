@@ -552,6 +552,21 @@ var scrollVis = function () {
           })
           .ticks(tickCount)
         ) 
+    var dotAxisX, dotAxisY;
+    if(IS_PHONE()) dotAxisX = 0;
+    else if(IS_SHORT()) dotAxisX = 100;
+    else dotAxisX = 100;
+
+    if(IS_PHONE()) dotAxisY = 10;
+    else if(IS_SHORT()) dotAxisY = 45;
+    else dotAxisY = 45;
+
+    var dotAxisXText = (IS_PHONE()) ? "" : "Difference in funding of districts attended by poor vs. non-poor students";
+    g.append("text")
+      .html(dotAxisXText)
+      .attr("x",dotAxisX)
+      .attr("y",height + dotAxisY)
+      .attr("class", "axisLabel dotAxisXLabel")
 
 
     // add the y Axis
@@ -946,6 +961,7 @@ var scrollVis = function () {
       .append("div")
       .attr("id", "buttonContainer")
       .style("opacity",0)
+      .style("z-index",-1)
 
     buttonContainer.append("div")
       .attr("class", "scatterButton stateButton active nonInteractive switch on")
@@ -1047,7 +1063,7 @@ var scrollVis = function () {
 
   if(IS_PHONE()){
     mapLegend = g.append("g")
-      .attr("transform", "translate(-20,-40)")
+      .attr("transform", "translate(-20,-30)")
       .attr("id","mapLegend")
       .attr("class", "mapElements")
       .style("opacity",0)
@@ -1088,6 +1104,11 @@ var scrollVis = function () {
       .attr("y", 45)
       .text("No data")
       .attr("class","keyLabel")
+    mapLegend.append("text")
+      .attr("x",-2)
+      .attr("y",-20)
+      .text("Poverty rate among families with children 5–17")
+      .attr("class","axisLabel")
   }else{
     mapLegend = g.append("g")
       .attr("transform", "translate(" + (width - 45) + ",0)")
@@ -1128,6 +1149,10 @@ var scrollVis = function () {
       .attr("y",(mapColor.range().length)*20 + 15)
       .text("No data")
       .attr("class","keyLabel")
+    mapLegend.append("text")
+      .attr("transform","translate(-14,270)rotate(270)")
+      .text("Poverty rate among families with children 5–17")
+      .attr("class","axisLabel")
   }
 
     //histograms
@@ -1233,7 +1258,7 @@ svg
       }
       var p = d3.mouse(this), site;
       p[0] -= margin.left;
-      p[1] -= margin.top;
+      p[1] -= margin.top + 70;
       // don't react if the mouse is close to one of the axis
       if (p[0] < 5 || p[1] < 5) {
         site = null;
@@ -1307,14 +1332,29 @@ function showDotTooltip(m, sectionIndex){
       if(yCoord < (state + band/2) && yCoord > (state - band/2)){
         d3.selectAll(".dotChartSelected")
           .classed("dotChartSelected", false)
-        if(sectionIndex == 3 && (states[i] != "NY" && states[i] != "FL") ){ break}
-        var selectedG = d3.selectAll(groupSelector + "." + states[i])
-          .classed("dotChartSelected", true)
-        selectedG.node().parentNode.appendChild(selectedG.node())
-        d3.selectAll(".highlightBar." + states[i])
-          .classed("dotChartSelected", true)
-        d3.selectAll(".highlightBar.dotChartClicked")
-          .classed("dotChartSelected", true)
+        if(sectionIndex == 3 && (states[i] != "NY" && states[i] != "FL") ){
+          d3.selectAll(".highlightBar.FL.dotChartClicked")
+            .classed("dotChartSelected", true)
+          d3.selectAll(".highlightBar.NY.dotChartClicked")
+            .classed("dotChartSelected", true)
+          break
+        }
+        else{
+          var selectedG = d3.selectAll(groupSelector + "." + states[i])
+            .classed("dotChartSelected", true)
+          selectedG.node().parentNode.appendChild(selectedG.node())
+          d3.selectAll(".highlightBar." + states[i])
+            .classed("dotChartSelected", true)
+          if(sectionIndex != 3){
+            d3.selectAll(".highlightBar.dotChartClicked")
+              .classed("dotChartSelected", true)
+          }else{
+            d3.selectAll(".highlightBar.FL.dotChartClicked")
+              .classed("dotChartSelected", true)
+            d3.selectAll(".highlightBar.NY.dotChartClicked")
+              .classed("dotChartSelected", true)
+          }
+        }
         // selectedG.select(".dotTooltip.stateValue")
 
         break;
@@ -1339,8 +1379,15 @@ function removeDotTooltip(){
   d3.selectAll(".dotChartSelected")
       .classed("dotChartSelected", false)
   if(SECTION_INDEX() < 4){
-      d3.selectAll(".dotChartClicked.highlightBar")
-      .classed("dotChartSelected", true)
+      if(SECTION_INDEX() == 3){
+        d3.selectAll(".highlightBar.FL.dotChartClicked")
+          .classed("dotChartSelected", true)
+        d3.selectAll(".highlightBar.NY.dotChartClicked")
+          .classed("dotChartSelected", true)
+      }else{
+        d3.selectAll(".dotChartClicked.highlightBar")
+          .classed("dotChartSelected", true)
+      }
   }
 }
 
@@ -1797,6 +1844,9 @@ var  drawOutlierLabels = function(cat, outliers){
     d3.select(".zeroLine")
       .transition()
       .style("opacity",1)
+    d3.select(".dotAxisXLabel")
+      .transition()
+      .style("opacity",1)
     d3.select(".legend")
       .transition()
       .delay(1500)
@@ -1951,6 +2001,10 @@ var  drawOutlierLabels = function(cat, outliers){
       .transition()
       .duration(1000)
       .style("opacity",1)
+    d3.select(".dotAxisXLabel")
+      .transition()
+      .duration(1000)
+      .style("opacity",1)
     d3.select(".legend")
       .transition()
       .duration(1000)
@@ -1998,6 +2052,11 @@ var  drawOutlierLabels = function(cat, outliers){
       .transition()
       .duration(1000)
       .style("opacity",0)
+    d3.select(".dotAxisXLabel")
+      .transition()
+      .duration(1000)
+      .style("opacity",0)
+
     d3.select(".legend")
       .transition()
       .duration(1000)
@@ -2296,7 +2355,7 @@ var  drawOutlierLabels = function(cat, outliers){
       .on("end", function(){
         d3.select(this).classed("nonInteractive", true)
       })
-    d3.select("#buttonContainer").transition().style("opacity",0)
+    d3.select("#buttonContainer").transition().style("opacity",0).style("z-index",-1)
 
   }
   function dotsOverTime(){
@@ -2379,6 +2438,7 @@ var  drawOutlierLabels = function(cat, outliers){
       .transition()
       .duration(1000)
       .style("opacity",1)
+      .style("z-index",2)
     
   }
 

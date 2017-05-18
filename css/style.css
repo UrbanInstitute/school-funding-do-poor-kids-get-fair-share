@@ -91,7 +91,7 @@ p{
   position: relative;
   float: inherit;
   padding-left: 6px;
-  /*bottom: 100px;*/
+  bottom: -110px;
 }
 #vis.posRelBottomSingleCol{
   position: absolute;
@@ -261,6 +261,9 @@ circle.morph{
 @media (max-height: 880px){
   #isShort{
     display: block;
+  }
+  #vis.posRelBottom{
+    bottom: -97px;
   }
   .mapFL{
     top: 19px;

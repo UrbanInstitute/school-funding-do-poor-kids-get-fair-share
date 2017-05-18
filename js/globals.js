@@ -14,11 +14,11 @@ var SECTION_INDEX = function(){
 var PHONE_VIS_WIDTH = 230;
 var PHONE_VIS_HEIGHT = 400;
 var SHORT_VIS_WIDTH = 600;
-var SHORT_VIS_HEIGHT = 560;
+var SHORT_VIS_HEIGHT = 540;
 var SHORT_SCATTER_WIDTH = 480;
 var PHONE_SCATTER_WIDTH = 235
 var VIS_WIDTH = 600;
-var VIS_HEIGHT = 700;
+var VIS_HEIGHT = 680;
 
 
 var MARGIN = { top: 60, left: 120, bottom: 104, right: 20 };
