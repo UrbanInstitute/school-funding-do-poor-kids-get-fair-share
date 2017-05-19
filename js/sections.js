@@ -1111,7 +1111,7 @@ var scrollVis = function () {
       .attr("class","axisLabel")
   }else{
     mapLegend = g.append("g")
-      .attr("transform", "translate(" + (width - 45) + ",0)")
+      .attr("transform", "translate(" + (width - 55) + ",0)")
       .attr("id","mapLegend")
       .attr("class", "mapElements")
       .style("opacity",0)
@@ -1150,7 +1150,7 @@ var scrollVis = function () {
       .text("No data")
       .attr("class","keyLabel")
     mapLegend.append("text")
-      .attr("transform","translate(-54,-8)")
+      .attr("transform","translate(0,-13)")
       .text("Poverty rate")
       .attr("class","axisLabel")
   }
