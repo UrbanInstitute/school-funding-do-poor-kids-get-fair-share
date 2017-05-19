@@ -59,6 +59,19 @@ p{
   font-weight: bold;
   margin-bottom: 10px;
 }
+.subtitle{
+  margin-top: -8px;
+  font-size: 17px;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+.mapButton{
+    display: inline-block;
+    cursor: pointer;
+    color:#1696d2;
+    font-style:italic;
+    font-size:16px
+}
 #extra-space {
   height: 0px;
 }
@@ -210,19 +223,6 @@ g.dotChartSelected .dotHoverText.hidden, g.dotChartSelected .dotSumLine.hidden {
   font-size: 12px;
   font-style: italic;
 }
-
-.mapButton{
-    display: block;
-
-    cursor: pointer;
-    margin: 0 auto;
-    margin-top:20px;
-    margin-bottom:5px;
-    color:#1696d2;
-    font-style:italic;
-    font-size:18px
-}
-
 
 
 circle.morph{

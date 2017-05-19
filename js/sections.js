@@ -1441,7 +1441,7 @@ var  drawOutlierLabels = function(cat, outliers){
         d3.select(this)
           .classed("tracts",false)
           .classed("districts",true)
-          .text("Back to district map")
+          .text("(click for district map)")
         floridaTracts(histData)  
       }else{
         floridaDistricts(histData)
@@ -1452,7 +1452,7 @@ var  drawOutlierLabels = function(cat, outliers){
       d3.select("#newYorkButton")
         .classed("tracts",false)
         .classed("districts",true)
-        .text("Back to district map")
+        .text("(click for district map)")
         newYorkTracts(histData)  
       }else{
         newYorkDistricts(histData)
@@ -2113,7 +2113,7 @@ var  drawOutlierLabels = function(cat, outliers){
       d3.select("#floridaButton")
         .classed("tracts",true)
         .classed("districts",false)
-        .text("Back to neighborhood map")
+        .text("(click for neighborhood map)")
       }
 
 
@@ -2273,7 +2273,7 @@ var  drawOutlierLabels = function(cat, outliers){
       d3.select("#newYorkButton")
         .classed("tracts",true)
         .classed("districts",false)
-        .text("Back to neighborhood map")
+        .text("(click for neighborhood map)")
       }
 
     d3.select("#histYLabel")
