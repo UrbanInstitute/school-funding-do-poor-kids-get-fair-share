@@ -193,6 +193,12 @@ g.dotChartSelected .dotHoverText.hidden, g.dotChartSelected .dotSumLine.hidden {
   font-size: 14px;
   font-style: italic;
 }
+.note{
+  font-size: 11px;
+}
+.note tspan{
+  font-weight: bold;
+}
 .scatterAxis, .histAxis{
   stroke: #333;
 }

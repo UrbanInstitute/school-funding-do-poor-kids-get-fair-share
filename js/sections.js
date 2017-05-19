@@ -1107,7 +1107,7 @@ var scrollVis = function () {
     mapLegend.append("text")
       .attr("x",-2)
       .attr("y",-20)
-      .text("Poverty rate among families with children 5–17")
+      .text("Poverty rate")
       .attr("class","axisLabel")
   }else{
     mapLegend = g.append("g")
@@ -1150,8 +1150,8 @@ var scrollVis = function () {
       .text("No data")
       .attr("class","keyLabel")
     mapLegend.append("text")
-      .attr("transform","translate(-14,270)rotate(270)")
-      .text("Poverty rate among families with children 5–17")
+      .attr("transform","translate(-54,-8)")
+      .text("Poverty rate")
       .attr("class","axisLabel")
   }
 
@@ -1172,14 +1172,19 @@ var scrollVis = function () {
     .attr("y",-13)
     .attr("class", "axisLabel")
 
-  var histLabelX = (IS_PHONE()) ? -30 : 150,
-      histLabelY = (IS_PHONE()) ? 192 : 287,
-      histLabelText = (IS_PHONE()) ? "Poverty rate among families with children 5&ndash;17" : "Poverty rate among families with children 5&ndash;17"
+  var histLabelX = (IS_PHONE()) ? 90 : 264,
+      histLabelY = (IS_PHONE()) ? 192 : 277,
+      histLabelText = "Poverty rate"
   histG.append("text")
     .html(histLabelText)
     .attr("x",histLabelX)
     .attr("y",histLabelY)
     .attr("class", "axisLabel histXAxisLabel")
+  histG.append("text")
+    .html("<tspan>Note:</tspan> Poverty rates among families with children 5–17")
+    .attr("x",-20)
+    .attr("y",histLabelY + 14)
+    .attr("class", "note")
 
   histG.selectAll(".histBar")
     .data(histData)
