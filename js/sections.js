@@ -561,12 +561,17 @@ var scrollVis = function () {
     else if(IS_SHORT()) dotAxisY = 45;
     else dotAxisY = 45;
 
-    var dotAxisXText = (IS_PHONE()) ? "" : "Difference in funding of districts attended by poor vs. non-poor students";
+    var dotAxisXText = (IS_PHONE()) ? "" : "Difference in funding of districts attended by poor vs. nonpoor students";
     g.append("text")
       .html(dotAxisXText)
       .attr("x",dotAxisX)
       .attr("y",height + dotAxisY)
       .attr("class", "axisLabel dotAxisXLabel")
+    g.append("text")
+    .html("<tspan>Note:</tspan> We exclude Hawaii and Washington, DC, because they are both single districts.")
+    .attr("x",0)
+    .attr("y",height + dotAxisY + 24)
+    .attr("class", "note dotNote")
 
 
     // add the y Axis
@@ -1174,17 +1179,18 @@ var scrollVis = function () {
 
   var histLabelX = (IS_PHONE()) ? 90 : 264,
       histLabelY = (IS_PHONE()) ? 192 : 277,
-      histLabelText = "Poverty rate"
+      histLabelText = "Poverty rate",
+      noteX = (IS_PHONE()) ? -30 : -30;
   histG.append("text")
     .html(histLabelText)
     .attr("x",histLabelX)
     .attr("y",histLabelY)
     .attr("class", "axisLabel histXAxisLabel")
   histG.append("text")
-    .html("<tspan>Note:</tspan> Poverty rates among families with children 5–17")
-    .attr("x",-20)
+    .html("<tspan>Note:</tspan> Poverty rates among families with children ages 5&ndash;17.")
+    .attr("x",noteX)
     .attr("y",histLabelY + 14)
-    .attr("class", "note")
+    .attr("class", "note histNote")
 
   histG.selectAll(".histBar")
     .data(histData)
@@ -1849,6 +1855,9 @@ var  drawOutlierLabels = function(cat, outliers){
     d3.select(".zeroLine")
       .transition()
       .style("opacity",1)
+    d3.select(".dotNote")
+      .transition()
+      .style("opacity",1)
     d3.select(".dotAxisXLabel")
       .transition()
       .style("opacity",1)
@@ -2006,6 +2015,10 @@ var  drawOutlierLabels = function(cat, outliers){
       .transition()
       .duration(1000)
       .style("opacity",1)
+    d3.select(".dotNote")
+      .transition()
+      .duration(1000)
+      .style("opacity",1)
     d3.select(".dotAxisXLabel")
       .transition()
       .duration(1000)
@@ -2036,6 +2049,12 @@ var  drawOutlierLabels = function(cat, outliers){
 
     d3.select("#histYLabel")
       .text("Number of neighborhoods")
+      .transition()
+      .attr("x",-30)
+    d3.select(".histNote")
+      .transition()
+      .attr("x",-30)
+
 
     d3.select("#morphPath")
       .transition()
@@ -2054,6 +2073,10 @@ var  drawOutlierLabels = function(cat, outliers){
       .duration(1000)
       .style("opacity",0)
     d3.select(".zeroLine")
+      .transition()
+      .duration(1000)
+      .style("opacity",0)
+    d3.select(".dotNote")
       .transition()
       .duration(1000)
       .style("opacity",0)
@@ -2124,6 +2147,11 @@ var  drawOutlierLabels = function(cat, outliers){
 
     d3.select("#histYLabel")
       .text("Number of districts")
+      .transition()
+      .attr("x",-20)
+    d3.select(".histNote")
+      .transition()
+      .attr("x",-20)
 
     d3.selectAll("#dotChartYAxis .tick text")
       .transition()
@@ -2211,6 +2239,11 @@ var  drawOutlierLabels = function(cat, outliers){
 
     d3.select("#histYLabel")
       .text("Number of neighborhoods")
+      .transition()
+      .attr("x",-30)
+    d3.select(".histNote")
+      .transition()
+      .attr("x",-30)
 
     histY.domain([0, d3.max(histData, function(d) { return d.tractNyCount; })]);
     d3.select("#histYAxis")

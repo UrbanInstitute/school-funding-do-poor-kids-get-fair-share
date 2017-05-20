@@ -263,6 +263,16 @@ circle.morph{
     top: 0;
     left: 0;
 }
+.dotNote{
+  display: block;
+}
+.mobileDotNote{
+  display: none;
+  font-style: italic;
+}
+.mobileDotNote span{
+  font-weight: bold;
+}
 
 @media (max-height: 880px){
   #isShort{
@@ -377,6 +387,12 @@ circle.morph{
     width: 100%;
   }
   #isMobile{
+    display: block;
+  }
+  .dotNote{
+    display: none;
+  }
+  .mobileDotNote{
     display: block;
   }
   #topText{
