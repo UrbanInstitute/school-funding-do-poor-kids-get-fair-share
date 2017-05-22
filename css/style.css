@@ -432,10 +432,18 @@ circle.morph{
     margin-bottom: 1200px;
   }
 }
+@media (max-width: 350px){
+  #sections{
+    /*width: 300px;*/
+    left: -20px;
+    /*pointer-events: none;*/
+  }
+}
+
 @media (max-width: 500px){
   #sections{
     width: 300px;
-    left: -20px;
+    /*left: -20px;*/
     pointer-events: none;
   }
 }

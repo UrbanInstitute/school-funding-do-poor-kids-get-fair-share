@@ -1177,9 +1177,9 @@ var scrollVis = function () {
     .attr("y",-13)
     .attr("class", "axisLabel")
 
-  var histLabelX = (IS_PHONE()) ? 90 : 264,
+  var histLabelX = (IS_PHONE()) ? 60 : 240,
       histLabelY = (IS_PHONE()) ? 192 : 277,
-      histLabelText = "Poverty rate",
+      histLabelText = "Poverty rate (percent)",
       noteX = (IS_PHONE()) ? -30 : -30;
   histG.append("text")
     .html(histLabelText)
@@ -2144,14 +2144,14 @@ var  drawOutlierLabels = function(cat, outliers){
         .text("(click for neighborhood map)")
       }
 
-
+    var noteX = (IS_PHONE()) ? -30: -20
     d3.select("#histYLabel")
       .text("Number of districts")
       .transition()
       .attr("x",-20)
     d3.select(".histNote")
       .transition()
-      .attr("x",-20)
+      .attr("x",noteX)
 
     d3.selectAll("#dotChartYAxis .tick text")
       .transition()
