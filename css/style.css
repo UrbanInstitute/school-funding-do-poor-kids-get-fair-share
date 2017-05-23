@@ -18,7 +18,14 @@ body{
   padding-top: 60px;
 }
 
+#topTitle{
+  font-size: 30px;
+  text-align: center;
+  padding-bottom: 20px;
+}
 #topText{
+  margin-top: -140px;
+  padding: 40px;
   margin-bottom:30px;
   font-size:21px;
   font-weight:400;
@@ -26,6 +33,13 @@ body{
   background: #fff; 
   z-index: 1000;
   position: relative;
+}
+#topHR{
+  width: 130px;
+  height: 6px;
+  background-color: #1696d2;
+  margin: 0 auto;
+  margin-bottom: 20px;
 }
 
 
@@ -382,6 +396,9 @@ circle.morph{
   }
 }
 @media (max-width: 1170px){
+  .headerimage{
+    height: 440px !important;
+  }
   .container{
     margin-left: auto;
     width: 100%;
@@ -481,7 +498,7 @@ circle.morph{
      position: relative;
     overflow: hidden;
     width: 100%;
-    height: 350px;
+    height: 600px;
   z-index:-1;
  
 }
@@ -491,7 +508,7 @@ circle.morph{
 }
 
 #heroimage{
-   background-image: url("../images/banner-temp.png");
+   background-image: url("../images/pencil-header.png");
      background-size: cover;
     background-repeat: no-repeat;
     width: 100%;
