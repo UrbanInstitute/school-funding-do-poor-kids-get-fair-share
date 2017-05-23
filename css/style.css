@@ -117,7 +117,7 @@ p{
 #vis.posRelBottom{
   position: relative;
   float: inherit;
-  padding-left: 6px;
+  padding-left: 0px;
   bottom: -110px;
 }
 #vis.posRelBottomSingleCol{
@@ -444,6 +444,14 @@ circle.morph{
     /*top: 20px;*/
   }
 }
+@media (max-width: 930px){
+  .headerimage {
+    height: 350px !important;
+  }
+  #topTitle {
+    font-size: 25px;
+  }
+}
 @media (max-width: 768px){
   .step {
     margin-bottom: 1200px;
@@ -458,6 +466,14 @@ circle.morph{
 }
 
 @media (max-width: 500px){
+  .headerimage {
+    height: 180px !important;
+    top: 20px;
+  }
+  #topText{
+    margin-top: -90px;
+    padding: 20px;
+  }
   #sections{
     width: 300px;
     /*left: -20px;*/
@@ -495,12 +511,11 @@ circle.morph{
    
 
 .headerimage{
-     position: relative;
-    overflow: hidden;
-    width: 100%;
-    height: 600px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 720px;
   z-index:-1;
- 
 }
 
 .headerwrapper{
@@ -531,7 +546,9 @@ circle.morph{
 }
 
 
-
+@media (max-width: 2000px) {
+  .headerimage{ height:600px;}
+}
 /*browser windows smaller than 850px*/
 @media (max-width: 600px) {
    .headerimage{ height:300px;}
