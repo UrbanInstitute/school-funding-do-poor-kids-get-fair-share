@@ -562,16 +562,29 @@ var scrollVis = function () {
     else dotAxisY = 45;
 
     var dotAxisXText = (IS_PHONE()) ? "" : "Difference in funding of districts attended by poor vs. nonpoor students";
-    g.append("text")
-      .html(dotAxisXText)
-      .attr("x",dotAxisX)
-      .attr("y",height + dotAxisY)
-      .attr("class", "axisLabel dotAxisXLabel")
-    g.append("text")
-    .html("<tspan>Note:</tspan> We exclude Hawaii and Washington, DC, because they are both single districts.")
-    .attr("x",0)
-    .attr("y",height + dotAxisY + 24)
-    .attr("class", "note dotNote")
+    if(IS_IE){
+      g.append("text")
+        .text(dotAxisXText)
+        .attr("x",dotAxisX)
+        .attr("y",height + dotAxisY)
+        .attr("class", "axisLabel dotAxisXLabel")
+      g.append("text")
+        .text("Note: We exclude Hawaii and Washington, DC, because they are both single districts.")
+        .attr("x",0)
+        .attr("y",height + dotAxisY + 24)
+        .attr("class", "note dotNote")
+    }else{
+      g.append("text")
+        .html(dotAxisXText)
+        .attr("x",dotAxisX)
+        .attr("y",height + dotAxisY)
+        .attr("class", "axisLabel dotAxisXLabel")
+      g.append("text")
+        .html("<tspan>Note:</tspan> We exclude Hawaii and Washington, DC, because they are both single districts.")
+        .attr("x",0)
+        .attr("y",height + dotAxisY + 24)
+        .attr("class", "note dotNote")
+    }
 
 
     // add the y Axis
@@ -1181,16 +1194,30 @@ var scrollVis = function () {
       histLabelY = (IS_PHONE()) ? 192 : 277,
       histLabelText = "Poverty rate (percent)",
       noteX = (IS_PHONE()) ? -30 : -30;
-  histG.append("text")
-    .html(histLabelText)
-    .attr("x",histLabelX)
-    .attr("y",histLabelY)
-    .attr("class", "axisLabel histXAxisLabel")
-  histG.append("text")
-    .html("<tspan>Note:</tspan> Poverty rates among families with children ages 5&ndash;17.")
-    .attr("x",noteX)
-    .attr("y",histLabelY + 14)
-    .attr("class", "note histNote")
+  if (IS_IE){
+    histG.append("text")
+      .text(histLabelText)
+      .attr("x",histLabelX)
+      .attr("y",histLabelY)
+      .attr("class", "axisLabel histXAxisLabel")
+    histG.append("text")
+      .text("Note:Poverty rates among families with children ages 5-17.")
+      .attr("x",noteX)
+      .attr("y",histLabelY + 14)
+      .attr("class", "note histNote")
+  }else{
+    histG.append("text")
+      .html(histLabelText)
+      .attr("x",histLabelX)
+      .attr("y",histLabelY)
+      .attr("class", "axisLabel histXAxisLabel")
+    histG.append("text")
+      .html("<tspan>Note:</tspan> Poverty rates among families with children ages 5&ndash;17.")
+      .attr("x",noteX)
+      .attr("y",histLabelY + 14)
+      .attr("class", "note histNote")
+  }
+
 
   histG.selectAll(".histBar")
     .data(histData)
@@ -2563,6 +2590,9 @@ var  drawOutlierLabels = function(cat, outliers){
  * @param data - loaded tsv data
  */
 function display(dotChartData, scatterplotData, histData) {
+  if(getInternetExplorerVersion() != -1){
+    IS_IE = true;
+  }
   // create a new plot and
   // display it
   var plot = scrollVis();

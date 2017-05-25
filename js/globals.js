@@ -11,6 +11,27 @@ var SECTION_INDEX = function(){
   return d3.select("#sectionIndex").attr("data-index")
 }
 
+var IS_IE = false;
+function getInternetExplorerVersion()
+{
+  var rv = -1;
+  if (navigator.appName == 'Microsoft Internet Explorer')
+  {
+    var ua = navigator.userAgent;
+    var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+    if (re.exec(ua) != null)
+      rv = parseFloat( RegExp.$1 );
+  }
+  else if (navigator.appName == 'Netscape')
+  {
+    var ua = navigator.userAgent;
+    var re  = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
+    if (re.exec(ua) != null)
+      rv = parseFloat( RegExp.$1 );
+  }
+  return rv;
+}
+
 var PHONE_VIS_WIDTH = 230;
 var PHONE_VIS_HEIGHT = 400;
 var SHORT_VIS_WIDTH = 600;
