@@ -287,8 +287,31 @@ circle.morph{
 .mobileDotNote span{
   font-weight: bold;
 }
+#mobile-notes{
+  display: none;
+}
+#mobile-notes-text-dots{
+  font-size: 14px;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  line-height: 1.6;
+}
+#mobile-notes-text-maps{
+  font-size: 14px;
+  line-height: 1.6;
+}
 
 @media (max-height: 880px){
+  #buttonContainer{
+    top: 45px !important;
+  }
+  .scatterButtonLabel.title{
+    font-style: italic;
+    font-size: 13px !important;
+    font-weight: normal;
+    bottom: 48px !important;
+    left: 1px !important;
+  }
   #isShort{
     display: block;
   }
@@ -301,18 +324,28 @@ circle.morph{
     width: 473px;
   }
   .mapNY{
-    top: -43px;
+    top: -53px;
     left: 180px;
     width: 473px;
   }
+  #dotChartYAxis .tick text{
+    font-size: 11px;
+  }
+
 /*  .scatterButton{
     bottom: 80px;
   }*/
 }
 
-@media (max-height: 667px) , (max-width: 768px){
+@media (max-height: 636px) , (max-width: 768px){
   #isPhone{
     display: block;
+  }
+  #mobile-notes{
+    display: block;
+  }
+  .dotNote, .histNote{
+    display: none;
   }
   .switch{
     width: 55px !important;
@@ -406,7 +439,7 @@ circle.morph{
   #isMobile{
     display: block;
   }
-  .dotNote{
+  .dotNote, .histNote{
     display: none;
   }
   .mobileDotNote{

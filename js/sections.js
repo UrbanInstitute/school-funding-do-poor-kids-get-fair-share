@@ -109,9 +109,18 @@ var scrollVis = function () {
       g = svg.select('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-      var histAdjust = (IS_SHORT() || IS_PHONE()) ? 50 : 0;
+      // var histAdjust = (IS_SHORT() || IS_PHONE()) ? 50 : 0;
+      var histAdjust;
+      if(IS_PHONE()){
+        histAdjust = 50;
+      }
+      else if(IS_SHORT()){
+        histAdjust = 80;
+      }else{
+        histAdjust = 0;
+      }
       histG = svg.append("g")
-        .attr("class", "mapElements")
+        .attr("class", "mapElements") 
         .attr("transform", "translate(" + histMargin.left + "," + (height - histHeight + histAdjust) + ")")
         .style("opacity",0);
 
@@ -2312,7 +2321,7 @@ var  drawOutlierLabels = function(cat, outliers){
     gridlines()
 
     if(! IS_PHONE()){
-    var coords = (IS_SHORT()) ? "translate(170,-43)" : "translate(90,-73)"
+    var coords = (IS_SHORT()) ? "translate(170,-53)" : "translate(90,-73)"
       d3.select("#morphG")
         .transition()
         .duration(1000)
@@ -2456,11 +2465,17 @@ var  drawOutlierLabels = function(cat, outliers){
       .transition()
       .style("opacity",0)
 
-    if(IS_PHONE()){
+    if(IS_SHORT()){
+      g
+        .transition()
+        .attr('transform', 'translate(' + (margin.left) + ',' + (margin.top+33) + ')');
+    }
+    else if(IS_PHONE()){
       g
         .transition()
         .attr('transform', 'translate(' + (margin.left+20) + ',' + margin.top + ')');
-    }else{
+    }
+    else{
       g
         .transition()
         .attr('transform', 'translate(' + (margin.left) + ',' + (margin.top+70) + ')');
