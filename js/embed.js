@@ -2713,7 +2713,7 @@ d3.csv("data/data_ben_2014.csv", function(dotChartData){
         // }
         window.setTimeout(function(){
         display(dotChartData, scatterplotData, histData)  
-      }, 100)
+      }, 1000)
         
 
       }
