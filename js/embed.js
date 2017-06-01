@@ -2711,15 +2711,15 @@ d3.csv("data/data_ben_2014.csv", function(dotChartData){
         // }else{
         //   d3.select("body").style("height", VIS_HEIGHT + "px")
         // }
-        window.setTimeout(function(){
+      window.setTimeout(function(){
         display(dotChartData, scatterplotData, histData)  
-      }, 1000)
+      }, 100)
         
 
       }
 
 
-      var pymChild = new pym.Child({ renderCallback: drawGraphic, polling: 500 });
+      var pymChild = new pym.Child({ renderCallback: drawGraphic});
     });
   });
 });

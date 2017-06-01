@@ -9,7 +9,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
      display: block;
 }
 
-body, html {
+body{
      color: #000;
      font-family: "Lato",sans-serif;
      font-size: 16px;
@@ -485,11 +485,11 @@ footer h3, footer h4{
     #left{ width:100%;}
     #right{ width:100%; margin-top:30px;}
 }
-
-.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+/*
+.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }*/
 
 /*browser windows smaller than 850px*/
-@media (max-width: 600px) {
+/*@media (max-width: 600px) {
    .wrapper {padding-top:80px;} 
    .headerimage{ height:250px;}
     h1{font-size: 45px;padding-top: 100px;}
@@ -497,8 +497,8 @@ footer h3, footer h4{
 
 
 
-
-
+}
+*/
 
 
 
@@ -827,7 +827,7 @@ circle.morph{
     display: block;
   }
   body{
-    height: 644px;
+    /*height: 644px;*/
   }
   #vis.posRelBottom{
     bottom: -97px;
@@ -851,7 +851,8 @@ circle.morph{
   }*/
 }
 
-@media (max-height: 636px) , (max-width: 768px){
+/*@media*/
+@media (max-width: 768px){
   #isPhone{
     display: block;
   }

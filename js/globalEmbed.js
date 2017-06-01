@@ -3,7 +3,6 @@ var IS_SHORT = function(){
   return false;
 }
 var IS_PHONE = function(){
-  // if
   // return false;
   return (d3.select("#isPhone").style("display") == "block")
 }
